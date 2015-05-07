@@ -1,0 +1,30 @@
+@media (min-width: 800px) {
+	#game-container {
+		border: 1px solid green;
+		width: 50%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+#info-table {
+	font-size: 1.2em;
+}
+
+table {
+	border: 1px solid red;
+	text-align: center;
+	font-size: 2em;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+td {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+#bottom-row {
+	font-size: 2.5em;
+}
