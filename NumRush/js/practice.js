@@ -11,6 +11,10 @@ $(document).ready(function() {
     var incorrect = 0;
     var $incorrectIndicator = $('#incorrect-indicator');
 
+    // Audio
+    var $correctSfx = $('#right-sfx');   
+    var $gameBgm = $('#game-bgm');
+
 
     // Initialization
     // Create the 5 answers
@@ -51,6 +55,9 @@ $(document).ready(function() {
             // Increase indicator count
             correct++;
             $correctIndicator.text("CORRECT: " + correct);
+
+            // Play the sound
+            $correctSfx.get(0).play();
 
             // Get a new number
             $targetElement.text(generateNextAnswer());
