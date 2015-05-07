@@ -31,6 +31,8 @@ $(document).ready(function() {
     // Attach handlers
     jAnswers.bind("tap", answerHandler);
 
+    // Load audio
+    loadBgmSound();
   
     // -- OBJECTS --
     function Question(num1, operator, num2, answer) {
@@ -57,7 +59,7 @@ $(document).ready(function() {
             $correctIndicator.text("CORRECT: " + correct);
 
             // Play the sound
-            $correctSfx.get(0).play();
+            correctSound();
 
             // Get a new number
             $targetElement.text(generateNextAnswer());
@@ -83,6 +85,23 @@ $(document).ready(function() {
 
 
     // -- METHODS --
+
+    function correctSound() {
+        var sfx = new Audio("sound/hitsound1.wav"); // buffers automatically when created
+        sfx.play();
+    }
+
+    function loadBgmSound() {
+        var bgm = new Audio("sound/game_bgm.wav");
+        bgm.loop = true;
+
+        if (localStorage.getItem("bgm-muted") == "true") {
+            bgm.pause();
+        } else {
+            bgm.play();
+        }
+    }
+
     // Gets and loads the first 5 answers
     function initializeAnswers() {
         for (i = 0; i < 5; i++) {
