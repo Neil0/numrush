@@ -150,9 +150,8 @@ $(document).ready(function() {
             randInt = getRandomInt(1, 20);
 
             // Check if it exists already
-            // Note: ... what the fuck, this can't be i because it changes the outer loop....
             // Note: for loop is a loop, so you need a label to continue the while
-            for (j = 0; j < jAnswers.length - 1; j++) {
+            for (j = 0; j < jAnswers.length; j++) {
                 var something = jAnswers[j].innerHTML;
                 if (something == randInt) {
                     continue outer; // Yes - retry
