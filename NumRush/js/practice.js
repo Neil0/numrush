@@ -14,9 +14,10 @@ $(document).ready(function() {
     // Audio
     var $correctSfx = $('#right-sfx');   
     var $gameBgm = $('#game-bgm');
+    var sfxEnabled = true;
 
 
-    // Initialization
+    // -- INIT -- 
     // Create the 5 answers
     initializeAnswers();
     // Create the 3 questions
@@ -32,8 +33,10 @@ $(document).ready(function() {
     jAnswers.bind("tap", answerHandler);
 
     // Load audio
+    loadSfxSound(); // Checks if the sfx should be played - doesn't actually load anything
     loadBgmSound();
   
+
     // -- OBJECTS --
     function Question(num1, operator, num2, answer) {
         this.num1 = num1;
@@ -59,7 +62,7 @@ $(document).ready(function() {
             $correctIndicator.text("CORRECT: " + correct);
 
             // Play the sound
-            correctSound();
+            if (sfxEnabled) { correctSfx(); }
 
             // Get a new number
             $targetElement.text(generateNextAnswer());
@@ -85,8 +88,8 @@ $(document).ready(function() {
 
 
     // -- METHODS --
-
-    function correctSound() {
+    // TODO: Load the audio, apparently audio lags
+    function correctSfx() {
         var sfx = new Audio("sound/hitsound1.wav"); // buffers automatically when created
         sfx.play();
     }
@@ -99,6 +102,14 @@ $(document).ready(function() {
             bgm.pause();
         } else {
             bgm.play();
+        }
+    }
+
+    function loadSfxSound() {
+        if (localStorage.getItem("sfx-muted") == "true") {
+            sfxEnabled = false;
+        } else {
+            sfxEnabled = true;
         }
     }
 
