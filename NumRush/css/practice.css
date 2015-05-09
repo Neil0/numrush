@@ -1,6 +1,6 @@
 @media (min-width: 800px) {
 	#game-container {
-		border: 1px solid green;
+		border: 1px solid black;
 		width: 50%;
 		margin-left: auto;
 		margin-right: auto;
@@ -12,7 +12,7 @@
 }
 
 table {
-	border: 1px solid red;
+	border: 1px solid black;
 	text-align: center;
 	font-size: 2em;
 	width: 100%;

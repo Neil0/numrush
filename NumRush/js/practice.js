@@ -81,6 +81,9 @@ $(document).ready(function() {
             // Increase indicator count
             incorrect++;
             $incorrectIndicator.text("INCORRECT: " + incorrect);
+			if(sfxEnabled){
+				incorrectSfx();
+			}
 
             // Do nothing
         }
@@ -93,6 +96,10 @@ $(document).ready(function() {
         var sfx = new Audio("sound/hitsound1.wav"); // buffers automatically when created
         sfx.play();
     }
+	function incorrectSfx(){
+		var sfx = new Audio("sound/miss.mp3");
+		sfx.play();
+	}
 
     function loadBgmSound() {
         var bgm = new Audio("sound/game_bgm.wav");
@@ -112,6 +119,11 @@ $(document).ready(function() {
             sfxEnabled = true;
         }
     }
+	
+	function buttonSound() {
+		var sound = new Audio("sound/hitsound2.wav");
+		sound.play();
+	}
 
     // Gets and loads the first 5 answers
     function initializeAnswers() {
@@ -150,8 +162,9 @@ $(document).ready(function() {
             randInt = getRandomInt(1, 20);
 
             // Check if it exists already
+            // Note: ... what the fuck, this can't be i because it changes the outer loop....
             // Note: for loop is a loop, so you need a label to continue the while
-            for (j = 0; j < jAnswers.length; j++) {
+            for (j = 0; j < jAnswers.length - 1; j++) {
                 var something = jAnswers[j].innerHTML;
                 if (something == randInt) {
                     continue outer; // Yes - retry
@@ -215,6 +228,9 @@ $(document).ready(function() {
     function generateSum(answer) {
         var numA = getRandomInt(1, 10);
         // using numbers between 1 and 10 for now
+		while(answer <= numA){
+			numA = getRandomInt(1, 10);
+		}
         var numB = answer - numA;
         var question = new Question(numA, "+", numB, answer);
         return question;
