@@ -8,8 +8,13 @@
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 	<link rel="stylesheet" href="css/practice.css" />
 	
+	<!-- jQuery -->
 	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+	<!-- CreateJS -->
+	 <script src="https://code.createjs.com/easeljs-0.8.0.min.js"></script>
+
 	<script src="js/practice.js"></script>
 
 </head> 
@@ -28,33 +33,24 @@
 			<!-- Back button -->
 			<a href="menu.html" data-ajax="false" data-role="button">BACK</a>
 			
-			<!-- the game -->
-			<table id="info-table">
-				<tr>
-					<td id="correct-indicator">CORRECT: 0</td>
-					<td id="incorrect-indicator">INCORRECT: 0</td>
-				</tr>
-			</table>
-			<table id="question-table">
-				<tr>
-					<td></td>
-				</tr>
-				<tr>
-					<td></td>
-				</tr>
-				<tr id="bottom-row">
-					<td></td>
-				</tr>
-			</table>
-			<table id="answer-table">
-				<tr>
-					<td class="available"></td>
-					<td class="available"></td>
-					<td class="available"></td>
-					<td class="available"></td>
-					<td class="available"></td>
-				</tr>
-			</table>
+			<!-- the game with divs -->
+			<div id="top-bar">
+				<div id="correct-indicator">CORRECT: 0</div>
+				<div id="incorrect-indicator">INCORRECT: 0</div>
+			</div>
+
+			<div id="question-bar">
+				<!-- Divs loaded by the script -->
+			</div>
+
+			<div id="answer-bar">
+				<!-- jQuery text() doesn't like text with just a div -->
+				<div class="available"><span></span></div>
+				<div class="available"><span></span></div>
+				<div class="available"><span></span></div>
+				<div class="available"><span></span></div>
+				<div class="available"><span></span></div>
+			</div>
 		</div>
 
 	</div><!-- /content -->

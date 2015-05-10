@@ -1,9 +1,10 @@
 $(document).ready(function() {    
     // -- FIELDS --
     var questions = []; // Will store the question objects
-    var jQuestions = $('#question-table tr td'); // td on the html page to put that actual information
+    var jQuestions = $('#question-bar div'); // td on the html page to put that actual information
+    var $questionBar = $('#question-bar');
     var answers = []; // Mot using this right now b/c i'm a lazy fuq
-    var jAnswers = $('#answer-table tr td'); // td on the html page to put the answers in. 
+    var jAnswers = $('#answer-bar div'); // td on the html page to put the answers in. 
 
     var correct = 0;    
     // Note: Sorry for the new variable naming, jquery objects should be named with $ prefix wihle normal variables don't. i'll change the rest later
@@ -24,10 +25,8 @@ $(document).ready(function() {
     prepareNextQuestion();
     prepareNextQuestion();
     prepareNextQuestion();
-
-    // Load them visually 
-    loadQuestions();
-    //loadAnswers();
+    // Injection into the DOM
+    initializeQuestions();
 
     // Attach handlers
     jAnswers.bind("tap", answerHandler);
@@ -54,6 +53,8 @@ $(document).ready(function() {
         // Retrieve the selected element
         var $targetElement = $(event.target);
 
+        var test = questions[0].answer;
+
         // Check user choice
         // If correct 
         if ($targetElement.text() == questions[0].answer) {
@@ -66,16 +67,22 @@ $(document).ready(function() {
 
             // Get a new number
             $targetElement.text(generateNextAnswer());
+/*            
+            if animated can't prepare next answer
+            $targetElement.fadeOut(100, function() {
+                $targetElement.text(generateNextAnswer());
+            });
+            $targetElement.fadeIn(100);*/
+
             // Reset the availability
             $targetElement.toggleClass("available");
 
             // Set up the next question internally
             prepareNextQuestion();
 
-            // Load the changes (esentially repaint())
-            loadQuestions();
-            //loadAnswers();
-        
+            // load the changes (with animations)
+            animateNextQuestion();
+
         // else incorrect
         } else {
             // Increase indicator count
@@ -91,6 +98,25 @@ $(document).ready(function() {
 
 
     // -- METHODS --
+    function animateNextQuestion() {
+        // Retrieve necessary elements
+        var $last = $('#question-bar div:last-child');
+        var $nextBig = $('#question-bar div:nth-child(2)'); // Next quesiton to be answered
+
+        // Create the new question (externally)
+        var $newDiv = jQuery('<div>', {
+            text: questions[2].toString(),
+            style: 
+                "display: none;"
+        });
+
+        $questionBar.prepend($newDiv) // Inject next answer in DOM
+        $newDiv.slideDown('fast') // Animate it
+        $nextBig.animate( { fontSize: "2.5em" }, 'fast'); // Animate the next question for answer
+                          $last.fadeOut('fast').remove(); // Animate the answered question
+    }
+
+
     // TODO: Load the audio, apparently audio lags
     function correctSfx() {
         var sfx = new Audio("sound/hitsound1.wav"); // buffers automatically when created
@@ -132,12 +158,26 @@ $(document).ready(function() {
         }
     }
 
+    function initializeQuestions() {
+
+        for (i=0; i<3; i++) {
+            var $newDiv = jQuery('<div>', {
+                text: questions[i].toString()
+            });
+
+            $questionBar.prepend($newDiv);
+        }
+
+        $('#question-bar div:last-child').css('font-size', '2.5em');
+
+    }
+
     function advanceRows(newQuestion) {        
         // Move all objects up one position (overwritting the first)
         questions[0] = questions[1];
         questions[1] = questions[2];
-        questions[2] = newQuestion;
-    }
+        questions[2] = newQuestion
+  }
 
     function loadAnswers() {
         for (i=0; i<5; i++) {
@@ -146,6 +186,21 @@ $(document).ready(function() {
     }
 
     function loadQuestions() {
+
+        // Divs should have the right value off the bat...
+
+        console.log('asdfasdf');
+        var $first = $('#container div:first-child');
+        var $last = $('#container div:last-child');
+        var $news = jQuery('<div>', {
+            text: "Foobar",
+            style: 
+                "display: none;"
+        });
+        $news.insertBefore($first).show('fast');
+                      $last.fadeOut('fast').remove();
+
+
         // Done in reverse order, index 0 = bottom row
         for (i=0; i<3; i++) {
             jQuestions[i].innerHTML = questions[2 - i].toString();
@@ -153,7 +208,7 @@ $(document).ready(function() {
     }
        
     function generateNextAnswer() {
-        jAnswers = $('#answer-table tr td');
+        jAnswers = $('#answer-bar div'); // Retrieve the newest values
         var randInt;
         // Loop until there is no overlap
         outer:
@@ -192,7 +247,7 @@ $(document).ready(function() {
         // Remove the id (selection)
         selectedElement.removeAttr('id');
 
-        // Create the next question
+        //  the next question
         var nextQuestion = generateNextQuestion(answer);
 
         // Advance the questions forward, while adding in the new one
