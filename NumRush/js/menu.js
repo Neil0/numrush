@@ -9,7 +9,7 @@ $(document).ready(function() {
     // Initialization
     $bgmToggle.bind("tap", bgmHandler);
     $sfxToggle.bind("tap", sfxHandler);
-    // TODO: Initial checking of muting
+    loadAudioButtons();
 
 
     // -- HANDLERS --
@@ -18,32 +18,54 @@ $(document).ready(function() {
         // Retrieve the selected element
         var $targetElement = $(event.target); // Not used
 
-        // Toggle bgm mute
-        // Note: prop stands for property. The successor to the attr(), but should be used when necessary only. 
-        if ($bgm.prop('muted') == true) {
-            $bgm.prop('muted', false); 
-            localStorage.setItem("bgm-muted", "false");   
-            // Alternative: play() the audio (if it's paused)
-        } else {
-            $bgm.prop('muted', true);
-            localStorage.setItem("bgm-muted", "true");
-        }
+        toggleBgm();
     }
     
     function sfxHandler(event) {
         // Retrieve the selected element
         var $targetElement = $(event.target); // Not used
 
-        // Toggle sfx mute
-        if (localStorage.getItem("sfx-muted") == "true") {
-            // Note: I don't use toggleClass() b/c i'm a lazy fuq
-            $sfxToggle.addClass('off'); 
+        toggleSfx();
+    }
 
-            $sfx.get(0).play(); // Play a sfx to indicate it's un-muted
+
+    // -- METHODS --
+    function loadAudioButtons() {
+        // Sfx init
+        if (localStorage.getItem("sfx-muted") == "true") {
+            $sfxToggle.addClass('off');
+        } else {
+            $sfxToggle.removeClass('off');
+        }
+        // bgm init
+        if (localStorage.getItem("bgm-muted") == "true") {
+            $bgmToggle.attr('src', 'img/bgm_off.png');
+        } else {
+            $bgmToggle.attr('src', 'img/bgm_on.png');
+            $bgm.get(0).play();
+        }
+    }
+
+    function toggleSfx() {
+        if (localStorage.getItem("sfx-muted") == "true") {
+            $sfxToggle.removeClass('off');
+            $sfx.get(0).play();
             localStorage.setItem("sfx-muted", "false"); // Un-mute sfx globally
         } else {
-            $sfxToggle.removeClass('off'); // Strike through text to indicate
+            $sfxToggle.addClass('off');
             localStorage.setItem("sfx-muted", "true"); // Mute sfx globally
+        }
+    }
+
+    function toggleBgm() {
+        if (localStorage.getItem("bgm-muted") == "true") {
+            $bgmToggle.attr('src', 'img/bgm_on.png');
+            $bgm.get(0).play();
+            localStorage.setItem("bgm-muted", "false"); // Un-mute sfx globally
+        } else {
+            $bgmToggle.attr('src', 'img/bgm_off.png');
+            $bgm.get(0).pause();
+            localStorage.setItem("bgm-muted", "true"); // Un-mute sfx globally
         }
     }
 });
