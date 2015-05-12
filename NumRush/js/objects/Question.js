@@ -29,12 +29,12 @@ var p = createjs.extend(Question, createjs.Container);
 
 p.setup = function() {
 	var text = new createjs.Text(this.label, "20px Arial", "#000");
-	text.textBaseline = "top";
+	text.textBaseline = "middle";
 	text.textAlign = "center";
 	
 	// cordinates for the text to be drawn 
 	text.x = this.width/2; // x is not top-left but the center
-	text.y = layout.PADDING;
+	text.y = this.height/2;
 	
 	var background = new createjs.Shape();
 	background.graphics.beginFill(this.color).drawRoundRect(0,0,this.width,this.height,10);

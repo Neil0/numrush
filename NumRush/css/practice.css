@@ -40,6 +40,11 @@ div {
 	-webkit-flex: 1;
 }
 
+#back-button {
+	position: absolute;
+	top: 0;
+}
+
 
 /* jQuery padding - will shift game off-screen a little */
 div.ui-content {

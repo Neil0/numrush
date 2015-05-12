@@ -21,12 +21,12 @@ var p = createjs.extend(Answer, createjs.Container);
 
 p.setup = function() {
 	var text = new createjs.Text(this.answer, "20px Arial", "#000");
-	text.textBaseline = "top";
+	text.textBaseline = "middle";
 	text.textAlign = "center";
 		
 	// cordinates for the text to be drawn 
 	text.x = this.width/2;
-	text.y = this.width/2;
+	text.y = this.height/2;
 	
 	var background = new createjs.Shape();
 	background.graphics.beginFill(this.color).drawRoundRect(0,0,this.width,this.height,10);
@@ -40,7 +40,7 @@ p.setup = function() {
 
 	// Container initial cordinates 
 	this.x = 0;
-	this.y = layout.BOT1;
+	this.y = layout.BOT2;
 
 	// Disable interaction with child (only interact as a whole)
 	this.mouseChildren = false;
@@ -50,6 +50,7 @@ p.handleClick = function (event) {
 	if (this.answer == questions[0].answer) {
 		// Scores
 		correct++;
+		correctIndicator.txt.text = correct;
 
 		// Current componenets
 		this.visible = false; 
@@ -63,6 +64,7 @@ p.handleClick = function (event) {
 		advanceRows(generateNextQuestion());
 	} else {
 		incorrect++;
+		incorrectIndicator.txt.text = incorrect;
 	}
 
 	//updateQuestionPositions();

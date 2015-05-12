@@ -2,6 +2,9 @@
 var layout = {
 	// ! : if you see 1111, it means that it's waiting for the device size 
 
+	STAGE_WIDTH : 1111, 
+	STAGE_HEIGHT : 1111,
+
 	// Component properties  
 	QUES_WIDTH : 1111,
 	QUES_HEIGHT : 1111,
@@ -19,11 +22,18 @@ var layout = {
 	MID1 : 150,
 	MID2 : 300,
 	MID3 : 450,
-	BOT1 : 650,
+	BOT1 : 600,
+	BOT2 : 650,
 
-	ALWAYSUSECOMMAS : 6969 // Basically so you re-arrange variables without fear of putting commas down
+	ALWAYSUSECOMMAS : 6969 // Basically so you can re-arrange variables without fear of putting commas down
 }
 
 function initializeVariables(deviceWidth, deviceHeight) {
-	// TODO
+	layout.STAGE_WIDTH = deviceWidth;
+	layout.STAGE_HEIGHT = deviceHeight;
+
+	layout.QUES_WIDTH = deviceWidth;
+	layout.QUES_HEIGHT = deviceHeight * 0.15;
+
+	layout.ANS_SIZE = deviceWidth * 0.20;
 }

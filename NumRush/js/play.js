@@ -6,6 +6,8 @@ var stageWidth, stageHeight; // This is technically jQuery
 var questions = [];
 var answers = [];
 
+var timer;
+
 var correct = 0;
 var incorrect = 0;
 var correctIndicator, incorrectIndicator;
@@ -33,10 +35,14 @@ function init() {
     // TODO: sfx and bgm
 
     // Initialization 
+    // TODO: remove addchild
     initializeAnswers();
     initializeQuestions(); 
     correctIndicator = stage.addChild(new correctIndicator());
     incorrectIndicator = stage.addChild(new incorrectIndicator());
+
+    // timer stuff
+    timer = stage.addChild(new Timer());
 
     updateAnswerPositions();
     updateQuestionPositions();
