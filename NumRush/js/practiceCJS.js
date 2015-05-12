@@ -44,6 +44,7 @@ function init() {
     updateQuestionPositions();
 
     // Looper
+    createjs.Ticker.setFPS(60);
     createjs.Ticker.on("tick", stage); // Updates the stage
 
     console.log(stage.children.length);
@@ -89,7 +90,9 @@ function loadSfxSound() {
 // TODO: Fix this once generateAnswers is done
 function initializeAnswers() {
     for (i = 0; i < 5; i++) {
-        answers.push(generateNextAnswer());
+        var nextAnswer = generateNextAnswer();
+        nextAnswer.index = i; // We need the index so we can replace them properly
+        answers.push(nextAnswer);
     }
 }
 
@@ -111,7 +114,7 @@ function generateNextAnswer() {
             randInt = getRandomInt(1, 20);
 
             // Check if it exists already
-            for (j = 0; j < answers.length - 1; j++) {
+            for (j = 0; j < answers.length; j++) {
                 var something = answers[j].answer;
                 if (something == randInt) {
                     continue outer; // Yes - retry
@@ -212,6 +215,27 @@ function generateDivision(answer) {
 
 function advanceRows(newQuestion) {
     // Move all objects up one position (overwritting the first)
+
+
+// i need to save the variable before, because they're being advanced while the tween is running
+    // Individually animate each one
+    createjs.Tween.get(questions[0])
+        .to({ y:(questions[0].y + 150), alpha: 0 }, 300, createjs.Ease.linear)
+        .call( function() {
+            this.visible = false; 
+        });
+
+    createjs.Tween.get(questions[1])
+        .to({ y:(questions[1].y + 150) }, 300, createjs.Ease.linear); // Advance position
+    createjs.Tween.get(questions[1].getChildAt(1))
+        .to({ scaleX: 2, scaleY: 2 }, 300, createjs.Ease.linear); // Enlarge text
+
+    createjs.Tween.get(questions[2])
+        .to({ y:(questions[2].y + 150) }, 300, createjs.Ease.linear); 
+
+    createjs.Tween.get(newQuestion)
+        .to({ y:layout.MID1}, 300, createjs.Ease.linear);  
+
     questions[0] = questions[1];
     questions[1] = questions[2];
     questions[2] = newQuestion

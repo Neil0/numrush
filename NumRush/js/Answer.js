@@ -47,17 +47,26 @@ p.setup = function() {
 } ;
 
 p.handleClick = function (event) {
-	alert("You clicked on a button: "+this.label);
 	if (this.answer == questions[0].answer) {
+		// Scores
 		correct++;
-		this.visible = false; 
 
-		// How do i replace this specific index?
-		// I might need to add an index property or ... have the index for the answer instead
-		// I'm gonna choose the index property 
-		generateNextAnswer(); 
-		prepareNextQuestion();
+		// Current componenets
+		this.visible = false; 
+		//questions[0].visible = false;
+
+		// Create the next answer
+		var nextAnswer = generateNextAnswer(); 
+		nextAnswer.index = this.index; // Pass on this index 
+		answers[nextAnswer.index] = nextAnswer; // Replace this answer with new
+		// Create the next question
+		advanceRows(generateNextQuestion());
+	} else {
+		incorrect++;
 	}
+
+	//updateQuestionPositions();
+	updateAnswerPositions();
 } ;
 
 p.handleRollOver = function(event) {       
