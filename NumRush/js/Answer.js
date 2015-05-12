@@ -4,9 +4,9 @@ function Answer(answer) {
 	this.Container_constructor(); // Basically: super();
 	
 	// Layout
-	this.width = ANS_SIZE;
-	this.height = ANS_SIZE;
-	this.color = ANS_COLOR;
+	this.width = layout.ANS_SIZE;
+	this.height = layout.ANS_SIZE;
+	this.color = layout.ANS_COLOR;
 	this.index; // Set by the game when loaded into the array
 
 	// Answer
@@ -20,9 +20,6 @@ var p = createjs.extend(Answer, createjs.Container);
 
 
 p.setup = function() {
-	// TODO: Base this off the size later
-	var PADDING = 20;
-
 	var text = new createjs.Text(this.answer, "20px Arial", "#000");
 	text.textBaseline = "top";
 	text.textAlign = "center";
@@ -43,7 +40,7 @@ p.setup = function() {
 
 	// Container initial cordinates 
 	this.x = 0;
-	this.y = BOT1;
+	this.y = layout.BOT1;
 
 	// Disable interaction with child (only interact as a whole)
 	this.mouseChildren = false;

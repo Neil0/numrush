@@ -1,20 +1,3 @@
-// Global Variables 
-// TODO: Maybe change into enums ... QUES, ANS, LAYOUT
-var MARGIN = 10;
-var QUES_WIDTH;
-var QUES_HEIGHT;
-var QUES_COLOR = "#F00";
-var ANS_SIZE;
-var ANS_COLOR = "#0FF";
-
-// TEMP LAYOUT
-var TOP1 = 0;
-var TOP2 = 75;
-var MID1 = 150;
-var MID2 = 300;
-var MID3 = 450;
-var BOT1 = 650;
-
 // EaselJS 
 var canvas, stage;
 var stageWidth, stageHeight; // This is technically jQuery
@@ -42,14 +25,13 @@ function init() {
     stageWidth = $('#canvas').prop("width"); 
     stageHeight = $('#canvas').prop("height");
 
-    MARGIN = 10;
-    QUES_WIDTH = stageWidth;
-    console.log(QUES_WIDTH);
+    layout.QUES_WIDTH = stageWidth;
+    console.log(layout.QUES_WIDTH);
     console.log(480);
-    QUES_HEIGHT = stageHeight * 0.10;
-    QUES_COLOR = "#F00";
-    ANS_SIZE = stageWidth * 0.2;
-    ANS_COLOR = "#0FF";
+    layout.QUES_HEIGHT = stageHeight * 0.10;
+    layout.QUES_COLOR = "#F00";
+    layout.ANS_SIZE = stageWidth * 0.2;
+    layout.ANS_COLOR = "#0FF";
 
     // Audio
     // TODO: sfx and bgm
@@ -241,13 +223,13 @@ function updateQuestionPositions() {
     for (q=0; q<3; q++) {
         switch (q) {
             case 0:
-                questions[q].y = MID3; // Lowest
+                questions[q].y = layout.MID3; // Lowest
                 break;
             case 1: 
-                questions[q].y = MID2; 
+                questions[q].y = layout.MID2; 
                 break;
             case 2: 
-                questions[q].y = MID1; // Most upper
+                questions[q].y = layout.MID1; // Most upper
                 break;
             default: 
                 console.log("Something went wrong with loadQuestions()");

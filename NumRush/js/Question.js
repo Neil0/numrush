@@ -5,9 +5,9 @@ function Question(num1, operator, num2, answer) {
 	this.Container_constructor(); // Basically: super();
 	
 	// Positioning
-	this.width = QUES_WIDTH;
-	this.height = QUES_HEIGHT;
-	this.color = QUES_COLOR;
+	this.width = layout.QUES_WIDTH;
+	this.height = layout.QUES_HEIGHT;
+	this.color = layout.QUES_COLOR;
 
 	// Question
     this.num1 = num1;
@@ -28,15 +28,13 @@ var p = createjs.extend(Question, createjs.Container);
 
 
 p.setup = function() {
-	var PADDING = 20;
-
 	var text = new createjs.Text(this.label, "20px Arial", "#000");
 	text.textBaseline = "top";
 	text.textAlign = "center";
 	
 	// cordinates for the text to be drawn 
 	text.x = this.width/2; // x is not top-left but the center
-	text.y = PADDING;
+	text.y = layout.PADDING;
 	
 	var background = new createjs.Shape();
 	background.graphics.beginFill(this.color).drawRoundRect(0,0,this.width,this.height,10);
