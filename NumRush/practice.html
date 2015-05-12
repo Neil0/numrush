@@ -1,0 +1,76 @@
+<!DOCTYPE html> 
+<html> 
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<title>Single page template</title> 
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+	<link rel="stylesheet" href="css/practice.css" />
+	
+	<!-- jQuery -->
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+	<!-- CreateJS -->
+	<script src="https://code.createjs.com/easeljs-0.8.0.min.js"></script>
+	<script src="https://code.createjs.com/tweenjs-0.6.0.min.js"></script>
+
+	<!-- Our Scripts (Should be in this order...) -->
+	<script src="js/utility.js"></script> 
+	<script src="js/Answer.js"></script>
+	<script src="js/Question.js"></script>
+	<script src="js/practiceCJS.js"></script>
+
+</head> 
+
+<body onload="init();"> 
+
+<div data-role="page">
+
+	<div data-role="header">
+		<h1></h1>
+	</div><!-- /header -->
+
+	<div data-role="content">
+
+		<div id="game-container">
+
+			<canvas id="canvas" width="480" height="800">
+				<!-- alternate content? -->
+			</canvas>
+
+
+			<!-- Back button -->
+			<a href="menu.html" data-ajax="false" data-role="button">BACK</a>
+			
+			<!-- the game with divs -->
+			<div id="top-bar">
+				<div id="correct-indicator">CORRECT: 0</div>
+				<div id="incorrect-indicator">INCORRECT: 0</div>
+			</div>
+
+			<div id="question-bar">
+				<!-- Divs loaded by the script -->
+			</div>
+
+			<div id="answer-bar">
+				<!-- jQuery text() doesn't like text with just a div -->
+				<div class="available"><span></span></div>
+				<div class="available"><span></span></div>
+				<div class="available"><span></span></div>
+				<div class="available"><span></span></div>
+				<div class="available"><span></span></div>
+			</div>
+		</div>
+
+	</div><!-- /content -->
+	
+	<div data-role="footer" data-position="fixed">
+		<h6>Team EXODIA</h6>
+	</div><!-- /footer -->
+	
+</div><!-- /page -->
+
+</body>
+</html>
