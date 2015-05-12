@@ -139,6 +139,7 @@ function generateNextAnswer() {
             break;
         }
     
+    // Answerobject, stage.addChild - return DisplayObject 
     return stage.addChild(new Answer(randInt));
 }
 
