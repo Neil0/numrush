@@ -317,7 +317,9 @@ function answerIncorrect() {
     livesDisplay.txt.text = livesRemaining;
 
     if (livesRemaining <= 0) {
+        // Game over
         alert("You board the 125. STRAIGHT TO HELLLLLLLL");
+        $.mobile.changePage("#score-dialog");
     }
 }
 

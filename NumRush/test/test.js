@@ -23,6 +23,5 @@ function score(){
 	var BasicGain = 100;
 	SCORE +=(TIME_REMAINING * 10) + BasicGain;
 	document.getElementById('score').innerHTML = SCORE;
-	
 }
 

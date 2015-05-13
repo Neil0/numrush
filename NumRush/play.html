@@ -30,7 +30,7 @@
 
 <body onload="init();"> 
 
-<div data-role="page">
+<div data-role="page" id="main">
 
 	<div data-role="header">
 		<h1></h1>
@@ -47,13 +47,39 @@
 			<!-- Back button -->
 			<a id="back-button" href="menu.html" data-ajax="false" data-role="button">BACK</a>
 
+			<!-- score button (for testing) -->
+			<a href="#score-dialog" data-role="button" data-rel="dialog" data-transition="pop">Show page "popup" (as a dialog)</a>
+		</div>
+
 	</div><!-- /content -->
 	
 	<div data-role="footer" data-position="fixed">
 		<h6>Team EXODIA</h6>
 	</div><!-- /footer -->
-	
+
 </div><!-- /page -->
+
+<!-- Start of third page: #popup -->
+<div data-role="dialog" id="score-dialog">
+
+	<div data-role="header" data-theme="e">
+		<h1>GAME OVER</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">	
+		<h2>Enter your name</h2>
+		<input type="text" name="name" id="basic" value=""/>
+
+		<a href="#main" data-rel="back" data-role="button" data-inline="true" data-icon="back">Submit</a>
+		<a href="#main" data-rel="back" data-role="button" data-inline="true" data-icon="back">Retry</a>
+		<a href="#main" data-rel="back" data-role="button" data-inline="true" data-icon="back">Menu</a>
+	</div><!-- /content -->
+	
+	<div data-role="footer">
+		<h4>Page Footer</h4>
+	</div><!-- /footer -->
+</div><!-- /page popup -->
+
 
 </body>
 </html>
