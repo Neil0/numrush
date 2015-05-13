@@ -1,6 +1,6 @@
 (function() {
 
-function Lives() {
+function Score() {
 	this.Container_constructor(); // Basically: super();
 	
 	// Layout
@@ -13,7 +13,7 @@ function Lives() {
 	this.setup();
 }
 // Basically: ... Button extends Container ...  (below returns a prototype)
-var p = createjs.extend(Lives, createjs.Container); 
+var p = createjs.extend(Score, createjs.Container); 
 
 
 p.setup = function() {
@@ -52,5 +52,5 @@ p.handleRollOver = function(event) {
 };
 
 // Allows things out of scope to use this now (all of the above cannot be called directly)
-window.Lives = createjs.promote(Lives, "Container");
+window.Score = createjs.promote(Score, "Container");
 }());

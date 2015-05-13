@@ -2,15 +2,49 @@
 var canvas, stage;
 var stageWidth, stageHeight; // This is technically jQuery
 
-// Game Info
+// GAME INFO
 var questions = [];
 var answers = [];
+// Score
+var BASE_GAIN = 100; // Minimum point gain on correct answer
+var score = 0;
+// Lives
+var MAX_LIVES = 5;
+var livesRemaining = MAX_LIVES;  
+// Time
+var MAX_TIME = 30;
+var remainingTime = MAX_TIME;
+var startTime;
 
-var score;
-var timer;
-var lives;
+// DisplayObjects
+var scoreDisplay;
+var timerDisplay;
+var livesDisplay;
 
 var sfxEnabled; // Determined by loadSfx()
+
+function updateTimeRemaining(){
+    var currentTime = new Date().getTime();
+    var elapsedTime = currentTime - startTime;
+    // Update time left
+    remainingTime = MAX_TIME - elapsedTime;
+
+    // Check if question fail
+    if (remainingTime < 0) {
+        remainingTime = 0;
+        // TODO: GAME OVER BITCHHHHH
+    } else {
+        // TODO: Something? or maybe nothing
+    }
+}
+
+// TODO: Rename maybe....
+//use this function when question is correct
+function increaseScore(){
+    score += BASE_GAIN + (remainingTime * 10);
+    // TODO: Update the score
+    document.getElementById('score').innerHTML = SCORE;
+}
 
 function init() {
     // Stage info
@@ -31,7 +65,7 @@ function init() {
     // TODO: sfx and bgm
 
     // Initialization 
-    // TODO: remove addchild
+    startTime = new Date().getTime();
     initializeAnswers();
     initializeQuestions(); 
     correctIndicator = stage.addChild(new correctIndicator());
@@ -46,6 +80,7 @@ function init() {
     // Looper
     createjs.Ticker.setFPS(60);
     createjs.Ticker.on("tick", stage); // Updates the stage
+    createjs.Ticker.on("tick", updateTimeRemaining); // Updates the time remaining (with display)
 
     console.log(stage.children.length);
 }
