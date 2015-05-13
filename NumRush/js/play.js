@@ -6,7 +6,7 @@ var stageWidth, stageHeight; // This is technically jQuery
 var questions = [];
 var answers = [];
 // Score
-var BASE_GAIN = 100; // Minimum point gain on correct answer
+var BASE_GAIN = 10; // Minimum point gain on correct answer
 var score = 0;
 // Lives
 var MAX_LIVES = 5;
@@ -88,7 +88,7 @@ function updateTimeRemaining(){
 
 //use this function when question is correct
 function increaseScore(){
-    score += Math.round(BASE_GAIN + (remainingTime / 100));
+    score += Math.round(BASE_GAIN + (Math.round(remainingTime) /10000)) * 10;
     // TODO: Update the score
     scoreDisplay.txt.text = score;
 }
@@ -196,7 +196,7 @@ function generateNextQuestion() {
 
     var question;
 
-    var randNum = getRandomInt(1, 2);
+    var randNum = getRandomInt(1, 4);
     switch (randNum) {
         case 1:
             question = generateSum(answer);
@@ -240,20 +240,19 @@ function generateMinus(answer) {
     return question;
 }
 function generateMultiplication(answer) {
-    var numA = getRandomInt(1, 10);
-    //Not sure how to make this work since we will need to divide the answer by a random number to get a second number.
-    while ((answer % numA) != 0 && answer > numA) { // will fuck up if numA is too big.
-        numA++;
-    }
+    do{
+        var numA = getRandomInt(1,10);
+    }while(answer%numA != 0)
+    
     var numB = answer / numA;
-    var Question = new Question(numA, "*", numB, answer);
-    return Question;
+    var question = new Question(numA, "*", numB, answer);
+    return question;
 }
 function generateDivision(answer) {
     var numA = getRandomInt(1, 10);
     var numB = answer * numA;
-    var Question = new Question(numA, "/", numB, answer);
-    return Question;
+    var question = new Question(numB, "/", numA, answer);
+    return question;
 }
 
 // Move all objects up one position (overwritting the first)
@@ -290,15 +289,14 @@ function checkAnswer(answer) {
 function answerCorrect(parentIndex, parentX) {
     // Update the score
     increaseScore();
-    // Reset the time
-    remainingTime = MAX_TIME;
 
+    // Reset the time
+    startTime = new Date().getTime(); // Set the time stamp to now
     // Create the next answer 
     var nextAnswer = generateNextAnswer();
     nextAnswer.index = parentIndex;         // Pass on parent index
     nextAnswer.x = parentX;                 // Pass on parent position
     answers[nextAnswer.index] = nextAnswer; // Replace parent
-
     // Animate next answer
     nextAnswer.alpha = 0;
     nextAnswer.scaleX = 1.2;
@@ -312,14 +310,15 @@ function answerCorrect(parentIndex, parentX) {
 }
 
 function answerIncorrect() {
-    // TODO: Finish logic
+    // Lower lives 
     livesRemaining--;
     livesDisplay.txt.text = livesRemaining;
 
+    // TODO: Advance to the next question - may need to implement a index system 
+
     if (livesRemaining <= 0) {
         // Game over
-        alert("You board the 125. STRAIGHT TO HELLLLLLLL");
-        $.mobile.changePage("#score-dialog");
+        $.mobile.changePage("#score-dialog", { role: "dialog" });
     }
 }
 
