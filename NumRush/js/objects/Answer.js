@@ -12,7 +12,7 @@ function Answer(answer) {
 	// Answer
 	this.answer = answer;
 	this.available = true; // Determines if this answer is associated with a question already
-	
+
 	this.setup();
 }
 // Basically: ... Button extends Container ...  (below returns a prototype)
@@ -39,37 +39,35 @@ p.setup = function() {
 	this.cursor = "pointer";
 
 	// Container initial cordinates 
-	this.x = 0;
-	this.y = layout.BOT2;
+	// Below 2 lines is so that scaling and rotation are based around the center
+	this.regX = this.width / 2; 
+	this.regY = this.height / 2;
+	this.x = 1111;
+	this.y = layout.BOT2 + (this.height / 2);
 
 	// Disable interaction with child (only interact as a whole)
 	this.mouseChildren = false;
 } ;
 
 p.handleClick = function (event) {
-	if (this.answer == questions[0].answer) {
-		// Scores
-		correct++;
-		correctIndicator.txt.text = correct;
+	/* checkAnswer(), answerCorrect(), answerIncorrect() are all functions defined 
+	 * in individual game modes (different for each mode)
+	 */
 
-		// Current componenets
-		this.visible = false; 
-		//questions[0].visible = false;
+	if (checkAnswer(this.answer)) {
+		// Animate myself
+		createjs.Tween.get(this)
+			.to({ alpha: 0, scaleX: 0.6, scaleY: 0.6}, 200, createjs.Ease.linear)
+			.call( function() { this.visible = false });
 
-		// Create the next answer
-		var nextAnswer = generateNextAnswer(); 
-		nextAnswer.index = this.index; // Pass on this index 
-		answers[nextAnswer.index] = nextAnswer; // Replace this answer with new
-		// Create the next question
-		advanceRows(generateNextQuestion());
+		// Carry out correct function (basically create another answer)
+		answerCorrect(this.index, this.x); 
+
 	} else {
-		incorrect++;
-		incorrectIndicator.txt.text = incorrect;
+		// Carry out the incorrect function
+		answerIncorrect();
 	}
-
-	//updateQuestionPositions();
-	updateAnswerPositions();
-} ;
+};
 
 p.handleRollOver = function(event) {       
 	this.alpha = event.type == ("rollover") ? 0.4 : 1;

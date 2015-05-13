@@ -10,7 +10,6 @@ var correct = 0;
 var incorrect = 0;
 var correctIndicator, incorrectIndicator;
 
-var currentAnswer; // The current answer for the game 
 var sfxEnabled; // Determined by loadSfx()
 
 
@@ -21,7 +20,7 @@ function init() {
     stage.enableMouseOver(); // TODO: Remove this later (change with touch or something?)
 
     // Initialize global variables 
-    stageWidth = $('#canvas').prop("width"); 
+    stageWidth = $('#canvas').prop("width");
     stageHeight = $('#canvas').prop("height");
 
     initializeVariables(stageWidth, stageHeight);
@@ -34,7 +33,7 @@ function init() {
 
     // Initialization 
     initializeAnswers();
-    initializeQuestions(); 
+    initializeQuestions();
     correctIndicator = stage.addChild(new correctIndicator());
     incorrectIndicator = stage.addChild(new incorrectIndicator());
 
@@ -85,7 +84,6 @@ function loadSfxSound() {
 }
 
 // INITIALIZERS
-// TODO: Fix this once generateAnswers is done
 function initializeAnswers() {
     for (i = 0; i < 5; i++) {
         var nextAnswer = generateNextAnswer();
@@ -121,7 +119,7 @@ function generateNextAnswer() {
             // No - return the value
             break;
         }
-    
+
     // Answerobject, stage.addChild - return DisplayObject 
     return stage.addChild(new Answer(randInt));
 }
@@ -131,7 +129,7 @@ function prepareNextQuestion() {
     // Obtain information about the current board
     var availableArray = [];
     // Note: foreach loop not working very well
-    for (a=0; a<answers.length; a++) {
+    for (a = 0; a < answers.length; a++) {
         if (answers[a].available == true) {
             availableArray.push(answers[a]);
         }
@@ -184,6 +182,7 @@ function generateSum(answer) {
     var question = new Question(numA, "+", numB, answer);
     return question;
 }
+
 function generateMinus(answer) {
     do {
         // Has to be 21 or it might loop infintely 
@@ -194,6 +193,7 @@ function generateMinus(answer) {
     var question = new Question(numA, "-", numB, answer);
     return question;
 }
+
 function generateMultiplication(answer) {
     var numA = getRandomInt(1, 10);
     //Not sure how to make this work since we will need to divide the answer by a random number to get a second number.
@@ -204,6 +204,7 @@ function generateMultiplication(answer) {
     var Question = new Question(numA, "*", numB, answer);
     return Question;
 }
+
 function generateDivision(answer) {
     var numA = getRandomInt(1, 10);
     var numB = answer * numA;
@@ -211,11 +212,9 @@ function generateDivision(answer) {
     return Question;
 }
 
+// Move all objects up one position (overwritting the first)
 function advanceRows(newQuestion) {
-    // Move all objects up one position (overwritting the first)
-
-
-// i need to save the variable before, because they're being advanced while the tween is running
+    // Animation
     // Individually animate each one
     createjs.Tween.get(questions[0])
         .to({ y:(questions[0].y + 150), alpha: 0 }, 300, createjs.Ease.linear)
@@ -239,51 +238,62 @@ function advanceRows(newQuestion) {
     questions[2] = newQuestion
 }
 
+// Answer checking
+function checkAnswer(answer) {
+    return (answer == questions[0].answer);
+}
+
+function answerCorrect(parentIndex, parentX) {
+    // Scores
+    correct++;
+    correctIndicator.txt.text = correct;
+
+    // Create next answer 
+    var nextAnswer = generateNextAnswer();
+    nextAnswer.index = parentIndex;         // Pass on parent index
+    nextAnswer.x = parentX;                 // Pass on parent position
+    answers[nextAnswer.index] = nextAnswer; // Replace parent
+
+    // Animate next answer
+    nextAnswer.alpha = 0;
+    createjs.Tween.get(nextAnswer)
+        .to({ alpha: 100 }, 300, createjs.Ease.linear);
+
+    // Create the next question
+    advanceRows(generateNextQuestion());
+}
+
+function answerIncorrect() {
+    incorrect++;
+    incorrectIndicator.txt.text = incorrect;
+}
 
 // POSITIONING
 function updateQuestionPositions() {
-    for (q=0; q<3; q++) {
+    for (q = 0; q < 3; q++) {
         switch (q) {
             case 0:
                 questions[q].y = layout.MID3; // Lowest
                 break;
-            case 1: 
-                questions[q].y = layout.MID2; 
+            case 1:
+                questions[q].y = layout.MID2;
                 break;
-            case 2: 
+            case 2:
                 questions[q].y = layout.MID1; // Most upper
                 break;
-            default: 
+            default:
                 console.log("Something went wrong with loadQuestions()");
                 break;
-        } 
-        console.log("Ques x: " + questions[q].x + " y: " + questions[q].y );
+        }
+        console.log("Ques x: " + questions[q].x + " y: " + questions[q].y);
     }
 }
 
 function updateAnswerPositions() {
-    for (a=0; a<5; a++) {
-        switch(a) {
-            case 0:
-                answers[a].x = 0;
-                break;
-            case 1:
-                answers[a].x = stageWidth * 0.20;
-                break;
-            case 2:
-                answers[a].x = stageWidth * 0.40;
-                break;
-            case 3:
-                answers[a].x = stageWidth * 0.60;
-                break;
-            case 4:
-                answers[a].x = stageWidth * 0.80;
-                break;
-            default:
-                console.log("Something went wrong with loadAnswers()");
-                break;
-        }
-        console.log("Ans x: " + answers[a].x + " y: " + answers[a].y );
-    }
+    for (a = 0; a < 5; a++) {
+        // x and y of the CENTER of the container. (not top left)
+        answers[a].x = (stageWidth * 0.10) + (a)*(stageWidth * 0.20);
 
+        console.log("Ans x: " + answers[a].x + " y: " + answers[a].y);
+    }
 }

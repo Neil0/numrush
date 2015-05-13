@@ -6,15 +6,11 @@ var stageWidth, stageHeight; // This is technically jQuery
 var questions = [];
 var answers = [];
 
+var score;
 var timer;
+var lives;
 
-var correct = 0;
-var incorrect = 0;
-var correctIndicator, incorrectIndicator;
-
-var currentAnswer; // The current answer for the game 
 var sfxEnabled; // Determined by loadSfx()
-
 
 function init() {
     // Stage info
@@ -217,11 +213,9 @@ function generateDivision(answer) {
     return Question;
 }
 
+// Move all objects up one position (overwritting the first)
 function advanceRows(newQuestion) {
-    // Move all objects up one position (overwritting the first)
-
-
-// i need to save the variable before, because they're being advanced while the tween is running
+    // Animation
     // Individually animate each one
     createjs.Tween.get(questions[0])
         .to({ y:(questions[0].y + 150), alpha: 0 }, 300, createjs.Ease.linear)
@@ -245,6 +239,33 @@ function advanceRows(newQuestion) {
     questions[2] = newQuestion
 }
 
+// Answer checking
+function checkAnswer(answer) {
+    return (answer == questions[0].answer);
+}
+
+function answerCorrect(parentIndex, parentX) {
+    // Create the next answer 
+    var nextAnswer = generateNextAnswer();
+    nextAnswer.index = parentIndex;         // Pass on parent index
+    nextAnswer.x = parentX;                 // Pass on parent position
+    answers[nextAnswer.index] = nextAnswer; // Replace parent
+
+    // Animate next answer
+    nextAnswer.alpha = 0;
+    nextAnswer.scaleX = 1.2;
+    nextAnswer.scaleY = 1.2;
+    createjs.Tween.get(nextAnswer)
+        .to({}, 100, createjs.Ease.linear)
+        .to({ alpha: 1, scaleX: 1, scaleY: 1 }, 300, createjs.Ease.linear);
+
+    // Create the next question
+    advanceRows(generateNextQuestion());
+}
+
+function answerIncorrect() {
+
+}
 
 // POSITIONING
 function updateQuestionPositions() {
@@ -268,28 +289,10 @@ function updateQuestionPositions() {
 }
 
 function updateAnswerPositions() {
-    for (a=0; a<5; a++) {
-        switch(a) {
-            case 0:
-                answers[a].x = 0;
-                break;
-            case 1:
-                answers[a].x = stageWidth * 0.20;
-                break;
-            case 2:
-                answers[a].x = stageWidth * 0.40;
-                break;
-            case 3:
-                answers[a].x = stageWidth * 0.60;
-                break;
-            case 4:
-                answers[a].x = stageWidth * 0.80;
-                break;
-            default:
-                console.log("Something went wrong with loadAnswers()");
-                break;
-        }
-        console.log("Ans x: " + answers[a].x + " y: " + answers[a].y );
-    }
+    for (a = 0; a < 5; a++) {
+        // x and y of the CENTER of the container. (not top left)
+        answers[a].x = (layout.ANS_SIZE / 2) + (a)*(layout.ANS_SIZE);
 
+        console.log("Ans x: " + answers[a].x + " y: " + answers[a].y);
+    }
 }
