@@ -1,6 +1,6 @@
 (function() {
 
-function Lives() {
+function Timer() {
 	this.Container_constructor(); // Basically: super();
 	
 	// Layout
@@ -13,7 +13,7 @@ function Lives() {
 	this.setup();
 }
 // Basically: ... Button extends Container ...  (below returns a prototype)
-var p = createjs.extend(Lives, createjs.Container); 
+var p = createjs.extend(Timer, createjs.Container); 
 
 
 p.setup = function() {
@@ -27,6 +27,9 @@ p.setup = function() {
 	
 	var background = new createjs.Shape();
 	background.graphics.beginFill(this.color).drawRoundRect(0,0,this.width,this.height,10);
+
+/*	var timeFill = new createjs.Shape();
+	timeFill.graphics.beginFill(this.color).drawRoundRect(0,0,)*/
 	
 	// Note: this refers to the container
 	this.txt = this.addChild(background, text);  // Container class method
@@ -52,5 +55,5 @@ p.handleRollOver = function(event) {
 };
 
 // Allows things out of scope to use this now (all of the above cannot be called directly)
-window.Lives = createjs.promote(Lives, "Container");
+window.Timer = createjs.promote(Timer, "Container");
 }());

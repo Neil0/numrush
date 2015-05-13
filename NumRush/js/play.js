@@ -12,7 +12,7 @@ var score = 0;
 var MAX_LIVES = 5;
 var livesRemaining = MAX_LIVES;  
 // Time
-var MAX_TIME = 30;
+var MAX_TIME = 30000; // 30 Seconds
 var remainingTime = MAX_TIME;
 var startTime;
 
@@ -23,28 +23,6 @@ var livesDisplay;
 
 var sfxEnabled; // Determined by loadSfx()
 
-function updateTimeRemaining(){
-    var currentTime = new Date().getTime();
-    var elapsedTime = currentTime - startTime;
-    // Update time left
-    remainingTime = MAX_TIME - elapsedTime;
-
-    // Check if question fail
-    if (remainingTime < 0) {
-        remainingTime = 0;
-        // TODO: GAME OVER BITCHHHHH
-    } else {
-        // TODO: Something? or maybe nothing
-    }
-}
-
-// TODO: Rename maybe....
-//use this function when question is correct
-function increaseScore(){
-    score += BASE_GAIN + (remainingTime * 10);
-    // TODO: Update the score
-    document.getElementById('score').innerHTML = SCORE;
-}
 
 function init() {
     // Stage info
@@ -65,14 +43,16 @@ function init() {
     // TODO: sfx and bgm
 
     // Initialization 
+    // Timer stuff
     startTime = new Date().getTime();
+    timerDisplay = stage.addChild(new Timer());
+    // Score stuff
+    scoreDisplay = stage.addChild(new Score());
+    // Lives stuff
+    livesDisplay = stage.addChild(new Lives());
+
     initializeAnswers();
     initializeQuestions(); 
-    correctIndicator = stage.addChild(new correctIndicator());
-    incorrectIndicator = stage.addChild(new incorrectIndicator());
-
-    // timer stuff
-    timer = stage.addChild(new Timer());
 
     updateAnswerPositions();
     updateQuestionPositions();
@@ -83,6 +63,34 @@ function init() {
     createjs.Ticker.on("tick", updateTimeRemaining); // Updates the time remaining (with display)
 
     console.log(stage.children.length);
+}
+
+
+function updateTimeRemaining(){
+    var currentTime = new Date().getTime();
+    var elapsedTime = currentTime - startTime;
+    // Update time left
+    remainingTime = MAX_TIME - elapsedTime;
+
+    // Check if question fail
+    if (remainingTime < 0) {
+        remainingTime = 0; // Might be unnecessary
+        answerIncorrect();
+    } else {
+        // TODO: Nothing, or maybe something?
+    }
+
+    // Format to two decimal places (rounds too)
+    var formattedTime = (remainingTime / 1000).toFixed(2);
+    // Display the time left
+    timerDisplay.txt.text = formattedTime;
+}
+
+//use this function when question is correct
+function increaseScore(){
+    score += Math.round(BASE_GAIN + (remainingTime / 100));
+    // TODO: Update the score
+    scoreDisplay.txt.text = score;
 }
 
 
@@ -280,6 +288,11 @@ function checkAnswer(answer) {
 }
 
 function answerCorrect(parentIndex, parentX) {
+    // Update the score
+    increaseScore();
+    // Reset the time
+    remainingTime = MAX_TIME;
+
     // Create the next answer 
     var nextAnswer = generateNextAnswer();
     nextAnswer.index = parentIndex;         // Pass on parent index
@@ -299,7 +312,13 @@ function answerCorrect(parentIndex, parentX) {
 }
 
 function answerIncorrect() {
+    // TODO: Finish logic
+    livesRemaining--;
+    livesDisplay.txt.text = livesRemaining;
 
+    if (livesRemaining <= 0) {
+        alert("You board the 125. STRAIGHT TO HELLLLLLLL");
+    }
 }
 
 // POSITIONING

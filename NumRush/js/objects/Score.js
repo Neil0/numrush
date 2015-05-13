@@ -17,7 +17,7 @@ var p = createjs.extend(Score, createjs.Container);
 
 
 p.setup = function() {
-	var text = new createjs.Text("10", "20px Arial", "black");
+	var text = new createjs.Text("0", "20px Arial", "black");
 	text.textBaseline = "middle";
 	text.textAlign = "center";
 		
@@ -37,7 +37,7 @@ p.setup = function() {
 
 	// Container initial cordinates 
 	this.x = 0;
-	this.y = layout.BOT1;
+	this.y = layout.TOP1;
 
 	// Disable interaction with child (only interact as a whole)
 	this.mouseChildren = false;

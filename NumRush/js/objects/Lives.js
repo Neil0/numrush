@@ -1,3 +1,4 @@
+// TODO: Need to figure out how this is gonna work
 (function() {
 
 function Lives() {
@@ -6,7 +7,7 @@ function Lives() {
 	// Layout
 	this.width = layout.STAGE_WIDTH;
 	this.height = layout.STAGE_HEIGHT * 0.05;
-	this.color = "orange";
+	this.color = "brown";
 
 	this.txt; 	
 	
@@ -17,14 +18,16 @@ var p = createjs.extend(Lives, createjs.Container);
 
 
 p.setup = function() {
-	var text = new createjs.Text("10", "20px Arial", "black");
+
+	// TODO: hmmmmmmm...............
+	var text = new createjs.Text("5", "20px Arial", "black");
 	text.textBaseline = "middle";
 	text.textAlign = "center";
 		
 	// cordinates for the text to be drawn 
 	text.x = this.width/2;
 	text.y = this.height/2;
-	
+
 	var background = new createjs.Shape();
 	background.graphics.beginFill(this.color).drawRoundRect(0,0,this.width,this.height,10);
 	
@@ -37,7 +40,7 @@ p.setup = function() {
 
 	// Container initial cordinates 
 	this.x = 0;
-	this.y = layout.BOT1;
+	this.y = layout.TOP2;
 
 	// Disable interaction with child (only interact as a whole)
 	this.mouseChildren = false;
