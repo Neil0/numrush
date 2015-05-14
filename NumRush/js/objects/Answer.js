@@ -50,21 +50,14 @@ p.setup = function() {
 } ;
 
 p.handleClick = function (event) {
-	/* checkAnswer(), answerCorrect(), answerIncorrect() are all functions defined 
-	 * in individual game modes (different for each mode)
-	 */
+	/* Note: checkAnswer(), answerCorrect(), answerIncorrect() are all functions 
+		defined in individual game modes (different for each mode)*/
 
 	if (checkAnswer(this.answer)) {
-		// Animate myself
-		createjs.Tween.get(this)
-			.to({ alpha: 0, scaleX: 0.6, scaleY: 0.6}, 200, createjs.Ease.linear)
-			.call( function() { this.visible = false });
-
-		// Carry out correct function (basically create another answer)
-		answerCorrect(this.index, this.x); 
-
+		// Carry out the correct function (which can vary between game modes)
+		answerCorrect(); 
 	} else {
-		// Carry out the incorrect function
+		// Carry out the incorrect function (which can vary between game modes)
 		answerIncorrect();
 	}
 };

@@ -5,6 +5,7 @@ var stageWidth, stageHeight; // This is technically jQuery
 // GAME INFO
 var questions = [];
 var answers = [];
+var currentAnswer; // Note: This is an object, to access the answer value use currentAnswer.answer
 // Score
 var BASE_GAIN = 10; // Minimum point gain on correct answer
 var score = 0;
@@ -54,6 +55,7 @@ function init() {
     initializeAnswers();
     initializeQuestions(); 
 
+    updateCurrentAnswer();
     updateAnswerPositions();
     updateQuestionPositions();
 
@@ -166,9 +168,16 @@ function generateNextAnswer() {
             // No - return the value
             break;
         }
-    
-    // Answerobject, stage.addChild - return DisplayObject 
-    return stage.addChild(new Answer(randInt));
+        // Create the next answer 
+
+    // Finalize setup 
+    var nextAnswer = stage.addChild(new Answer(randInt)); // Create the actual object
+    if (currentAnswer != null) {
+        nextAnswer.index = currentAnswer.index; // Pass on parent index
+        nextAnswer.x = currentAnswer.x;         // Pass on parent position
+    }
+    // Return the displayObject 
+    return nextAnswer;
 }
 
 // Gathers are all the necessary info before generating the next answer
@@ -257,28 +266,47 @@ function generateDivision(answer) {
 
 // Move all objects up one position (overwritting the first)
 function advanceRows(newQuestion) {
-    // Animation
-    // Individually animate each one
+    // Animations: (Individually animate each one)
+    // Bottom question
     createjs.Tween.get(questions[0])
         .to({ y:(questions[0].y + 150), alpha: 0 }, 300, createjs.Ease.linear)
         .call( function() {
             this.visible = false; 
         });
-
+    // Next question
     createjs.Tween.get(questions[1])
         .to({ y:(questions[1].y + 150) }, 300, createjs.Ease.linear); // Advance position
     createjs.Tween.get(questions[1].getChildAt(1))
         .to({ scaleX: 2, scaleY: 2 }, 300, createjs.Ease.linear); // Enlarge text
-
+    // Last question
     createjs.Tween.get(questions[2])
         .to({ y:(questions[2].y + 150) }, 300, createjs.Ease.linear); 
-
+    // New question
     createjs.Tween.get(newQuestion)
         .to({ y:layout.MID1}, 300, createjs.Ease.linear);  
 
+    // Advance the questions internally
     questions[0] = questions[1];
     questions[1] = questions[2];
     questions[2] = newQuestion
+}
+
+function advanceAnswers(nextAnswer) {
+    // Animations:
+    // Current answer
+    createjs.Tween.get(currentAnswer)
+        .to({ alpha: 0, scaleX: 0.6, scaleY: 0.6}, 200, createjs.Ease.linear)
+        .call( function() { this.visible = false });
+    // Next answer
+    nextAnswer.alpha = 0;       // Start invisible
+    nextAnswer.scaleX = 1.2;    // Start large
+    nextAnswer.scaleY = 1.2;
+    createjs.Tween.get(nextAnswer)
+        .to({}, 100, createjs.Ease.linear)
+        .to({ alpha: 1, scaleX: 1, scaleY: 1 }, 300, createjs.Ease.linear);
+
+    // Advance (replace) the answer internally
+    answers[nextAnswer.index] = nextAnswer; // Replace parent 
 }
 
 // Answer checking
@@ -286,39 +314,47 @@ function checkAnswer(answer) {
     return (answer == questions[0].answer);
 }
 
-function answerCorrect(parentIndex, parentX) {
-    // Update the score
-    increaseScore();
-
-    // Reset the time
-    startTime = new Date().getTime(); // Set the time stamp to now
-    // Create the next answer 
-    var nextAnswer = generateNextAnswer();
-    nextAnswer.index = parentIndex;         // Pass on parent index
-    nextAnswer.x = parentX;                 // Pass on parent position
-    answers[nextAnswer.index] = nextAnswer; // Replace parent
-    // Animate next answer
-    nextAnswer.alpha = 0;
-    nextAnswer.scaleX = 1.2;
-    nextAnswer.scaleY = 1.2;
-    createjs.Tween.get(nextAnswer)
-        .to({}, 100, createjs.Ease.linear)
-        .to({ alpha: 1, scaleX: 1, scaleY: 1 }, 300, createjs.Ease.linear);
-
-    // Create the next question
-    advanceRows(generateNextQuestion());
+function answerCorrect() {
+    // GAME-LOGIC(?)
+    increaseScore();                        // Update the score
+    startTime = new Date().getTime();       // Reset the time (Set the time stamp to now)
+    
+    // GAME-FUNCTIONS
+    advanceAnswers(generateNextAnswer());   // Create the next answer, animate, and setup
+    advanceRows(generateNextQuestion());    // Create the next question, animate, and setup
+    updateCurrentAnswer();
 }
 
 function answerIncorrect() {
-    // Lower lives 
+    // GAME-LOGIC(?)
+    // Update lives 
     livesRemaining--;
     livesDisplay.txt.text = livesRemaining;
 
-    // TODO: Advance to the next question - may need to implement a index system 
+    // GAME-FUNCTIONS
+    advanceAnswers(generateNextAnswer());   // Create the next answer, animate, and setup
+    advanceRows(generateNextQuestion());    // Create the next question, animate, and setup
+    updateCurrentAnswer();
 
+    // Check if user lost
     if (livesRemaining <= 0) {
-        // Game over
-        $.mobile.changePage("#score-dialog", { role: "dialog" });
+        gameOver();
+    }
+}
+
+function gameOver() {
+    // Show user's score
+    $('#instance-score').text("Score: " + score);
+    // Show the dialog 
+    $.mobile.changePage("#score-dialog", { role: "dialog" });
+}
+
+// Sets the currentAnswer to the answer object for the bottom most question. 
+function updateCurrentAnswer() {
+    for (a = 0; a < answers.length; a++) {
+        if (checkAnswer(answers[a].answer)) {
+            currentAnswer = answers[a];
+        }
     }
 }
 
