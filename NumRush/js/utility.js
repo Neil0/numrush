@@ -23,3 +23,17 @@ function shuffle(array) {
 
   return array;
 }
+
+// Fullscreen a canvas 
+function fullScreenCanvas(targetCanvas) {
+    // Check if in vertical orientation
+    if (window.innerWidth < window.innerHeight) {
+        // Fullscreen the canvas
+        targetCanvas.width = window.innerWidth;
+        targetCanvas.height = window.innerHeight;
+    } else {
+        // Sadly requires global variables to work
+        targetCanvas.width = layout.DEF_WIDTH;
+        targetCanvas.height = layout.DEF_HEIGHT;
+    }
+}

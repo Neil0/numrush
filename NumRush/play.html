@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 	<title>Single page template</title> 
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-	<link rel="stylesheet" href="css/practice.css" />
+	<link rel="stylesheet" href="css/play.css" />
 	
 	<!-- jQuery -->
 	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -30,56 +30,42 @@
 
 <body onload="init();"> 
 
-<div data-role="page" id="main">
+	<!-- Game page -->
+	<div data-role="page" id="main">
 
-	<div data-role="header">
-		<h1></h1>
-	</div><!-- /header -->
-
-	<div data-role="content">
-
-		<div id="game-container">
-
+		<div data-role="content" id="game-container">
 			<canvas id="canvas" width="480" height="800">
 				<!-- alternate content? -->
 			</canvas>
 
 			<!-- Back button -->
 			<a id="back-button" href="menu.html" data-ajax="false" data-role="button">BACK</a>
-
 			<!-- score button (for testing) -->
 			<a href="#score-dialog" data-role="button" data-rel="dialog" data-transition="pop">Show page "popup" (as a dialog)</a>
-		</div>
+		</div><!-- /content -->
 
-	</div><!-- /content -->
-	
-	<div data-role="footer" data-position="fixed">
-		<h6>Team EXODIA</h6>
-	</div><!-- /footer -->
+	</div><!-- /page -->
 
-</div><!-- /page -->
+	<!-- Score dialog -->
+	<div data-role="dialog" id="score-dialog">
 
-<!-- Start of third page: #popup -->
-<div data-role="dialog" id="score-dialog">
+		<div data-role="header" data-theme="e">
+			<h1>GAME OVER</h1>
+		</div><!-- /header -->
 
-	<div data-role="header" data-theme="e">
-		<h1>GAME OVER</h1>
-	</div><!-- /header -->
+		<div data-role="content" data-theme="d">	
+			<h2 id="instance-score">Score: </h2>
+			<label for="name">Name:</label><input type="text" name="name" id="basic" value=""/>
 
-	<div data-role="content" data-theme="d">	
-		<h2 id="instance-score">Score: </h2>
-		<label for="name">Name:</label><input type="text" name="name" id="basic" value=""/>
+			<a href="#main" data-rel="back" data-role="button" data-inline="true" data-icon="back">Submit</a>
+			<a href="#main" data-rel="back" data-role="button" data-inline="true" data-icon="back">Retry</a>
+			<a href="#main" data-rel="back" data-role="button" data-inline="true" data-icon="back">Menu</a>
+		</div><!-- /content -->
 
-		<a href="#main" data-rel="back" data-role="button" data-inline="true" data-icon="back">Submit</a>
-		<a href="#main" data-rel="back" data-role="button" data-inline="true" data-icon="back">Retry</a>
-		<a href="#main" data-rel="back" data-role="button" data-inline="true" data-icon="back">Menu</a>
-	</div><!-- /content -->
-	
-	<div data-role="footer">
-		<h4>Page Footer</h4>
-	</div><!-- /footer -->
-</div><!-- /page popup -->
-
+		<div data-role="footer">
+			<h4>Page Footer</h4>
+		</div><!-- /footer -->
+	</div><!-- /page popup -->
 
 </body>
 </html>

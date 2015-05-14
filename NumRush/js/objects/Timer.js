@@ -4,8 +4,8 @@ function Timer() {
 	this.Container_constructor(); // Basically: super();
 	
 	// Layout
-	this.width = layout.STAGE_WIDTH;
-	this.height = layout.STAGE_HEIGHT * 0.05;
+	this.width = layout.BOT1_WIDTH;
+	this.height = layout.BOT1_HEIGHT;
 	this.color = "orange";
 
 	this.txt; 	

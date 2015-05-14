@@ -4,8 +4,8 @@ function correctIndicator() {
 	this.Container_constructor(); // Basically: super();
 	
 	// Layout
-	this.width = layout.STAGE_WIDTH * 0.5;
-	this.height = layout.STAGE_HEIGHT * 0.10;
+	this.width = layout.TOP2_WIDTH * 0.50;
+	this.height = layout.TOP2_HEIGHT;
 	this.color = "#0FF";
 
 	this.label = "0";

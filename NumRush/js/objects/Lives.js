@@ -5,8 +5,8 @@ function Lives() {
 	this.Container_constructor(); // Basically: super();
 	
 	// Layout
-	this.width = layout.STAGE_WIDTH;
-	this.height = layout.STAGE_HEIGHT * 0.05;
+	this.width = layout.TOP2_WIDTH;
+	this.height = layout.TOP2_HEIGHT;
 	this.color = "brown";
 
 	this.txt; 	

@@ -1,6 +1,5 @@
 // EaselJS 
 var canvas, stage;
-var stageWidth, stageHeight; // This is technically jQuery
 
 // GAME INFO
 var questions = [];
@@ -27,15 +26,14 @@ var sfxEnabled; // Determined by loadSfx()
 
 function init() {
     // Stage info
-    canvas = document.getElementById("canvas");
-    stage = new createjs.Stage(canvas);
-    stage.enableMouseOver(); // TODO: Remove this later (change with touch or something?)
+    canvas = document.getElementById("canvas"); 
+    fullScreenCanvas(canvas);           // Sets width and height to fill screen
+    stage = new createjs.Stage(canvas); // Creates a EaselJS Stage for drawing
+    // Detection
+    stage.enableMouseOver();    // TODO: Remove this later (change with touch or something?)
 
-    // Initialize global variables 
-    stageWidth = $('#canvas').prop("width"); 
-    stageHeight = $('#canvas').prop("height");
-
-    initializeVariables(stageWidth, stageHeight);
+    // Initialize global variables for layout and sizing
+    initializeVariables(canvas.width, canvas.height);
 
     console.log(layout.QUES_WIDTH);
     console.log(480);
@@ -269,18 +267,18 @@ function advanceRows(newQuestion) {
     // Animations: (Individually animate each one)
     // Bottom question
     createjs.Tween.get(questions[0])
-        .to({ y:(questions[0].y + 150), alpha: 0 }, 300, createjs.Ease.linear)
+        .to({ y:(questions[0].y + layout.QUES_HEIGHT), alpha: 0 }, 300, createjs.Ease.linear)
         .call( function() {
             this.visible = false; 
         });
     // Next question
     createjs.Tween.get(questions[1])
-        .to({ y:(questions[1].y + 150) }, 300, createjs.Ease.linear); // Advance position
+        .to({ y:(questions[1].y + layout.QUES_HEIGHT), scaleY: 1.66 }, 300, createjs.Ease.linear); // Advance position
     createjs.Tween.get(questions[1].getChildAt(1))
-        .to({ scaleX: 2, scaleY: 2 }, 300, createjs.Ease.linear); // Enlarge text
+        .to({ scaleX: 1.66 }, 300, createjs.Ease.linear); // Enlarge text (scaleY taken care above)
     // Last question
     createjs.Tween.get(questions[2])
-        .to({ y:(questions[2].y + 150) }, 300, createjs.Ease.linear); 
+        .to({ y:(questions[2].y + layout.QUES_HEIGHT) }, 300, createjs.Ease.linear); 
     // New question
     createjs.Tween.get(newQuestion)
         .to({ y:layout.MID1}, 300, createjs.Ease.linear);  
