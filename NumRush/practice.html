@@ -21,38 +21,29 @@
 	<script src="js/globalVariables.js"></script>
 	<script src="js/objects/Answer.js"></script>
 	<script src="js/objects/Question.js"></script>
-	<script src="js/objects/correctIndicator.js"></script>
-	<script src="js/objects/incorrectIndicator.js"></script>
-	<script src="js/practiceCJS.js"></script>
+	<script src="js/objects/CorrectIndicator.js"></script>
+	<script src="js/objects/IncorrectIndicator.js"></script>
+	<script src="js/practice.js"></script>
 
 </head> 
 
 <body onload="init();"> 
 
-<div data-role="page">
+	<!-- Game page -->
+	<div data-role="page" id="main">
 
-	<div data-role="header">
-		<h1></h1>
-	</div><!-- /header -->
-
-	<div data-role="content">
-
-		<div id="game-container">
-
+		<div data-role="content" id="game-container">
 			<canvas id="canvas" width="480" height="800">
 				<!-- alternate content? -->
 			</canvas>
 
 			<!-- Back button -->
-			<a id="back-button" href="menu.html" data-ajax="false" data-role="button">BACK</a>
+			<div id="back-button-container">
+				<a id="back-button" href="menu.html" data-ajax="false" data-role="button">BACK</a>
+			</div>
+		</div><!-- /content -->
 
-	</div><!-- /content -->
-	
-	<div data-role="footer" data-position="fixed">
-		<h6>Team EXODIA</h6>
-	</div><!-- /footer -->
-	
-</div><!-- /page -->
+	</div><!-- /page -->
 
 </body>
 </html>

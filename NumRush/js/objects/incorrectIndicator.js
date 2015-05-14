@@ -1,10 +1,10 @@
 (function() {
 
-function incorrectIndicator() {
+function IncorrectIndicator() {
 	this.Container_constructor(); // Basically: super();
 	
 	// Layout
-	this.width = layout.TOP2_HEIGHT * 0.50;
+	this.width = layout.TOP2_WIDTH * 0.50;
 	this.height = layout.TOP2_HEIGHT;
 	this.color = "#0FF";
 
@@ -15,7 +15,7 @@ function incorrectIndicator() {
 	this.setup();
 }
 // Basically: ... Button extends Container ...  (below returns a psrototype)
-var p = createjs.extend(incorrectIndicator, createjs.Container); 
+var p = createjs.extend(IncorrectIndicator, createjs.Container); 
 
 
 p.setup = function() {
@@ -54,5 +54,5 @@ p.handleRollOver = function(event) {
 };
 
 // Allows things out of scope to use this now (all of the above cannot be called directly)
-window.incorrectIndicator = createjs.promote(incorrectIndicator, "Container");
+window.IncorrectIndicator = createjs.promote(IncorrectIndicator, "Container");
 }());

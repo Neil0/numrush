@@ -32,6 +32,8 @@ function init() {
     canvas = document.getElementById("canvas"); 
     fullScreenCanvas(canvas);           // Sets width and height to fill screen
     stage = new createjs.Stage(canvas); // Creates a EaselJS Stage for drawing
+    stage.addChild(backgroundLayer, foregroundLayer); // Add layers
+
     // Detection
     stage.enableMouseOver();    // TODO: Remove this later (change with touch or something?)
 
@@ -45,8 +47,6 @@ function init() {
     // TODO: sfx and bgm
 
     // Initialization: 
-    // Add layers
-    stage.addChild(backgroundLayer, foregroundLayer);
     // Timer stuff
     startTime = new Date().getTime();
     timerDisplay = foregroundLayer.addChild(new Timer());
@@ -55,10 +55,11 @@ function init() {
     // Lives stuff
     livesDisplay = foregroundLayer.addChild(new Lives());
 
+    // Answers and questions (in this order)
     initializeAnswers();
     initializeQuestions(); 
-
     updateCurrentAnswer();
+    // Initial positions and sizing
     initializeAnswerPositions();
     initializeQuestionPositions();
 

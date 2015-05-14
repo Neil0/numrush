@@ -5,46 +5,67 @@ var stageWidth, stageHeight; // This is technically jQuery
 // Game Info
 var questions = [];
 var answers = [];
+var currentAnswer; // Note: This is an object, to access the answer value use currentAnswer.answer
 
 var correct = 0;
 var incorrect = 0;
 var correctIndicator, incorrectIndicator;
+
+// Layers
+var foregroundLayer = new createjs.Container(); 
+var backgroundLayer = new createjs.Container(); // Only contains questions
+// DisplayObjects
+var scoreDisplay;
+var timerDisplay;
+var livesDisplay;
 
 var sfxEnabled; // Determined by loadSfx()
 
 
 function init() {
     // Stage info
-    canvas = document.getElementById("canvas");
-    stage = new createjs.Stage(canvas);
-    stage.enableMouseOver(); // TODO: Remove this later (change with touch or something?)
+    canvas = document.getElementById("canvas"); 
+    fullScreenCanvas(canvas);           // Sets width and height to fill screen
+    stage = new createjs.Stage(canvas); // Creates a EaselJS Stage for drawing
+    stage.addChild(backgroundLayer, foregroundLayer); // Add layers
 
-    // Initialize global variables 
-    stageWidth = $('#canvas').prop("width");
-    stageHeight = $('#canvas').prop("height");
+    // Detection
+    stage.enableMouseOver();    // TODO: Remove this later (change with touch or something?)
 
-    initializeVariables(stageWidth, stageHeight);
+    // Initialize global variables for layout and sizing
+    initializeVariables(canvas.width, canvas.height);
 
     console.log(layout.QUES_WIDTH);
     console.log(480);
 
-    // Audio
+    // Audio:
     // TODO: sfx and bgm
 
-    // Initialization 
+    // Initialization: 
+    // Indicator stuff
+    correctIndicator = foregroundLayer.addChild(new CorrectIndicator());
+    incorrectIndicator = foregroundLayer.addChild(new IncorrectIndicator());
+    // Answers and questions (in this order)
     initializeAnswers();
-    initializeQuestions();
-    correctIndicator = stage.addChild(new correctIndicator());
-    incorrectIndicator = stage.addChild(new incorrectIndicator());
-
-    updateAnswerPositions();
-    updateQuestionPositions();
+    initializeQuestions(); 
+    updateCurrentAnswer();
+    // Initial positions and sizing
+    initializeAnswerPositions();
+    initializeQuestionPositions();
 
     // Looper
     createjs.Ticker.setFPS(60);
-    createjs.Ticker.on("tick", stage); // Updates the stage
+    // Handles all the update logic
+    createjs.Ticker.on("tick", handleTick); 
 
     console.log(stage.children.length);
+}
+
+function handleTick(event) {
+    if (!event.paused) {
+        // Render 
+        stage.update();
+    }
 }
 
 
@@ -119,9 +140,16 @@ function generateNextAnswer() {
             // No - return the value
             break;
         }
+        // Create the next answer 
 
-    // Answerobject, stage.addChild - return DisplayObject 
-    return stage.addChild(new Answer(randInt));
+    // Finalize setup 
+    var nextAnswer = foregroundLayer.addChild(new Answer(randInt)); // Create the actual object
+    if (currentAnswer != null) {
+        nextAnswer.index = currentAnswer.index; // Pass on parent index
+        nextAnswer.x = currentAnswer.x;         // Pass on parent position
+    }
+    // Return the displayObject 
+    return nextAnswer;
 }
 
 // Gathers are all the necessary info before generating the next answer
@@ -129,7 +157,7 @@ function prepareNextQuestion() {
     // Obtain information about the current board
     var availableArray = [];
     // Note: foreach loop not working very well
-    for (a = 0; a < answers.length; a++) {
+    for (a=0; a<answers.length; a++) {
         if (answers[a].available == true) {
             availableArray.push(answers[a]);
         }
@@ -149,7 +177,7 @@ function generateNextQuestion() {
 
     var question;
 
-    var randNum = getRandomInt(1, 2);
+    var randNum = getRandomInt(1, 4);
     switch (randNum) {
         case 1:
             question = generateSum(answer);
@@ -169,7 +197,7 @@ function generateNextQuestion() {
     }
 
     // Return the display object 
-    return stage.addChild(question);
+    return backgroundLayer.addChild(question);
 }
 
 function generateSum(answer) {
@@ -182,7 +210,6 @@ function generateSum(answer) {
     var question = new Question(numA, "+", numB, answer);
     return question;
 }
-
 function generateMinus(answer) {
     do {
         // Has to be 21 or it might loop infintely 
@@ -193,49 +220,65 @@ function generateMinus(answer) {
     var question = new Question(numA, "-", numB, answer);
     return question;
 }
-
 function generateMultiplication(answer) {
-    var numA = getRandomInt(1, 10);
-    //Not sure how to make this work since we will need to divide the answer by a random number to get a second number.
-    while ((answer % numA) != 0 && answer > numA) { // will fuck up if numA is too big.
-        numA++;
-    }
+    do{
+        var numA = getRandomInt(1,10);
+    }while(answer%numA != 0)
+    
     var numB = answer / numA;
-    var Question = new Question(numA, "*", numB, answer);
-    return Question;
+    var question = new Question(numA, "*", numB, answer);
+    return question;
 }
-
 function generateDivision(answer) {
     var numA = getRandomInt(1, 10);
     var numB = answer * numA;
-    var Question = new Question(numA, "/", numB, answer);
-    return Question;
+    var question = new Question(numB, "/", numA, answer);
+    return question;
 }
 
 // Move all objects up one position (overwritting the first)
 function advanceRows(newQuestion) {
-    // Animation
-    // Individually animate each one
+    // Animations: (Individually animate each one)
+    // Bottom question
     createjs.Tween.get(questions[0])
-        .to({ y:(questions[0].y + 150), alpha: 0 }, 300, createjs.Ease.linear)
+        .to({ y:(questions[0].y + layout.QUES_HEIGHT), alpha: 0 }, 300, createjs.Ease.linear)
         .call( function() {
             this.visible = false; 
         });
-
+    // Next question
     createjs.Tween.get(questions[1])
-        .to({ y:(questions[1].y + 150) }, 300, createjs.Ease.linear); // Advance position
+        .to({ y:(questions[1].y + layout.QUES_HEIGHT), scaleY: 1.66 }, 300, createjs.Ease.linear); // Advance position
     createjs.Tween.get(questions[1].getChildAt(1))
-        .to({ scaleX: 2, scaleY: 2 }, 300, createjs.Ease.linear); // Enlarge text
-
+        .to({ scaleX: 1.66 }, 300, createjs.Ease.linear); // Enlarge text (scaleY taken care above)
+    // Last question
     createjs.Tween.get(questions[2])
-        .to({ y:(questions[2].y + 150) }, 300, createjs.Ease.linear); 
-
+        .to({ y:(questions[2].y + layout.QUES_HEIGHT) }, 300, createjs.Ease.linear); 
+    // New question
     createjs.Tween.get(newQuestion)
         .to({ y:layout.MID1}, 300, createjs.Ease.linear);  
 
+    // Advance the questions internally
     questions[0] = questions[1];
     questions[1] = questions[2];
     questions[2] = newQuestion
+}
+
+function advanceAnswers(nextAnswer) {
+    // Animations:
+    // Current answer
+    createjs.Tween.get(currentAnswer)
+        .to({ alpha: 0, scaleX: 0.6, scaleY: 0.6}, 200, createjs.Ease.linear)
+        .call( function() { this.visible = false });
+    // Next answer
+    nextAnswer.alpha = 0;       // Start invisible
+    nextAnswer.scaleX = 1.2;    // Start large
+    nextAnswer.scaleY = 1.2;
+    createjs.Tween.get(nextAnswer)
+        .to({}, 100, createjs.Ease.linear)
+        .to({ alpha: 1, scaleX: 1, scaleY: 1 }, 300, createjs.Ease.linear);
+
+    // Advance (replace) the answer internally
+    answers[nextAnswer.index] = nextAnswer; // Replace parent 
 }
 
 // Answer checking
@@ -243,56 +286,80 @@ function checkAnswer(answer) {
     return (answer == questions[0].answer);
 }
 
-function answerCorrect(parentIndex, parentX) {
-    // Scores
+function answerCorrect() {
+    // GAME-LOGIC(?)
     correct++;
     correctIndicator.txt.text = correct;
 
-    // Create next answer 
-    var nextAnswer = generateNextAnswer();
-    nextAnswer.index = parentIndex;         // Pass on parent index
-    nextAnswer.x = parentX;                 // Pass on parent position
-    answers[nextAnswer.index] = nextAnswer; // Replace parent
-
-    // Animate next answer
-    nextAnswer.alpha = 0;
-    createjs.Tween.get(nextAnswer)
-        .to({ alpha: 100 }, 300, createjs.Ease.linear);
-
-    // Create the next question
-    advanceRows(generateNextQuestion());
+    // GAME-FUNCTIONS
+    advanceAnswers(generateNextAnswer());   // Create the next answer, animate, and setup
+    advanceRows(generateNextQuestion());    // Create the next question, animate, and setup
+    updateCurrentAnswer();
 }
 
 function answerIncorrect() {
-    incorrect++;
+    // GAME-LOGIC(?)
+    incorrect--;
     incorrectIndicator.txt.text = incorrect;
-}
 
-// POSITIONING
-function updateQuestionPositions() {
-    for (q = 0; q < 3; q++) {
-        switch (q) {
-            case 0:
-                questions[q].y = layout.MID3; // Lowest
-                break;
-            case 1:
-                questions[q].y = layout.MID2;
-                break;
-            case 2:
-                questions[q].y = layout.MID1; // Most upper
-                break;
-            default:
-                console.log("Something went wrong with loadQuestions()");
-                break;
-        }
-        console.log("Ques x: " + questions[q].x + " y: " + questions[q].y);
+    // GAME-FUNCTIONS
+    advanceAnswers(generateNextAnswer());   // Create the next answer, animate, and setup
+    advanceRows(generateNextQuestion());    // Create the next question, animate, and setup
+    updateCurrentAnswer();
+
+    // Check if user lost
+    if (livesRemaining <= 0) {
+        gameOver();
     }
 }
 
-function updateAnswerPositions() {
+// TODO: Should we prompt users if they wish to exit?
+function gameOver() {
+    console.log("gameOver() called");
+    // Pause the game
+    createjs.Ticker.paused = true;
+    // Show user's score
+    $('#instance-score').text("Score: " + score);
+    // Show the dialog 
+    $.mobile.changePage("#score-dialog", { role: "dialog" });
+}
+
+// Sets the currentAnswer to the answer object for the bottom most question. 
+function updateCurrentAnswer() {
+    for (a = 0; a < answers.length; a++) {
+        if (checkAnswer(answers[a].answer)) {
+            currentAnswer = answers[a];
+        }
+    }
+}
+
+// POSITIONING
+function initializeQuestionPositions() {
+    for (q=0; q<3; q++) {
+        switch (q) {
+            case 0:
+                questions[q].y = layout.MID3; // Lowest
+                questions[q].scaleY = 1.66;
+                questions[q].getChildAt(1).scaleX = 1.66;
+                break;
+            case 1: 
+                questions[q].y = layout.MID2; 
+                break;
+            case 2: 
+                questions[q].y = layout.MID1; // Most upper
+                break;
+            default: 
+                console.log("Something went wrong with loadQuestions()");
+                break;
+        } 
+        console.log("Ques x: " + questions[q].x + " y: " + questions[q].y );
+    }
+}
+
+function initializeAnswerPositions() {
     for (a = 0; a < 5; a++) {
         // x and y of the CENTER of the container. (not top left)
-        answers[a].x = (stageWidth * 0.10) + (a)*(stageWidth * 0.20);
+        answers[a].x = (layout.ANS_SIZE / 2) + (a)*(layout.ANS_SIZE);
 
         console.log("Ans x: " + answers[a].x + " y: " + answers[a].y);
     }

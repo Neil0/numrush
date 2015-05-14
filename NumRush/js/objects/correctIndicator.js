@@ -1,6 +1,6 @@
 (function() {
 
-function correctIndicator() {
+function CorrectIndicator() {
 	this.Container_constructor(); // Basically: super();
 	
 	// Layout
@@ -15,7 +15,7 @@ function correctIndicator() {
 	this.setup();
 }
 // Basically: ... Button extends Container ...  (below returns a prototype)
-var p = createjs.extend(correctIndicator, createjs.Container); 
+var p = createjs.extend(CorrectIndicator, createjs.Container); 
 
 
 p.setup = function() {
@@ -54,5 +54,5 @@ p.handleRollOver = function(event) {
 };
 
 // Allows things out of scope to use this now (all of the above cannot be called directly)
-window.correctIndicator = createjs.promote(correctIndicator, "Container");
+window.CorrectIndicator = createjs.promote(CorrectIndicator, "Container");
 }());

@@ -1,52 +1,34 @@
-@media (min-width: 800px) {
-	#game-container {
-		border: 1px solid black;
-		width: 50%;
-		margin-left: auto;
-		margin-right: auto;
-	}
-}
-/*
-div {
-	border: 1px solid black;
-	text-align: center;	
+/* Ensures full screen works properly */
+html, body {
 	width: 100%;
-	font-size: 1.2em;
-	margin-left: auto;
-	margin-right: auto;
+	height: 100%;
+	margin: 0;
 }
 
-#top-bar {
-	font-size: 0.8em;
-}
-#top-bar div {
-	display: inline;
+/* Centers the canvas */
+#main {
+	text-align: center;
 }
 
-#question-bar {
-	height: 250px;
-}
-#question-bar div {
-}
-#question-bar #bottom-row {
-	font-size: 2.5em;
+/* Removes some padding */
+#game-container {
+	padding: 0;
 }
 
-#answer-bar {
-	display: flex;
-	flex-direction: row;
-	/* Giving all the children below */
-	-webkit-box-flex: 1;
-	-webkit-flex: 1;
-}
-
-#back-button {
+/* Below two center the button */
+#back-button-container {
 	position: absolute;
 	top: 0;
+	left: 50%;
+}
+#back-button {
+	position: relative;
+	/* Considering the button width */
+	left: -50%; 
 }
 
 
 /* jQuery padding - will shift game off-screen a little */
 div.ui-content {
 	padding: 0;
-}*/
+}
