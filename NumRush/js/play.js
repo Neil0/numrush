@@ -100,6 +100,7 @@ function updateTimeRemaining(){
 
 //use this function when question is correct
 function increaseScore(){
+    console.log("increaseScore()");
     score += Math.round(BASE_GAIN + (Math.round(remainingTime) /10000)) * 10;
     scoreDisplay.txt.text = score;
 }
@@ -159,6 +160,8 @@ function initializeQuestions() {
 // GAME LOGIC
 // Creates the next answer 
 function generateNextAnswer() {
+        console.log("generateNextAnswer()");
+
     var randInt;
     // Loop until there is no overlap
     outer:
@@ -190,6 +193,9 @@ function generateNextAnswer() {
 
 // Gathers are all the necessary info before generating the next answer
 function prepareNextQuestion() {
+        console.log("prepareNextQuestion()");
+
+
     // Obtain information about the current board
     var availableArray = [];
     // Note: foreach loop not working very well
@@ -208,6 +214,8 @@ function prepareNextQuestion() {
 }
 
 function generateNextQuestion() {
+            console.log("generateNextQuestion()");
+
 
     var answer = prepareNextQuestion();
 
@@ -274,21 +282,23 @@ function generateDivision(answer) {
 
 // Move all objects up one position (overwritting the first)
 function advanceRows(newQuestion) {
+                console.log("advanceRows()");
+
     // Animations: (Individually animate each one)
     // Bottom question
     createjs.Tween.get(questions[0])
-        .to({ y:(questions[0].y + layout.QUES_HEIGHT), alpha: 0 }, 300, createjs.Ease.linear)
+        .to({ y:(layout.MID3 + this.y), alpha: 0 }, 300, createjs.Ease.linear)
         .call( function() {
             this.visible = false; 
         });
     // Next question
     createjs.Tween.get(questions[1])
-        .to({ y:(questions[1].y + layout.QUES_HEIGHT), scaleY: 1.66 }, 300, createjs.Ease.linear); // Advance position
+        .to({ y:(layout.MID3), scaleY: 1.66 }, 300, createjs.Ease.linear); // Advance position
     createjs.Tween.get(questions[1].getChildAt(1))
         .to({ scaleX: 1.66 }, 300, createjs.Ease.linear); // Enlarge text (scaleY taken care above)
     // Last question
     createjs.Tween.get(questions[2])
-        .to({ y:(questions[2].y + layout.QUES_HEIGHT) }, 300, createjs.Ease.linear); 
+        .to({ y:(layout.MID2) }, 300, createjs.Ease.linear); 
     // New question
     createjs.Tween.get(newQuestion)
         .to({ y:layout.MID1}, 300, createjs.Ease.linear);  
@@ -300,6 +310,8 @@ function advanceRows(newQuestion) {
 }
 
 function advanceAnswers(nextAnswer) {
+                    console.log("advanceAnswers()");
+
     // Animations:
     // Current answer
     createjs.Tween.get(currentAnswer)
@@ -323,6 +335,8 @@ function checkAnswer(answer) {
 }
 
 function answerCorrect() {
+                        console.log("answerCorrect()");
+
     // GAME-LOGIC(?)
     increaseScore();                        // Update the score
     startTime = new Date().getTime();       // Reset the time (Set the time stamp to now)
@@ -334,6 +348,8 @@ function answerCorrect() {
 }
 
 function answerIncorrect() {
+    console.log("answerIncorrect()");
+
     // GAME-LOGIC(?)
     // Update lives 
     livesRemaining--;
@@ -353,7 +369,7 @@ function answerIncorrect() {
 }
 
 function gameOver() {
-    console.log("gameOver() called");
+    console.log("gameOver()");
     // Pause the game
     createjs.Ticker.paused = true;
     // Show user's score
@@ -364,6 +380,8 @@ function gameOver() {
 
 // Sets the currentAnswer to the answer object for the bottom most question. 
 function updateCurrentAnswer() {
+        console.log("updateCurrentAnswer()");
+
     for (a = 0; a < answers.length; a++) {
         if (checkAnswer(answers[a].answer)) {
             currentAnswer = answers[a];

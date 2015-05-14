@@ -38,9 +38,6 @@ p.setup = function() {
 	
 	var background = new createjs.Shape();
 	background.graphics.beginFill(this.color).drawRoundRect(0,0,this.width,this.height,10);
-	
-	console.log("width: " + this.width);
-	console.log("height: " + this.height);
 
 	// Note: this refers to the container
 	this.addChild(background, text);  // Container class method
