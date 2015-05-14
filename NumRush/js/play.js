@@ -16,6 +16,9 @@ var MAX_TIME = 30000; // 30 Seconds
 var remainingTime = MAX_TIME;
 var startTime;
 
+// Layers
+var foregroundLayer = new createjs.Container(); 
+var backgroundLayer = new createjs.Container(); // Only contains questions
 // DisplayObjects
 var scoreDisplay;
 var timerDisplay;
@@ -38,17 +41,19 @@ function init() {
     console.log(layout.QUES_WIDTH);
     console.log(480);
 
-    // Audio
+    // Audio:
     // TODO: sfx and bgm
 
-    // Initialization 
+    // Initialization: 
+    // Add layers
+    stage.addChild(backgroundLayer, foregroundLayer);
     // Timer stuff
     startTime = new Date().getTime();
-    timerDisplay = stage.addChild(new Timer());
+    timerDisplay = foregroundLayer.addChild(new Timer());
     // Score stuff
-    scoreDisplay = stage.addChild(new Score());
+    scoreDisplay = foregroundLayer.addChild(new Score());
     // Lives stuff
-    livesDisplay = stage.addChild(new Lives());
+    livesDisplay = foregroundLayer.addChild(new Lives());
 
     initializeAnswers();
     initializeQuestions(); 
@@ -59,8 +64,10 @@ function init() {
 
     // Looper
     createjs.Ticker.setFPS(60);
-    createjs.Ticker.on("tick", stage); // Updates the stage
+    // Update (kinda) 
     createjs.Ticker.on("tick", updateTimeRemaining); // Updates the time remaining (with display)
+    // Render
+    createjs.Ticker.on("tick", stage); // Updates the stage (visuals)
 
     console.log(stage.children.length);
 }
@@ -169,7 +176,7 @@ function generateNextAnswer() {
         // Create the next answer 
 
     // Finalize setup 
-    var nextAnswer = stage.addChild(new Answer(randInt)); // Create the actual object
+    var nextAnswer = foregroundLayer.addChild(new Answer(randInt)); // Create the actual object
     if (currentAnswer != null) {
         nextAnswer.index = currentAnswer.index; // Pass on parent index
         nextAnswer.x = currentAnswer.x;         // Pass on parent position
@@ -223,7 +230,7 @@ function generateNextQuestion() {
     }
 
     // Return the display object 
-    return stage.addChild(question);
+    return backgroundLayer.addChild(question);
 }
 
 function generateSum(answer) {
@@ -341,6 +348,8 @@ function answerIncorrect() {
 }
 
 function gameOver() {
+    // Pause the game
+    createjs.Ticker.off();
     // Show user's score
     $('#instance-score').text("Score: " + score);
     // Show the dialog 

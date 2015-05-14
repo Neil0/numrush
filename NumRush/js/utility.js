@@ -36,4 +36,6 @@ function fullScreenCanvas(targetCanvas) {
         targetCanvas.width = layout.DEF_WIDTH;
         targetCanvas.height = layout.DEF_HEIGHT;
     }
+
+    console.log("Window width: " + window.innerWidth + " height: " + window.innerHeight);
 }
