@@ -193,7 +193,7 @@ function generateNextAnswer() {
 
 // Gathers are all the necessary info before generating the next answer
 function prepareNextQuestion() {
-        console.log("prepareNextQuestion()");
+    console.log("prepareNextQuestion()");
 
 
     // Obtain information about the current board
@@ -245,24 +245,14 @@ function generateNextQuestion() {
 }
 
 function generateSum(answer) {
-    var numA = getRandomInt(1, 10);
-    // using numbers between 1 and 10 for now
-    while (answer <= numA) {
-        numA = getRandomInt(1, 10);
-    }
+    var numA = getRandomInt(0, answer);
     var numB = answer - numA;
-    var question = new Question(numA, "+", numB, answer);
-    return question;
+    return new Question(numA, "+", numB, answer);
 }
 function generateMinus(answer) {
-    do {
-        // Has to be 21 or it might loop infintely 
-        numA = getRandomInt(1, 21);
-    } while (numA <= answer)
-
+    var numA = getRandomInt(answer, answer + 20);
     var numB = numA - answer;
-    var question = new Question(numA, "-", numB, answer);
-    return question;
+    return new Question(numA, "-", numB, answer);
 }
 function generateMultiplication(answer) {
     do{
