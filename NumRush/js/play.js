@@ -89,8 +89,6 @@ function updateTimeRemaining(){
     if (remainingTime < 0) {
         remainingTime = 0; // Might be unnecessary
         answerIncorrect();
-    } else {
-        // TODO: Nothing, or maybe something?
     }
 
     // Format to two decimal places (rounds too)
@@ -102,7 +100,6 @@ function updateTimeRemaining(){
 //use this function when question is correct
 function increaseScore(){
     score += Math.round(BASE_GAIN + (Math.round(remainingTime) /10000)) * 10;
-    // TODO: Update the score
     scoreDisplay.txt.text = score;
 }
 
@@ -143,7 +140,6 @@ function loadSfxSound() {
 }
 
 // INITIALIZERS
-// TODO: Fix this once generateAnswers is done
 function initializeAnswers() {
     for (i = 0; i < 5; i++) {
         var nextAnswer = generateNextAnswer();
@@ -380,6 +376,8 @@ function initializeQuestionPositions() {
         switch (q) {
             case 0:
                 questions[q].y = layout.MID3; // Lowest
+                questions[q].scaleY = 1.66;
+                questions[q].getChildAt(1).scaleX = 1.66;
                 break;
             case 1: 
                 questions[q].y = layout.MID2; 
