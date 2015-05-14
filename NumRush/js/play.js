@@ -12,7 +12,7 @@ var score = 0;
 var MAX_LIVES = 5;
 var livesRemaining = MAX_LIVES;  
 // Time
-var MAX_TIME = 30000; // 30 Seconds
+var MAX_TIME = 20000; // 20 Seconds
 var remainingTime = MAX_TIME;
 var startTime;
 
@@ -59,19 +59,25 @@ function init() {
     initializeQuestions(); 
 
     updateCurrentAnswer();
-    updateAnswerPositions();
-    updateQuestionPositions();
+    initializeAnswerPositions();
+    initializeQuestionPositions();
 
     // Looper
     createjs.Ticker.setFPS(60);
-    // Update (kinda) 
-    createjs.Ticker.on("tick", updateTimeRemaining); // Updates the time remaining (with display)
-    // Render
-    createjs.Ticker.on("tick", stage); // Updates the stage (visuals)
+    // Handles all the update logic
+    createjs.Ticker.on("tick", handleTick); 
 
     console.log(stage.children.length);
 }
 
+function handleTick(event) {
+    if (!event.paused) {
+        // Update (kinda)
+        updateTimeRemaining();
+        // Render 
+        stage.update();
+    }
+}
 
 function updateTimeRemaining(){
     var currentTime = new Date().getTime();
@@ -335,6 +341,8 @@ function answerIncorrect() {
     // Update lives 
     livesRemaining--;
     livesDisplay.txt.text = livesRemaining;
+    // Reset the time
+    startTime = new Date().getTime();
 
     // GAME-FUNCTIONS
     advanceAnswers(generateNextAnswer());   // Create the next answer, animate, and setup
@@ -348,8 +356,9 @@ function answerIncorrect() {
 }
 
 function gameOver() {
+    console.log("gameOver() called");
     // Pause the game
-    createjs.Ticker.off();
+    createjs.Ticker.paused = true;
     // Show user's score
     $('#instance-score').text("Score: " + score);
     // Show the dialog 
@@ -366,7 +375,7 @@ function updateCurrentAnswer() {
 }
 
 // POSITIONING
-function updateQuestionPositions() {
+function initializeQuestionPositions() {
     for (q=0; q<3; q++) {
         switch (q) {
             case 0:
@@ -386,7 +395,7 @@ function updateQuestionPositions() {
     }
 }
 
-function updateAnswerPositions() {
+function initializeAnswerPositions() {
     for (a = 0; a < 5; a++) {
         // x and y of the CENTER of the container. (not top left)
         answers[a].x = (layout.ANS_SIZE / 2) + (a)*(layout.ANS_SIZE);
