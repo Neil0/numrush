@@ -27,8 +27,17 @@ img {
 }
 
 /* LEADERBOARD STUFF */
-#main-content {
-	width: 50%;
-	margin-left: auto;
-	margin-right: auto;
+@media screen and (orientation:portrait) {
+	#main-content {
+		width: 90%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+@media screen and (orientation:landscape) {
+	#main-content {
+		width: 50%;
+		margin-left: auto;
+		margin-right: auto;
+	}
 }

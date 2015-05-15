@@ -14,3 +14,11 @@ html, body {
 #game-container {
 	padding: 0;
 }
+
+/* Score Dialog */
+.invalid {
+	color: red;
+}
+.valid {
+	color: green;
+}

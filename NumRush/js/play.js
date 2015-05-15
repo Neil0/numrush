@@ -414,11 +414,36 @@ function initializeAnswerPositions() {
 
 // SCORE
 function submitScore(){ 
-    var name = document.getElementById('basic').value;
-    $.ajax( { url: "https://api.mongolab.com/api/1/databases/numrush2910/collections/leaderboard?apiKey=2wY4G3-jDGhBVdvAO7TGBpN2dV27JFoL",
-          data: JSON.stringify(  {"username": name,"score":score}
-             ),
-          type: "POST",
-          contentType: "application/json" } );
 
+    var name = document.getElementById("name-input").value;
+    var $validIndicator = $('#valid-indicator');
+
+    if (validateName(name)) {
+        // Clear any invalid text
+        $validIndicator.removeClass('invalid');
+        $validIndicator.addClass('valid');
+        $validIndicator.text('Score submitted!');
+
+        // Upload to database
+        $.ajax({ 
+            url: "https://api.mongolab.com/api/1/databases/numrush2910/collections/leaderboard?apiKey=2wY4G3-jDGhBVdvAO7TGBpN2dV27JFoL"
+            ,data: JSON.stringify( {"username": name,"score":score} )
+            ,type: "POST"
+            ,contentType: "application/json" }
+        );
+    } else {
+        // Indicate is invalid
+        $validIndicator.removeClass('valid');
+        $validIndicator.addClass('invalid');
+        $('#valid-indicator').text('Please enter a name between 1-20 characters.');
+    }
+}
+
+// Check if between 1-20 characters
+function validateName(name) {
+    if (name.length <= 0 || name.length > 20) {
+        return false;
+    } else {
+        return true;
+    }
 }

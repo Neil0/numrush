@@ -55,12 +55,15 @@
 
 		<div data-role="content" data-theme="d">	
 			<h2 id="instance-score">Score: </h2>
-			<label for="name">Name:</label><input type="text" name="name" id="basic" value=""/>
+			<p id="valid-indicator"></p>
+			<label for="name">Name:</label><input type="text" name="name" id="name-input" value=""/>
 
 
-			<a href="#main" data-rel="back" data-role="button" data-inline="true" data-icon="back" onclick="submitScore()">Submit</a>
+			<a data-role="button" data-inline="true" onclick="submitScore()">Submit</a>
+			
 			<a href="#main" data-rel="back" data-role="button" data-inline="true" data-icon="back">Retry</a>
-			<a href="#main" data-rel="back" data-role="button" data-inline="true" data-icon="back">Menu</a>
+
+			<a href="menu.html" data-ajax="false" data-role="button" data-inline="true" data-icon="back">Menu</a>
 		</div><!-- /content -->
 
 		<div data-role="footer">
