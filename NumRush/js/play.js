@@ -28,6 +28,12 @@ var sfxEnabled; // Determined by loadSfx()
 
 
 function init() {
+    console.log("init()");
+    initializeAssets(); // pray we got time
+    console.log("Past initAssets()");
+}
+
+function initPlay() {
     // Stage info
     canvas = document.getElementById("canvas"); 
     fullScreenCanvas(canvas);           // Sets width and height to fill screen

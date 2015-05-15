@@ -28,8 +28,9 @@ p.setup = function() {
 	text.x = this.width/2;
 	text.y = this.height/2;
 	
-	var background = new createjs.Shape();
-	background.graphics.beginFill(this.color).drawRoundRect(0,0,this.width,this.height,10);
+	var bitmap = preload.getResult("ans");
+	var background = new createjs.Bitmap(bitmap);
+	// background.graphics.beginFill(this.color).drawRoundRect(0,0,this.width,this.height,10);
 	
 	// Note: this refers to the container
 	this.addChild(background, text);  // Container class method

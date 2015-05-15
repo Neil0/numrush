@@ -44,6 +44,17 @@ var layout = {
 	ALWAYSUSECOMMAS : 6969 // Basically so you can re-arrange variables without fear of putting commas down
 }
 
+
+// Can't enum objects
+var preload = new createjs.LoadQueue();
+var manifest = [
+    {src: 'img/answer.png', id: 'ans'},
+    {src: 'img/life.png', id: 'life'},
+    {src: 'img/no_life.png', id: 'nolife'}
+];
+preload.on("complete", handleComplete, this);
+
+
 function initializeVariables(canvasWidth, canvasHeight) {
 	// STAGE
 	layout.STAGE_WIDTH = canvasWidth;
@@ -66,4 +77,14 @@ function initializeVariables(canvasWidth, canvasHeight) {
 	layout.MID3 = canvasHeight * 0.50;			
 	layout.BOT1 = canvasHeight * 0.75;			
 	layout.BOT2 = canvasHeight * 0.80;			
+}
+
+function initializeAssets() {
+	console.log("initAssets()");
+	preload.loadManifest(manifest);
+}
+
+function handleComplete(event) {
+	console.log("All files loaded");
+	initPlay();
 }
