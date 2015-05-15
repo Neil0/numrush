@@ -16,6 +16,10 @@ var MAX_TIME = 20000; // 20 Seconds
 var remainingTime = MAX_TIME;
 var startTime;
 
+// Difficulty
+var termRange = [3,3]; // Only supports 2-3 terms 
+
+
 // Layers
 var foregroundLayer = new createjs.Container(); 
 var backgroundLayer = new createjs.Container(); // Only contains questions
@@ -25,6 +29,9 @@ var timerDisplay;
 var livesDisplay;
 
 var sfxEnabled; // Determined by loadSfx()
+
+
+var OPERATORS = ["+", "-", "x", "/"];
 
 
 function init() {
@@ -214,45 +221,97 @@ function prepareNextQuestion() {
 }
 
 function generateNextQuestion() {
-            console.log("generateNextQuestion()");
-
-
-    var answer = prepareNextQuestion();
-
+    console.log("generateNextQuestion()");
+    // Init the question     
     var question;
 
-    var randNum = getRandomInt(1, 4);
-    switch (randNum) {
-        case 1:
-            question = generateSum(answer);
-            break;
-        case 2:
-            question = generateMinus(answer);
-            break;
-        case 3:
-            question = generateMultiplication(answer);
-            break;
-        case 4:
-            question = generateDivision(answer);
-            break;
-        default:
-            console.log("something went wrong with generateNextQuestion()");
-            break;
+    // Retrieve the next answer 
+    var answer = prepareNextQuestion();
+
+    // Generate a 2 or 3 term question
+    var randTerm = getRandomInt(termRange[0], termRange[1]);
+    // Generating a 2 term question
+    if (randTerm == 2) {
+        var set = generateSet(answer, 1, 4);
+
+        question = new Question(set); 
+
+    // Generating a 3 term question
+    } else {
+        // Init
+        var fullSet = []; 
+        var numSet = [];
+        var operatorSet = [];
+
+        // Set up (random) operators
+        operatorSet[0] = OPERATORS[getRandomInt(0, 3)];
+        operatorSet[1] = OPERATORS[getRandomInt(0, 3)];
+
+        // Check if x||/ followed by +||- 
+        if (operatorSet[0] == "x" || operatorSet[0] == "/" && operatorSet[1] == "+" || operatorSet[1] == "-") {
+            // Calculate right to left
+            var numSetR = generateSet(answer, operatorSet[1]);
+            var numSetL = generateSet(numSetR[0], operatorSet[0]); // Take middle operator and expand
+
+            // Assemble, nsl[0] +- nsl[1] x/ nsr[1];
+            numSet = [numSetL[0], numSetL[1], numSetR[1]];
+
+        // Else, proceed as normally
+        } else {
+            // Calculate left to right
+            var numSetL = generateSet(answer, operatorSet[0]);
+            var numSetR = generateSet(numSetL[1], operatorSet[1]); // take middle operator and expand
+
+            // Assemble, nsl[0] op nsr[0] op nsr[1]
+            numSet = [numSetL[0], numSetR[0], numSetR[1]];
+        }
+
+        // Assemble numbers and operators
+        fullSet[0] = numSet;
+        fullSet[1] = operatorSet;
+        fullSet[2] = answer; // From above
+
+        // Create the question with the set
+        question = new Question(fullSet);
     }
 
     // Return the display object 
     return backgroundLayer.addChild(question);
 }
 
+// Returns an array of numbers, and an array of operators (for the question).
+function generateSet(answer, operator) {
+    switch (operator) {
+        case "+":
+            return generateSum(answer);
+            break;
+        case "-":
+            return generateMinus(answer);
+            break;
+        case "x":
+            return generateMultiplication(answer);
+            break;
+        case "/":
+            return generateDivision(answer);
+            break;
+        default:
+            console.log("something went wrong with generateNextQuestion()");
+            break;
+    }
+}
+
 function generateSum(answer) {
     var numA = getRandomInt(0, answer);
     var numB = answer - numA;
-    return new Question(numA, "+", numB, answer);
+    var set = [numA, numB];     // [[nums][operators]answer];
+    return set;
 }
 function generateMinus(answer) {
+    // TODO: The difference will always be from 1-20, might want to base it off the answer it self
     var numA = getRandomInt(answer, answer + 20);
     var numB = numA - answer;
-    return new Question(numA, "-", numB, answer);
+    var set = [numA, numB];
+    return set;
 }
 function generateMultiplication(answer) {
     do{
@@ -260,14 +319,14 @@ function generateMultiplication(answer) {
     }while(answer%numA != 0)
     
     var numB = answer / numA;
-    var question = new Question(numA, "*", numB, answer);
-    return question;
+    var set = [numA, numB];
+    return set;
 }
 function generateDivision(answer) {
     var numA = getRandomInt(1, 10);
     var numB = answer * numA;
-    var question = new Question(numB, "/", numA, answer);
-    return question;
+    var set = [numB, numA];
+    return set;
 }
 
 // Move all objects up one position (overwritting the first)
