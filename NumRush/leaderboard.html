@@ -6,14 +6,14 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 	<title>Single page template</title> 
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-	<link rel="stylesheet" href="css/menu.css" />
+	<link rel="stylesheet" href="css/leaderboard.css" />
 	
 	<!-- jQuery stuff -->
 	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 	<!-- Utility -->
 	<!-- Page stuff -->
-	<script src="js/menu.js"></script>
+	<script src="js/leaderboard.js"></script>
 </head> 
 
 <body> 
@@ -27,11 +27,18 @@
 	</div><!-- /header -->
 
 	<div data-role="content">
-		<h1>NumRush</h1>
+	<button onclick="callName()"> users </button>
+	<button onclick="callScore()"> scores </button>
+		<h1>Leaderboards</h1>
+	<div id="nameboard"><table style = "width:50%" id="nametable">
 
-		<a href="play.html" data-ajax="false" data-role="button">Play</a>
-		<a href="practice.html" data-ajax="false" data-role="button">Practice</a>
-		<a href="leaderboard.html" data-ajax="false" data-role="button">Leaderboards</a>
+	</table>
+	</div>
+	<div id="scoreboard">
+	<table style = "width:50%" id="scoretable">
+
+	</table>
+	</div>
 
 	</div><!-- /content -->
 	

@@ -277,7 +277,7 @@ function advanceRows(newQuestion) {
     // Animations: (Individually animate each one)
     // Bottom question
     createjs.Tween.get(questions[0])
-        .to({ y:(layout.MID3 + this.y), alpha: 0 }, 300, createjs.Ease.linear)
+        .to({ y:(layout.MID3 + questions[0].y), alpha: 0 }, 300, createjs.Ease.linear)
         .call( function() {
             this.visible = false; 
         });
@@ -409,4 +409,16 @@ function initializeAnswerPositions() {
 
         console.log("Ans x: " + answers[a].x + " y: " + answers[a].y);
     }
+}
+
+
+// SCORE
+function submitScore(){ 
+    var name = document.getElementById('basic').value;
+    $.ajax( { url: "https://api.mongolab.com/api/1/databases/numrush2910/collections/leaderboard?apiKey=2wY4G3-jDGhBVdvAO7TGBpN2dV27JFoL",
+          data: JSON.stringify(  {"username": name,"score":score}
+             ),
+          type: "POST",
+          contentType: "application/json" } );
+
 }
