@@ -18,43 +18,46 @@
 
 <body> 
 
-<div data-role="page">
+	<div data-role="page">
 
-	<div data-role="header">
-		<h1></h1>
-		<img id="bgm-toggle" src="img/bgm_on.png" alt="toggle BGM" height="42" width="42">
-		<p id="sfx-toggle">SFX</p>
-	</div><!-- /header -->
+		<div data-role="header">
+			<h1></h1>
+			<img id="bgm-toggle" src="img/bgm_on.png" alt="toggle BGM" height="42" width="42">
+			<p id="sfx-toggle">SFX</p>
+		</div><!-- /header -->
 
-	<div data-role="content">
-	<button onclick="callName()"> users </button>
-	<button onclick="callScore()"> scores </button>
-		<h1>Leaderboards</h1>
-	<div id="nameboard"><table style = "width:50%" id="nametable">
-
-	</table>
-	</div>
-	<div id="scoreboard">
-	<table style = "width:50%" id="scoretable">
-
-	</table>
-	</div>
-
-	</div><!-- /content -->
+		<div data-role="content" id="main-content">
 	
-	<div data-role="footer" data-position="fixed">
-		<h6>Team EXODIA</h6>
-	</div><!-- /footer -->
+			<h1>Leaderboards</h1>
 
-</div><!-- /page -->
+			<table data-role="table" class="ui-responsive">
+				<thead>
+					<tr>
+						<th>Rank</th>
+						<th>Name</th>
+						<th>Score</th>
+					</tr>
+				</thead>
+				<tbody id="leader-table">
+
+				</tbody>
+			</table>
+
+		</div><!-- /content -->
+
+		<div data-role="footer" data-position="fixed">
+			<h6>Team EXODIA</h6>
+		</div><!-- /footer -->
+
+	</div><!-- /page -->
 
 	<!-- AUDIO -->
 	<audio id="menu-bgm" loop>
 		<source src ="sound/menu_bgm.mp3" type="audio/mpeg">
-	</audio>
-	<audio id="menu-sfx">
-		<source src="sound/sfx_toggle.wav" type="audio/mpeg">
-	</audio>
+		</audio>
+		<audio id="menu-sfx">
+			<source src="sound/sfx_toggle.wav" type="audio/mpeg">
+			</audio>
 
-</body>
-</html>
+		</body>
+		</html>

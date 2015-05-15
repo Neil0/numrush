@@ -1,53 +1,71 @@
-retrieve();
 
-var jsonData;
-var complete = 0;
-//USE THIS SHIT BEFORE CALLING ANY FUNCTIONS THAT WILL QUERY THE DATABASE!!!!!!!!!!!!
-
-function retrieve(){
-$.ajax({
-  dataType: "json",
-  //url now picks top 10 scores & usernames in order from highest to lowest score
-  url: "https://api.mongolab.com/api/1/databases/numrush2910/collections/leaderboard?s={%22score%22:-1}&l=10&apiKey=2wY4G3-jDGhBVdvAO7TGBpN2dV27JFoL",
-  success: function(data) {
-	complete = 1;
-  	jsonData = data;
-  }
-});
-alert("done");
-}
-
-//prints out names of the top 10 players according to score
-function callName(){
-var table = document.getElementById('nametable');
-	for (i = jsonData.length-1; i >= 0; i--) {
-		var row = table.insertRow(0);
-		var cell = row.insertCell(0);
-		cell.innerHTML =jsonData[i].username;
-	}
-}
-
-//prints out the top 10 scores in 'scoreboard'
-function callScore(){
-	var table = document.getElementById('scoretable');
-	for (i = jsonData.length-1; i >= 0; i--) {
-		var row = table.insertRow(0);
-		var cell = row.insertCell(0);
-		cell.innerHTML =jsonData[i].score;
-	}
-}
-$(document).ready(function() {    
+$(document).ready(function() {
     // -- FIELDS --
+    // DOM
     var $bgmToggle = $('#bgm-toggle');
     var $sfxToggle = $('#sfx-toggle');
     var $bgm = $('#menu-bgm');
     var $sfx = $('#menu-sfx');
-
+    var $leaderTable = $('#leader-table');
+    // Leaderboards
+    var jsonData;
+    var complete = 0;
+    var rank = 0;
 
     // Initialization
+    // Audio
     $bgmToggle.bind("tap", bgmHandler);
     $sfxToggle.bind("tap", sfxHandler);
     loadAudioButtons();
+    // Leaderboards
+    retrieve();
+
+
+    //USE THIS SHIT BEFORE CALLING ANY FUNCTIONS THAT WILL QUERY THE DATABASE!!!!!!!!!!!!
+    function retrieve() {
+        $.ajax({
+            dataType: "json",
+            //url now picks top 10 scores & usernames in order from highest to lowest score
+            url: "https://api.mongolab.com/api/1/databases/numrush2910/collections/leaderboard?s={%22score%22:-1}&l=10&apiKey=2wY4G3-jDGhBVdvAO7TGBpN2dV27JFoL",
+            success: function(data) {
+                complete = 1;
+                jsonData = data;
+                loadLeaderboard();
+            }
+        });
+
+    }
+
+    //prints out rank, name, scores of the top 10 (5?) players according to score
+    function loadLeaderboard() {
+        console.log("loadLeaderboard()");
+
+        for (i = 0; i < jsonData.length; i++) {
+            var $newRow = $("<tr>");
+            // Create rank
+            var $newRank = $("<td>", {
+                text: ++rank
+            });
+            // Create name
+            var $newName = $("<td>", {
+                text: jsonData[i].username
+            });
+            // Create score
+            var $newScore = $("<td>", {
+                text: jsonData[i].score
+            });
+
+            // Add to DOM
+            $newRow.append($newRank);    // Rank column
+            $newRow.append($newName);    // Name column
+            $newRow.append($newScore);   // Score column
+            $leaderTable.append($newRow);     // End row tag
+        }
+    }
+
+
+
+
 
 
     // -- HANDLERS --
@@ -58,7 +76,7 @@ $(document).ready(function() {
 
         toggleBgm();
     }
-    
+
     function sfxHandler(event) {
         // Retrieve the selected element
         var $targetElement = $(event.target); // Not used
