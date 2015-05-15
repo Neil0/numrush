@@ -8,6 +8,7 @@ function Answer(answer) {
 	this.height = layout.ANS_SIZE;
 	this.color = layout.ANS_COLOR;
 	this.index; // Set by the game when loaded into the array
+	this.picture = answerImage; // Located in play.js
 
 	// Answer
 	this.answer = answer;
@@ -27,9 +28,13 @@ p.setup = function() {
 	// cordinates for the text to be drawn 
 	text.x = this.width/2;
 	text.y = this.height/2;
-	
-	var background = new createjs.Shape();
-	background.graphics.beginFill(this.color).drawRoundRect(0,0,this.width,this.height,10);
+
+
+	var background = new createjs.Bitmap(answerImage);
+	var rawWidth = background.image.width;
+	var scaleFactor = this.width / rawWidth;
+	background.scaleX = background.scaleY = scaleFactor;
+	//background.graphics.beginFill(this.color).drawRoundRect(0,0,this.width,this.height,10);
 	
 	// Note: this refers to the container
 	this.addChild(background, text);  // Container class method

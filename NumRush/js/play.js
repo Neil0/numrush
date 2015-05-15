@@ -30,11 +30,22 @@ var livesDisplay;
 
 var sfxEnabled; // Determined by loadSfx()
 
-
 var OPERATORS = ["+", "-", "x", "/"];
 
 
-function init() {
+var answerImage;
+
+function loadGame() {
+    console.log("Assets loading");
+    // PRELOAD ALL ASSETS
+    var preload = new createjs.LoadQueue();
+    preload.addEventListener("fileload", init);
+    preload.loadFile("img/answer.png");
+}
+
+function init(event) {
+    answerImage = event.result; // Load that image
+
     // Stage info
     canvas = document.getElementById("canvas"); 
     fullScreenCanvas(canvas);           // Sets width and height to fill screen
