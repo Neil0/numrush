@@ -32,10 +32,15 @@ function fullScreenCanvas(targetCanvas) {
         targetCanvas.width = window.innerWidth;
         targetCanvas.height = window.innerHeight;
     } else {
-        // Sadly requires global variables to work
-        targetCanvas.width = layout.DEF_WIDTH;
-        targetCanvas.height = layout.DEF_HEIGHT;
+        // 5 X 3, bounded by window height
+        targetCanvas.width = window.innerHeight * 3 / 5; 
+        targetCanvas.height = window.innerHeight;
     }
 
     console.log("Window width: " + window.innerWidth + " height: " + window.innerHeight);
+}
+
+// Not used
+function getScaleFactor(rawLength, targetLength) {
+  return targetLength / rawLength;
 }

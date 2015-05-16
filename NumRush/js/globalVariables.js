@@ -1,4 +1,5 @@
 // Global Variables 
+// TODO: split enums into positioning and properties
 var layout = {
 	// ! : if you see 1111, it means that it's waiting for the device size 
 
@@ -44,16 +45,26 @@ var layout = {
 	ALWAYSUSECOMMAS : 6969 // Basically so you can re-arrange variables without fear of putting commas down
 }
 
-
-// Can't enum objects
+// Not actually loaded until initAssets() is called
 var preload = new createjs.LoadQueue();
+/*preload.on("fileload", foo, bar);
+preload.on("progress", foo, bar);*/ 
+preload.on("complete", handleComplete, this);
 var manifest = [
     {src: 'img/answer.png', id: 'ans'},
     {src: 'img/life.png', id: 'life'},
     {src: 'img/no_life.png', id: 'nolife'}
 ];
-preload.on("complete", handleComplete, this);
 
+function initializeAssets() {
+	console.log("initAssets()");
+	preload.loadManifest(manifest);
+}
+
+function handleComplete(event) {
+	console.log("All files loaded");
+	initGame();
+}
 
 function initializeVariables(canvasWidth, canvasHeight) {
 	// STAGE
@@ -79,12 +90,3 @@ function initializeVariables(canvasWidth, canvasHeight) {
 	layout.BOT2 = canvasHeight * 0.80;			
 }
 
-function initializeAssets() {
-	console.log("initAssets()");
-	preload.loadManifest(manifest);
-}
-
-function handleComplete(event) {
-	console.log("All files loaded");
-	initPlay();
-}

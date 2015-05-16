@@ -17,7 +17,9 @@ var p = createjs.extend(Score, createjs.Container);
 
 
 p.setup = function() {
-	var text = new createjs.Text("0", "20px Arial", "black");
+	var fontSize = this.height * 0.40;
+	var font = fontSize + "px Arial"; // TODO: make a global font
+	var text = new createjs.Text("0", font, "#000");
 	text.textBaseline = "middle";
 	text.textAlign = "center";
 		

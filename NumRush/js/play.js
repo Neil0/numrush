@@ -26,29 +26,25 @@ var livesDisplay;
 
 var sfxEnabled; // Determined by loadSfx()
 
-
+// Initialize all base variables and preload assets. Once assets are loaded it will call init. 
 function init() {
-    console.log("init()");
-    initializeAssets(); // pray we got time
-    console.log("Past initAssets()");
-}
-
-function initPlay() {
-    // Stage info
+    // Canvas info
     canvas = document.getElementById("canvas"); 
-    fullScreenCanvas(canvas);           // Sets width and height to fill screen
-    stage = new createjs.Stage(canvas); // Creates a EaselJS Stage for drawing
-    stage.addChild(backgroundLayer, foregroundLayer); // Add layers
-
+    fullScreenCanvas(canvas);                           // Sets width and height to fill screen
+    // Stage info
+    stage = new createjs.Stage(canvas);                 // Creates a EaselJS Stage for drawing
+    stage.addChild(backgroundLayer, foregroundLayer);   // Add layers
     // Detection
     stage.enableMouseOver();    // TODO: Remove this later (change with touch or something?)
 
     // Initialize global variables for layout and sizing
     initializeVariables(canvas.width, canvas.height);
 
-    console.log(layout.QUES_WIDTH);
-    console.log(480);
+    // Preload all assets (crucial for first rendering)
+    initializeAssets(); // Note: Once finish it will call initGame()
+}
 
+function initGame() {
     // Audio:
     // TODO: sfx and bgm
 
@@ -306,7 +302,7 @@ function advanceRows(newQuestion) {
 }
 
 function advanceAnswers(nextAnswer) {
-                    console.log("advanceAnswers()");
+    console.log("advanceAnswers()");
 
     // Animations:
     // Current answer
@@ -331,7 +327,7 @@ function checkAnswer(answer) {
 }
 
 function answerCorrect() {
-                        console.log("answerCorrect()");
+    console.log("answerCorrect()");
 
     // GAME-LOGIC(?)
     increaseScore();                        // Update the score
@@ -417,12 +413,44 @@ function initializeAnswerPositions() {
     }
 }
 
+function restartGame() {
+    // Reset
+    scoreDisplay.txt.text = "0";  
+    score = 0;
 
-// SCORE
+    livesDisplay.txt.text = MAX_LIVES;
+    livesRemaining = MAX_LIVES;
+    
+    for (q = 0; q < questions.length; q++) { questions[q].visible = false; }
+    for (a = 0; a < answers.length; a++) { answers[a].visible = false; }
+    questions.length = 0;
+    answers.length = 0;
+    currentAnswer = null;
+
+    timerDisplay.txt.text = (MAX_TIME / 1000).toFixed(2);
+    startTime = new Date().getTime();
+    remainingTime = MAX_TIME;
+
+    // Init again
+    // Answers and questions (in this order)
+    initializeAnswers();
+    initializeQuestions(); 
+    updateCurrentAnswer();
+    // Initial positions and sizing
+    initializeAnswerPositions();
+    initializeQuestionPositions();
+
+    // Resume
+    createjs.Ticker.paused = false;
+}
+
+
+// SCORE DIALOG
 function submitScore(){ 
 
     var name = document.getElementById("name-input").value;
     var $validIndicator = $('#valid-indicator');
+    var submitted = false;
 
     if (validateName(name)) {
         // Clear any invalid text
@@ -437,6 +465,9 @@ function submitScore(){
             ,type: "POST"
             ,contentType: "application/json" }
         );
+
+        // Prevent submitting again
+        $('#submit-button').attr('disabled', "");   // This is actually mixing jQuery and pure js
     } else {
         // Indicate is invalid
         $validIndicator.removeClass('valid');

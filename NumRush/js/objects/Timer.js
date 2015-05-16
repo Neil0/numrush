@@ -17,7 +17,9 @@ var p = createjs.extend(Timer, createjs.Container);
 
 
 p.setup = function() {
-	var text = new createjs.Text("10", "20px Arial", "black");
+	var fontSize = this.height * 0.40;
+	var font = fontSize + "px Arial"; // TODO: make a global font
+	var text = new createjs.Text("20.00", font, "#000");
 	text.textBaseline = "middle";
 	text.textAlign = "center";
 		
