@@ -45,6 +45,7 @@ var layout = {
 	ALWAYSUSECOMMAS : 6969 // Basically so you can re-arrange variables without fear of putting commas down
 }
 
+// PRELOAD
 // Not actually loaded until initAssets() is called
 var preload = new createjs.LoadQueue();
 /*preload.on("fileload", foo, bar);
@@ -56,14 +57,16 @@ var manifest = [
     {src: 'img/no_life.png', id: 'nolife'}
 ];
 
-function initializeAssets() {
-	console.log("initAssets()");
-	preload.loadManifest(manifest);
-}
-
 function handleComplete(event) {
 	console.log("All files loaded");
 	initGame();
+}
+
+
+// INITIALIZERS
+function initializeAssets() {
+	console.log("initAssets()");
+	preload.loadManifest(manifest);
 }
 
 function initializeVariables(canvasWidth, canvasHeight) {

@@ -274,7 +274,7 @@ function generateDivision(answer) {
 
 // Move all objects up one position (overwritting the first)
 function advanceRows(newQuestion) {
-                console.log("advanceRows()");
+    console.log("advanceRows()");
 
     // Animations: (Individually animate each one)
     // Bottom question
@@ -345,7 +345,9 @@ function answerIncorrect() {
     // GAME-LOGIC(?)
     // Update lives 
     livesRemaining--;
-    livesDisplay.txt.text = livesRemaining;
+    livesDisplay.updateLivesDisplay(livesRemaining);
+    // TODO:
+
     // Reset the time
     startTime = new Date().getTime();
 
@@ -418,7 +420,7 @@ function restartGame() {
     scoreDisplay.txt.text = "0";  
     score = 0;
 
-    livesDisplay.txt.text = MAX_LIVES;
+    livesDisplay.updateLivesDisplay(MAX_LIVES);
     livesRemaining = MAX_LIVES;
     
     for (q = 0; q < questions.length; q++) { questions[q].visible = false; }

@@ -1,4 +1,3 @@
-// TODO: Need to figure out how this is gonna work
 (function() {
 
 function Lives() {
@@ -9,9 +8,30 @@ function Lives() {
 	this.height = layout.TOP2_HEIGHT;
 	this.color = "brown";
 
-	this.txt; 	
+	this.lifeArray = [];
+	this.nolifeArray = [];
+
+	this.updateLivesDisplay = function(life) {
+		// Assuming game restart
+		if (life == 5) {
+			for (all = 0; all < 5; all++) {
+				this.lifeArray[all].visible = true;
+				this.nolifeArray[all].visible = false;
+			}
+			return;
+		}
+		
+		// Get the desired display object
+		var removeLife = this.lifeArray[life];
+		var addNolife = this.nolifeArray[life];
+
+		// TODO:Animate them
+		removeLife.visible = false;
+		addNolife.visible = true;
+	} 
 	
 	this.setup();
+	this.updateLivesDisplay(5);
 }
 // Basically: ... Button extends Container ...  (below returns a prototype)
 var p = createjs.extend(Lives, createjs.Container); 
@@ -19,20 +39,48 @@ var p = createjs.extend(Lives, createjs.Container);
 
 p.setup = function() {
 
-	// TODO: hmmmmmmm...............
-	var text = new createjs.Text("5", "20px Arial", "black");
-	text.textBaseline = "middle";
-	text.textAlign = "center";
-		
-	// cordinates for the text to be drawn 
-	text.x = this.width/2;
-	text.y = this.height/2;
+	// Retrieve the files
+	var lifeFile = preload.getResult("life");
+	var nolifeFile = preload.getResult("nolife");
+	// Calculate the scale factor 
+	var scaleFactor = this.height / lifeFile.height; 
+	lifeFile.scale = scaleFactor;	// Add new property scale, so we can reference it later
 
-	var background = new createjs.Shape();
-	background.graphics.beginFill(this.color).drawRoundRect(0,0,this.width,this.height,10);
-	
+	// Create 5 of each
+	// Note: Using hp b/c scared of variable collision 
+	// Note: Only supports 5 lives
+	for (hp = 0; hp < 5; hp++) {
+		// Create bitmap object 
+		var lifeBitmap = new createjs.Bitmap(lifeFile);
+		var nolifeBitmap = new createjs.Bitmap(nolifeFile);
+		// Fix scale (scale is an added property)
+		lifeBitmap.scaleX = lifeBitmap.scaleY = lifeBitmap.scale = scaleFactor;
+		nolifeBitmap.scaleX = nolifeBitmap.scaleY = nolifeBitmap.scale = scaleFactor;
+
+		// Base scaling and rotation around the center
+		lifeBitmap.regX = lifeBitmap.image.width / 2; 
+		lifeBitmap.regY = lifeBitmap.image.height / 2;
+		nolifeBitmap.regX = nolifeBitmap.image.width / 2; 
+		nolifeBitmap.regY = nolifeBitmap.image.height / 2;
+
+		// Set location
+		lifeBitmap.x = this.width * ((hp+1)*(0.15) + 0.05);	
+		lifeBitmap.y = this.height / 2;
+		nolifeBitmap.x = this.width * ((hp+1)*(0.15) + 0.05);
+		nolifeBitmap.y = this.height / 2;
+
+		// Make nolife invisible for now
+		nolifeBitmap.visible = false;
+
+		// Add to parent (order is important);
+		var lifeDisplayObject = this.addChild(lifeBitmap);
+		var nolifeDisplayObject = this.addChild(nolifeBitmap);
+		// Add to array to access later
+		this.lifeArray.push(lifeDisplayObject);
+		this.nolifeArray.push(nolifeDisplayObject);
+	}
+
 	// Note: this refers to the container
-	this.txt = this.addChild(background, text);  // Container class method
 	this.on("click", this.handleClick);
 	this.on("rollover", this.handleRollOver);
 	this.on("rollout", this.handleRollOver);
