@@ -20,7 +20,9 @@ var p = createjs.extend(Answer, createjs.Container);
 
 
 p.setup = function() {
-	var text = new createjs.Text(this.answer, "20px Arial", "#000");
+	var fontSize = this.height * 0.40;
+	var font = fontSize + "px Arial"; // TODO: make a global font
+	var text = new createjs.Text(this.answer, font, "#000");
 	text.textBaseline = "middle";
 	text.textAlign = "center";
 		
@@ -28,10 +30,12 @@ p.setup = function() {
 	text.x = this.width/2;
 	text.y = this.height/2;
 	
-	var bitmap = preload.getResult("ans");
-	var background = new createjs.Bitmap(bitmap);
-	// background.graphics.beginFill(this.color).drawRoundRect(0,0,this.width,this.height,10);
-	
+	var imageFile = preload.getResult("ans");
+	var scaleFactor = this.width / imageFile.width; 
+	var background = new createjs.Bitmap(imageFile);
+	background.scaleX = scaleFactor;
+	background.scaleY = scaleFactor;
+
 	// Note: this refers to the container
 	this.addChild(background, text);  // Container class method
 	this.on("click", this.handleClick);
