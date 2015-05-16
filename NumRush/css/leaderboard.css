@@ -1,17 +1,15 @@
+/*HEADER*/
 h1 {
 	text-align: center;
 }
-
-.ui-btn {
-	margin-left: auto;
-	margin-right: auto;
-    width: 200px;
-}
-
 img {
 	position: absolute;
 	top: 0px;
 	right: 10px;
+}
+.ui-btn {
+	margin:0 auto;
+    width: 200px;
 }
 #sfx-toggle {
 	position: absolute;
@@ -25,19 +23,42 @@ img {
 .on {
 	
 }
+/*END HEADER */
+
+/*TABLE STYLE */
+table {
+	text-align:center;
+	color:black;
+}
+th{
+	background-color:rgba(0,191,255,.9);
+	border-right:1px solid #FFF;	
+	color:#FFF;
+	font:italic 20px arial;
+}
+tr:nth-child(odd){
+	background-color:rgba(0,191,255,.3);
+}
+tr:nth-child(even){
+	background-color:rgba(0,191,255,.1);
+}
+td{
+	border-left:1px solid #FFF;
+	font:20px arial;
+}
+/*END TABLE STYLE*/
 
 /* LEADERBOARD STUFF */
 @media screen and (orientation:portrait) {
 	#main-content {
 		width: 90%;
-		margin-left: auto;
-		margin-right: auto;
+		margin:0 auto;
 	}
 }
 @media screen and (orientation:landscape) {
 	#main-content {
 		width: 50%;
-		margin-left: auto;
-		margin-right: auto;
+		margin:0 auto;
 	}
 }
+/*END LEADERBOARD*/
