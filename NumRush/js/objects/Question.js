@@ -1,7 +1,6 @@
 (function() {
 
-// TODO:Should color be a param?
-function Question(num1, operator, num2, answer) {
+function Question(set) {
 	this.Container_constructor(); // Basically: super();
 	
 	// Positioning
@@ -10,13 +9,22 @@ function Question(num1, operator, num2, answer) {
 	this.color = layout.QUES_COLOR;
 
 	// Question
-    this.num1 = num1;
-    this.operator = operator;
-    this.num2 = num2;
-	this.answer = answer;
+	this.operands = set[0];
+	this.operators = set[1];
+	this.answer = set[2];
 
 	this.getQuestion = function() {
-        return this.num1 + " " + this.operator + " " + this.num2;
+		var string = "";
+
+		for (operand = 0; operand < this.operands.length; operand++) {
+			// Check if last operand 
+			if (operand == this.operands.length - 1) {
+				string += this.operands[operand];
+			} else {
+				string += this.operands[operand] + " " + this.operators[operand] + " ";
+			}
+		}
+        return string;
     }
 
 	this.label = this.getQuestion();
@@ -29,8 +37,8 @@ var p = createjs.extend(Question, createjs.Container);
 
 p.setup = function() {
 	var fontSize = this.height * 0.40;
-	var font = fontSize + "px Arial"; // TODO: make a global font
-	var text = new createjs.Text(this.label, font, "#000");
+    var font = fontSize + "px Arial"; // TODO: make a global font
+	var text = new createjs.Text(this.label, "20px Arial", "#000");
 	text.textBaseline = "middle";
 	text.textAlign = "center";
 	
