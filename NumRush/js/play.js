@@ -12,12 +12,18 @@ var score = 0;
 var MAX_LIVES = 5;
 var livesRemaining = MAX_LIVES;  
 // Time
-var MAX_TIME = 20000; // 20 Seconds
+var MAX_TIME = 10000; // 10 Seconds
 var remainingTime = MAX_TIME;
 var startTime;
 
 // Difficulty
-var termRange = [3,3]; // Only supports 2-3 terms
+var termRange = {min: 2, max: 2};       // Only supports 2-3 terms
+var operatorRange = { min: 0, max: 1};  // 0 = +, 1 = -, 2 = x, 3 = / 
+var LEVEL1 = 0;     // 2 Term + -
+var LEVEL2 = 2000;  // 2 Term + - x / 
+var LEVEL3 = 4000;  // 2-3 Term + -
+var LEVEL4 = 6000;  // 2-3 Term + - x /
+var LEVEL5 = 10000;  // 3 Term + - x / 
 
 // Layers
 var foregroundLayer = new createjs.Container(); 
@@ -32,6 +38,35 @@ var sfxEnabled; // Determined by loadSfx()
 var OPERATORS = ["+", "-", "x", "/"];
 
 
+// Currently based on score
+function updateDifficulty() {
+    if (score > LEVEL5) {
+        termRange.min = 3;
+        termRange.max = 3;
+        operatorRange.min = 0;
+        operatorRange.max = 3;
+    } else if (score > LEVEL4) {
+        termRange.min = 2;
+        termRange.max = 3;
+        operatorRange.min = 0;
+        operatorRange.max = 3;
+    } else if (score > LEVEL3) {
+        termRange.min = 2;
+        termRange.max = 3;
+        operatorRange.min = 0;
+        operatorRange.max = 1;
+    } else if (score > LEVEL2) {
+        termRange.min = 2;
+        termRange.max = 2;
+        operatorRange.min = 0;
+        operatorRange.max = 3;
+    } else if (score > LEVEL1) {
+        termRange.min = 2;
+        termRange.max = 2;
+        operatorRange.min = 0;
+        operatorRange.max = 1;
+    }
+}
 
 // Initialize all base variables and preload assets. Once assets are loaded it will call init. 
 function init() {
@@ -230,7 +265,7 @@ function generateNextQuestion() {
     var answer = prepareNextQuestion();
  
     // Generate a 2 or 3 term question
-    var randTerm = getRandomInt(termRange[0], termRange[1]);
+    var randTerm = getRandomInt(termRange["min"], termRange["max"]);
 
     // Generating a 2 term question
     if (randTerm == 2) {
@@ -240,7 +275,7 @@ function generateNextQuestion() {
         var operatorSet = [];
         
         // Calculate the pieces
-        operatorSet[0] = OPERATORS[getRandomInt(0, 3)];
+        operatorSet[0] = OPERATORS[getRandomInt(operatorRange["min"], operatorRange["max"])];
         numSet = generateSet(answer, operatorSet[0]);
         
         // Assemble all the pieces
@@ -259,8 +294,8 @@ function generateNextQuestion() {
         var operatorSet = [];
  
         // Set up (random) operators
-        operatorSet[0] = OPERATORS[getRandomInt(0, 3)];
-        operatorSet[1] = OPERATORS[getRandomInt(0, 3)];
+        operatorSet[0] = OPERATORS[getRandomInt(operatorRange["min"], operatorRange["max"])];
+        operatorSet[1] = OPERATORS[getRandomInt(operatorRange["min"], operatorRange["max"])];
 
         // Begin generation logic
         var operatorCode = operatorSet[0] + operatorSet[1];
@@ -421,7 +456,8 @@ function answerCorrect() {
     // GAME-LOGIC(?)
     increaseScore();                        // Update the score
     startTime = new Date().getTime();       // Reset the time (Set the time stamp to now)
-    
+    updateDifficulty();
+
     // GAME-FUNCTIONS
     advanceAnswers(generateNextAnswer());   // Create the next answer, animate, and setup
     advanceRows(generateNextQuestion());    // Create the next question, animate, and setup
