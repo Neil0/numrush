@@ -14,6 +14,8 @@ function Answer(answer) {
 	this.available = true; // Determines if this answer is associated with a question already
 
 	this.setup();
+
+	
 }
 // Basically: ... Button extends Container ...  (below returns a prototype)
 var p = createjs.extend(Answer, createjs.Container); 

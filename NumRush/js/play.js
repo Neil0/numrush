@@ -38,36 +38,6 @@ var sfxEnabled; // Determined by loadSfx()
 var OPERATORS = ["+", "-", "x", "/"];
 
 
-// Currently based on score
-function updateDifficulty() {
-    if (score > LEVEL5) {
-        termRange.min = 3;
-        termRange.max = 3;
-        operatorRange.min = 0;
-        operatorRange.max = 3;
-    } else if (score > LEVEL4) {
-        termRange.min = 2;
-        termRange.max = 3;
-        operatorRange.min = 0;
-        operatorRange.max = 3;
-    } else if (score > LEVEL3) {
-        termRange.min = 2;
-        termRange.max = 3;
-        operatorRange.min = 0;
-        operatorRange.max = 1;
-    } else if (score > LEVEL2) {
-        termRange.min = 2;
-        termRange.max = 2;
-        operatorRange.min = 0;
-        operatorRange.max = 3;
-    } else if (score > LEVEL1) {
-        termRange.min = 2;
-        termRange.max = 2;
-        operatorRange.min = 0;
-        operatorRange.max = 1;
-    }
-}
-
 // Initialize all base variables and preload assets. Once assets are loaded it will call init. 
 function init() {
     // Canvas info
@@ -124,29 +94,50 @@ function handleTick(event) {
     }
 }
 
-function updateTimeRemaining(){
-    var currentTime = new Date().getTime();
-    var elapsedTime = currentTime - startTime;
-    // Update time left
-    remainingTime = MAX_TIME - elapsedTime;
-
-    // Check if question fail
-    if (remainingTime < 0) {
-        remainingTime = 0; // Might be unnecessary
-        answerIncorrect();
+// INITIALIZERS
+function initializeAnswers() {
+    for (i = 0; i < 5; i++) {
+        var nextAnswer = generateNextAnswer();
+        nextAnswer.index = i; // We need the index so we can replace them properly
+        answers.push(nextAnswer);
     }
-
-    // Format to two decimal places (rounds too)
-    var formattedTime = (remainingTime / 1000).toFixed(2);
-    // Display the time left
-    timerDisplay.txt.text = formattedTime;
 }
 
-//use this function when question is correct
-function increaseScore(){
-    console.log("increaseScore()");
-    score += Math.round(BASE_GAIN + (Math.round(remainingTime) /10000)) * 10;
-    scoreDisplay.txt.text = score;
+function initializeQuestions() {
+    for (i = 0; i < 3; i++) {
+        questions.push(generateNextQuestion());
+    }
+}
+
+function initializeQuestionPositions() {
+    for (q=0; q<3; q++) {
+        switch (q) {
+            case 0:
+                questions[q].y = layout.MID3; // Lowest
+                questions[q].scaleY = 1.66;
+                questions[q].getChildAt(1).scaleX = 1.66;
+                break;
+            case 1: 
+                questions[q].y = layout.MID2; 
+                break;
+            case 2: 
+                questions[q].y = layout.MID1; // Most upper
+                break;
+            default: 
+                console.log("Something went wrong with loadQuestions()");
+                break;
+        } 
+        console.log("Ques x: " + questions[q].x + " y: " + questions[q].y );
+    }
+}
+
+function initializeAnswerPositions() {
+    for (a = 0; a < 5; a++) {
+        // x and y of the CENTER of the container. (not top left)
+        answers[a].x = (layout.ANS_SIZE / 2) + (a)*(layout.ANS_SIZE);
+
+        console.log("Ans x: " + answers[a].x + " y: " + answers[a].y);
+    }
 }
 
 
@@ -185,23 +176,62 @@ function loadSfxSound() {
     }
 }
 
-// INITIALIZERS
-function initializeAnswers() {
-    for (i = 0; i < 5; i++) {
-        var nextAnswer = generateNextAnswer();
-        nextAnswer.index = i; // We need the index so we can replace them properly
-        answers.push(nextAnswer);
-    }
-}
-
-function initializeQuestions() {
-    for (i = 0; i < 3; i++) {
-        questions.push(generateNextQuestion());
-    }
-}
-
 
 // GAME LOGIC
+function increaseScore() {
+    console.log("increaseScore()");
+    score += Math.round(BASE_GAIN + (Math.round(remainingTime) /10000)) * 10;
+    scoreDisplay.txt.text = score;
+}
+
+function updateTimeRemaining() {
+    var currentTime = new Date().getTime();
+    var elapsedTime = currentTime - startTime;
+    // Update time left
+    remainingTime = MAX_TIME - elapsedTime;
+
+    // Check if question fail
+    if (remainingTime < 0) {
+        remainingTime = 0; // Might be unnecessary
+        answerIncorrect();
+    }
+
+    // Format to two decimal places (rounds too)
+    var formattedTime = (remainingTime / 1000).toFixed(2);
+    // Display the time left
+    timerDisplay.txt.text = formattedTime;
+}
+
+// Currently based on score
+function updateDifficulty() {
+    if (score > LEVEL5) {
+        termRange.min = 3;
+        termRange.max = 3;
+        operatorRange.min = 0;
+        operatorRange.max = 3;
+    } else if (score > LEVEL4) {
+        termRange.min = 2;
+        termRange.max = 3;
+        operatorRange.min = 0;
+        operatorRange.max = 3;
+    } else if (score > LEVEL3) {
+        termRange.min = 2;
+        termRange.max = 3;
+        operatorRange.min = 0;
+        operatorRange.max = 1;
+    } else if (score > LEVEL2) {
+        termRange.min = 2;
+        termRange.max = 2;
+        operatorRange.min = 0;
+        operatorRange.max = 3;
+    } else if (score > LEVEL1) {
+        termRange.min = 2;
+        termRange.max = 2;
+        operatorRange.min = 0;
+        operatorRange.max = 1;
+    }
+}
+
 // Creates the next answer 
 function generateNextAnswer() {
     console.log("generateNextAnswer()");
@@ -445,7 +475,19 @@ function advanceAnswers(nextAnswer) {
     answers[nextAnswer.index] = nextAnswer; // Replace parent 
 }
 
-// Answer checking
+// Sets the currentAnswer to the answer object for the bottom most question. 
+function updateCurrentAnswer() {
+        console.log("updateCurrentAnswer()");
+
+    for (a = 0; a < answers.length; a++) {
+        if (checkAnswer(answers[a].answer)) {
+            currentAnswer = answers[a];
+        }
+    }
+}
+
+
+// ANSWER CHECKING
 function checkAnswer(answer) {
     return (answer == questions[0].answer);
 }
@@ -495,49 +537,6 @@ function gameOver() {
     $('#instance-score').text("Score: " + score);
     // Show the dialog 
     $.mobile.changePage("#score-dialog", { role: "dialog" });
-}
-
-// Sets the currentAnswer to the answer object for the bottom most question. 
-function updateCurrentAnswer() {
-        console.log("updateCurrentAnswer()");
-
-    for (a = 0; a < answers.length; a++) {
-        if (checkAnswer(answers[a].answer)) {
-            currentAnswer = answers[a];
-        }
-    }
-}
-
-// POSITIONING
-function initializeQuestionPositions() {
-    for (q=0; q<3; q++) {
-        switch (q) {
-            case 0:
-                questions[q].y = layout.MID3; // Lowest
-                questions[q].scaleY = 1.66;
-                questions[q].getChildAt(1).scaleX = 1.66;
-                break;
-            case 1: 
-                questions[q].y = layout.MID2; 
-                break;
-            case 2: 
-                questions[q].y = layout.MID1; // Most upper
-                break;
-            default: 
-                console.log("Something went wrong with loadQuestions()");
-                break;
-        } 
-        console.log("Ques x: " + questions[q].x + " y: " + questions[q].y );
-    }
-}
-
-function initializeAnswerPositions() {
-    for (a = 0; a < 5; a++) {
-        // x and y of the CENTER of the container. (not top left)
-        answers[a].x = (layout.ANS_SIZE / 2) + (a)*(layout.ANS_SIZE);
-
-        console.log("Ans x: " + answers[a].x + " y: " + answers[a].y);
-    }
 }
 
 function restartGame() {
