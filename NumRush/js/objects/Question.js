@@ -13,6 +13,28 @@ function Question(set) {
 	this.operators = set[1];
 	this.answer = set[2];
 
+	this.animate3rdPosition = function() {
+  		createjs.Tween.get(this)
+        	.to({ y:layout.MID1 }, 300, createjs.Ease.linear);  
+	}
+	this.animate2ndPosition = function() {
+	    createjs.Tween.get(this)
+	        .to({ y:(layout.MID2) }, 300, createjs.Ease.linear); 
+	}
+	this.animate1stPosition = function() {
+	    createjs.Tween.get(this)
+	        .to({ y:(layout.MID3), scaleY: 1.66 }, 300, createjs.Ease.linear); // Advance position
+	    createjs.Tween.get(this.getChildAt(1))	// TODO Might want to introduce a txt variable 
+	        .to({ scaleX: 1.66 }, 300, createjs.Ease.linear); // Enlarge text (scaleY taken care above)
+	}
+	this.animateGone = function() {
+		createjs.Tween.get(this)
+	        .to({ y:(layout.MID3 + this.height), alpha: 0 }, 300, createjs.Ease.linear)
+	        .call( function() {
+	            this.visible = false; 
+	    });
+	}
+
 	this.getQuestion = function() {
 		var string = "";
 

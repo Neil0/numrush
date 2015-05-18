@@ -13,11 +13,25 @@ function Answer(answer) {
 	this.answer = answer;
 	this.available = true; // Determines if this answer is associated with a question already
 
-	this.setup();
+	// When the answer fades away
+	this.animateGone = function() {
+	    createjs.Tween.get(this)
+	        .to({ alpha: 0, scaleX: 0.6, scaleY: 0.6}, 200, createjs.Ease.linear)
+	        .call( function() { this.visible = false });
+	}
 
-	
+	// When a new answer appears
+	this.animateNew = function() {
+	    this.alpha = 0;       // Start invisible
+	    this.scaleX = 1.2;    // Start large
+	    this.scaleY = 1.2;
+	    createjs.Tween.get(this)
+	        .to({}, 100, createjs.Ease.linear)
+	        .to({ alpha: 1, scaleX: 1, scaleY: 1 }, 300, createjs.Ease.linear);
+	}
+
+	this.setup();
 }
-// Basically: ... Button extends Container ...  (below returns a prototype)
 var p = createjs.extend(Answer, createjs.Container); 
 
 
@@ -35,8 +49,7 @@ p.setup = function() {
 	var imageFile = preload.getResult("ans");
 	var scaleFactor = this.width / imageFile.width; 
 	var background = new createjs.Bitmap(imageFile);
-	background.scaleX = scaleFactor;
-	background.scaleY = scaleFactor;
+	background.scaleX = background.scaleY = scaleFactor;
 
 	// Note: this refers to the container
 	this.addChild(background, text);  // Container class method

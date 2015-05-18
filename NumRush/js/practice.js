@@ -366,22 +366,13 @@ function advanceRows(newQuestion) {
 
     // Animations: (Individually animate each one)
     // Bottom question
-    createjs.Tween.get(questions[0])
-        .to({ y:(layout.MID3 + questions[0].y), alpha: 0 }, 300, createjs.Ease.linear)
-        .call( function() {
-            this.visible = false; 
-        });
-    // Next question
-    createjs.Tween.get(questions[1])
-        .to({ y:(layout.MID3), scaleY: 1.66 }, 300, createjs.Ease.linear); // Advance position
-    createjs.Tween.get(questions[1].getChildAt(1))
-        .to({ scaleX: 1.66 }, 300, createjs.Ease.linear); // Enlarge text (scaleY taken care above)
-    // Last question
-    createjs.Tween.get(questions[2])
-        .to({ y:(layout.MID2) }, 300, createjs.Ease.linear); 
+    questions[0].animateGone();
+    // 2nd question
+    questions[1].animate1stPosition();
+    // 3rd question
+    questions[2].animate2ndPosition();
     // New question
-    createjs.Tween.get(newQuestion)
-        .to({ y:layout.MID1}, 300, createjs.Ease.linear);  
+    newQuestion.animate3rdPosition();
 
     // Advance the questions internally
     questions[0] = questions[1];
@@ -394,16 +385,9 @@ function advanceAnswers(nextAnswer) {
 
     // Animations:
     // Current answer
-    createjs.Tween.get(currentAnswer)
-        .to({ alpha: 0, scaleX: 0.6, scaleY: 0.6}, 200, createjs.Ease.linear)
-        .call( function() { this.visible = false });
+    currentAnswer.animateGone();
     // Next answer
-    nextAnswer.alpha = 0;       // Start invisible
-    nextAnswer.scaleX = 1.2;    // Start large
-    nextAnswer.scaleY = 1.2;
-    createjs.Tween.get(nextAnswer)
-        .to({}, 100, createjs.Ease.linear)
-        .to({ alpha: 1, scaleX: 1, scaleY: 1 }, 300, createjs.Ease.linear);
+    nextAnswer.animateNew();
 
     // Advance (replace) the answer internally
     answers[nextAnswer.index] = nextAnswer; // Replace parent 
@@ -432,7 +416,7 @@ function answerIncorrect() {
     console.log("answerIncorrect()");
 
     // GAME-LOGIC(?)
-    incorrect--;
+    incorrect++;
     incorrectIndicator.txt.text = incorrect;
 
     // GAME-FUNCTIONS
