@@ -63,11 +63,6 @@ $(document).ready(function() {
         }
     }
 
-
-
-
-
-
     // -- HANDLERS --
     // Note: I almost feel that pure js here would be easier 
     function bgmHandler(event) {

@@ -83,7 +83,20 @@ function init() {
 
 function initGame() {
     // Audio:
-    // TODO: sfx and bgm
+    sfxEnabled = (localStorage.getItem("sfx-mute") == "true") ? false : true;
+    bgmEnabled = (localStorage.getItem("bgm-mute") == "true") ? false : true;
+ 
+    createjs.Sound.initializeDefaultPlugins();
+    var audiopath ="sound/";
+    var sounds = [
+        {src:"game_bgm.wav", id:"bg_music"},
+        {src:"hitsound1.wav", id:"correct"},
+        {src:"miss.mp3", id:"incorrect"},
+        {src:"failsound.mp3", id:"gameover"}
+    ];
+    createjs.Sound.addEventListener("fileload", handleLoad);
+    createjs.Sound.registerSounds(sounds, audiopath);
+
 
     // Initialization: 
     // Background
@@ -175,38 +188,28 @@ function initializeAnswerPositions() {
 
 
 // AUDIO
+function handleLoad(event){
+    console.log("Audio loaded");
+    if(bgmEnabled){
+        var instance = createjs.Sound.play("bg_music", { loop: -1 });
+    }
+}
+
 function correctSfx() {
-    var sfx = new Audio("sound/hitsound1.wav"); // buffers automatically when created
-    sfx.play();
+    var instance = createjs.Sound.play("correct");
+
 }
 
 function incorrectSfx() {
-    var sfx = new Audio("sound/miss.mp3");
-    sfx.play();
+    var instance = createjs.Sound.play("incorrect");
+}
+
+function gameoverSfx() {
+    var instance = createjs.Sound.play("gameover");
 }
 
 function buttonSound() {
-    var sound = new Audio("sound/hitsound2.wav");
-    sound.play();
-}
-
-function loadBgmSound() {
-    var bgm = new Audio("sound/game_bgm.wav");
-    bgm.loop = true;
-
-    if (localStorage.getItem("bgm-muted") == "true") {
-        bgm.pause();
-    } else {
-        bgm.play();
-    }
-}
-
-function loadSfxSound() {
-    if (localStorage.getItem("sfx-muted") == "true") {
-        sfxEnabled = false;
-    } else {
-        sfxEnabled = true;
-    }
+    var sound = new Audio("buttonSound");
 }
 
 
@@ -520,6 +523,9 @@ function answerCorrect() {
     startTime = new Date().getTime();       // Reset the time (Set the time stamp to now)
     updateDifficulty();
 
+    // Play sound
+    correctSfx();
+
     // GAME-FUNCTIONS
     advanceAnswers(generateNextAnswer());   // Create the next answer, animate, and setup
     advanceRows(generateNextQuestion());    // Create the next question, animate, and setup
@@ -533,10 +539,11 @@ function answerIncorrect() {
     // Update lives 
     livesRemaining--;
     livesDisplay.updateLivesDisplay(livesRemaining);
-    // TODO:
-
     // Reset the time
     startTime = new Date().getTime();
+
+    // Play sound
+    incorrectSfx();
 
     // GAME-FUNCTIONS
     advanceAnswers(generateNextAnswer());   // Create the next answer, animate, and setup
@@ -551,6 +558,8 @@ function answerIncorrect() {
 
 function gameOver() {
     console.log("gameOver()");
+    // Play sound
+    gameoverSfx();
     // Pause the game
     createjs.Ticker.paused = true;
     // Show user's score
