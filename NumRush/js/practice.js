@@ -44,15 +44,17 @@ var operatorRange = { min: 0, max: 1};  // 0 = +, 1 = -, 2 = x, 3 = /
 
 // Layers
 var foregroundLayer = new createjs.Container(); 
-var backgroundLayer = new createjs.Container(); // Only contains questions
+var midLayer = new createjs.Container(); // Only contains questions
+var backgroundLayer = new createjs.Container();
+
 // DisplayObjects
 var scoreDisplay;
 var timerDisplay;
 var livesDisplay;
 
 // Audio
-var sfxEnabled; // Determined by loadSfx()
-
+var sfxEnabled;
+var bgmEnabled;
  
 // Initialize all base variables and preload assets. Once assets are loaded it will call init. 
 function init() {
@@ -61,7 +63,7 @@ function init() {
     fullScreenCanvas(canvas);                           // Sets width and height to fill screen
     // Stage info
     stage = new createjs.Stage(canvas);                 // Creates a EaselJS Stage for drawing
-    stage.addChild(backgroundLayer, foregroundLayer);   // Add layers
+    stage.addChild(backgroundLayer, midLayer, foregroundLayer);   // Add layers
     // Detection
     stage.enableMouseOver();    // TODO: Remove this later (change with touch or something?)
 
@@ -74,9 +76,27 @@ function init() {
 
 function initGame() {
     // Audio:
-    // TODO: sfx and bgm
+    sfxEnabled = (localStorage.getItem("sfx-mute") == "true") ? false : true;
+    bgmEnabled = (localStorage.getItem("bgm-mute") == "true") ? false : true;
+ 
+    createjs.Sound.initializeDefaultPlugins();
+    var audiopath ="sound/";
+    var sounds = [
+        {src:"game_bgm.wav", id:"bg_music"},
+        {src:"hitsound1.wav", id:"correct"},
+        {src:"miss.mp3", id:"incorrect"},
+        {src:"failsound.mp3", id:"gameover"}
+    ];
+    createjs.Sound.addEventListener("fileload", bgm);   // Will call bgm() when loaded
+    createjs.Sound.registerSounds(sounds, audiopath);
 
     // Initialization: 
+    // Background
+    var bgImage = preload.getResult("bg");
+    var background = new createjs.Bitmap(bgImage);
+    setScaleFactor(background, canvas.width, canvas.height);
+    backgroundLayer.addChild(background);
+
     // Indicator stuff
     correctIndicator = foregroundLayer.addChild(new CorrectIndicator());
     incorrectIndicator = foregroundLayer.addChild(new IncorrectIndicator());
@@ -152,39 +172,16 @@ function initializeAnswerPositions() {
 
 
 // AUDIO
-function correctSfx() {
-    var sfx = new Audio("sound/hitsound1.wav"); // buffers automatically when created
-    sfx.play();
-}
-
-function incorrectSfx() {
-    var sfx = new Audio("sound/miss.mp3");
-    sfx.play();
-}
-
-function buttonSound() {
-    var sound = new Audio("sound/hitsound2.wav");
-    sound.play();
-}
-
-function loadBgmSound() {
-    var bgm = new Audio("sound/game_bgm.wav");
-    bgm.loop = true;
-
-    if (localStorage.getItem("bgm-muted") == "true") {
-        bgm.pause();
-    } else {
-        bgm.play();
+function bgm(event){
+    console.log("Audio loaded");
+    if(bgmEnabled){
+        var instance = createjs.Sound.play("bg_music", { loop: -1 });
     }
 }
-
-function loadSfxSound() {
-    if (localStorage.getItem("sfx-muted") == "true") {
-        sfxEnabled = false;
-    } else {
-        sfxEnabled = true;
-    }
-}
+function correctSfx() { var instance = createjs.Sound.play("correct"); }
+function incorrectSfx() { var instance = createjs.Sound.play("incorrect"); }
+function gameoverSfx() { var instance = createjs.Sound.play("gameover"); }
+function buttonSound() { var sound = new Audio("buttonSound"); }
 
 
 // GAME LOGIC
@@ -329,7 +326,7 @@ function generateNextQuestion() {
     }
  
     // Return the display object 
-    return backgroundLayer.addChild(question);
+    return midLayer.addChild(question);
 }
 
 // Returns an array of numbers, and an array of operators (for the question).
@@ -427,6 +424,9 @@ function answerCorrect() {
     correct++;
     correctIndicator.txt.text = correct;
     updateDifficulty();
+
+    // Play sound
+    correctSfx();
  
     // GAME-FUNCTIONS
     advanceAnswers(generateNextAnswer());   // Create the next answer, animate, and setup
@@ -440,6 +440,9 @@ function answerIncorrect() {
     // GAME-LOGIC(?)
     incorrect++;
     incorrectIndicator.txt.text = incorrect;
+
+    // Play sound
+    incorrectSfx();
 
     // GAME-FUNCTIONS
     advanceAnswers(generateNextAnswer());   // Create the next answer, animate, and setup
@@ -468,6 +471,7 @@ function updateDifficulty() {
     }
 }
 
+// Object that holds info about difficulty and can control it
 function DifficultyController() {
     this.currentCount = 0;
     // [[term min, term max, op min, op max], ...]

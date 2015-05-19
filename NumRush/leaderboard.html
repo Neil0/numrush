@@ -14,12 +14,14 @@
 	<script src="js/leaderboard.js"></script>
 </head> 
 <body> 
+
 	<div data-role="page">
 		<header data-role="header">
 			<h1></h1>
 			<img id="bgm-toggle" src="img/bgm_on.png" alt="toggle BGM" height="42" width="42">
 			<p id="sfx-toggle">SFX</p>
 		</header><!-- /header -->
+
 		<div data-role="content" id="main-content">	
 			<h1>LEADERBOARD</h1>
 			<table data-role="table" class="ui-responsive">
@@ -33,16 +35,21 @@
 				<tbody id="leader-table">
 				</tbody>
 			</table>
+
+			<a href="menu.html" data-ajax="false" data-role="button" data-inline="true" data-icon="back">BACK</a>
 		</div><!-- /content -->
+
 		<footer data-role="footer" data-position="fixed">
 			<h6>Team EXODIA</h6>
 		</footer><!-- /footer -->
 	</div><!-- /page -->	
+	
+	<!-- Audio -->
 	<audio id="menu-bgm" loop>
 		<source src ="sound/menu_bgm.mp3" type="audio/mpeg">
-		</audio>
-		<audio id="menu-sfx">
-			<source src="sound/sfx_toggle.wav" type="audio/mpeg">
-			</audio> <!-- /audio -->
-		</body>
-		</html>
+	</audio>
+	<audio id="menu-sfx">
+		<source src="sound/sfx_toggle.wav" type="audio/mpeg">
+	</audio> <!-- /audio -->
+</body>
+</html>

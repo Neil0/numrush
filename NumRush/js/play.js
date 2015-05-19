@@ -60,7 +60,8 @@ var timerDisplay;
 var livesDisplay;
 
 // Audio
-var sfxEnabled; // Determined by loadSfx()
+var sfxEnabled; 
+var bgmEnabled;
 
 
 // Initialize all base variables and preload assets. Once assets are loaded it will call init. 
@@ -94,19 +95,17 @@ function initGame() {
         {src:"miss.mp3", id:"incorrect"},
         {src:"failsound.mp3", id:"gameover"}
     ];
-    createjs.Sound.addEventListener("fileload", handleLoad);
+    createjs.Sound.addEventListener("fileload", bgm);   // Will call bgm() when loaded
     createjs.Sound.registerSounds(sounds, audiopath);
 
 
     // Initialization: 
     // Background
     var bgImage = preload.getResult("bg");
-    var xFactor = canvas.width / bgImage.width;
-    var yFactor = canvas.height/ bgImage.height;
     var background = new createjs.Bitmap(bgImage);
-    background.scaleX = xFactor;
-    background.scaleY = yFactor;  
+    setScaleFactor(background, canvas.width, canvas.height);
     backgroundLayer.addChild(background);
+
     // Timer stuff
     startTime = new Date().getTime();
     timerDisplay = foregroundLayer.addChild(new Timer());
@@ -188,29 +187,16 @@ function initializeAnswerPositions() {
 
 
 // AUDIO
-function handleLoad(event){
+function bgm(event){
     console.log("Audio loaded");
     if(bgmEnabled){
         var instance = createjs.Sound.play("bg_music", { loop: -1 });
     }
 }
-
-function correctSfx() {
-    var instance = createjs.Sound.play("correct");
-
-}
-
-function incorrectSfx() {
-    var instance = createjs.Sound.play("incorrect");
-}
-
-function gameoverSfx() {
-    var instance = createjs.Sound.play("gameover");
-}
-
-function buttonSound() {
-    var sound = new Audio("buttonSound");
-}
+function correctSfx() { var instance = createjs.Sound.play("correct"); }
+function incorrectSfx() { var instance = createjs.Sound.play("incorrect"); }
+function gameoverSfx() { var instance = createjs.Sound.play("gameover"); }
+function buttonSound() { var sound = new Audio("buttonSound"); }
 
 
 // GAME LOGIC
