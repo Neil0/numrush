@@ -40,7 +40,12 @@ function fullScreenCanvas(targetCanvas) {
     console.log("Window width: " + window.innerWidth + " height: " + window.innerHeight);
 }
 
-// Not used
-function getScaleFactor(rawLength, targetLength) {
-  return targetLength / rawLength;
+// Note: Below not used yet
+// Changes rawObject's dimensions to match targetObjects
+// Please ensure that targetObject has a width and height property
+function setScaleFactor(rawBitmap, width, height) {
+  var xFactor = width / rawBitmap.image.width;
+  var yFactor = height / rawBitmap.image.height;
+  rawBitmap.scaleX = xFactor;
+  rawBitmap.scaleY = yFactor;
 }

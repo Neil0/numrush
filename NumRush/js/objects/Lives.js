@@ -39,6 +39,13 @@ var p = createjs.extend(Lives, createjs.Container);
 
 p.setup = function() {
 
+	// Retrieve the background file
+	var bgFile = preload.getResult("lifeBack");
+	var background = new createjs.Bitmap(bgFile);
+	setScaleFactor(background, this.width, this.height);
+	// Add first so it'll always be on the back
+	this.addChild(background);
+
 	// Retrieve the files
 	var lifeFile = preload.getResult("life");
 	var nolifeFile = preload.getResult("nolife");
@@ -95,7 +102,7 @@ p.setup = function() {
 } ;
 
 p.handleClick = function (event) {
-	alert("why you click on time?");
+	alert("why you click on lives?");
 } ;
 
 p.handleRollOver = function(event) {       

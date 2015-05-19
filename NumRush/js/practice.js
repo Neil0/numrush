@@ -1,3 +1,27 @@
+// -- PRELOAD --
+// Note: Waiting for init() call
+var preload = new createjs.LoadQueue();
+/*preload.on("fileload", foo, bar);
+preload.on("progress", foo, bar);*/ 
+preload.on("complete", handleComplete, this);
+var manifest = [
+    {src: 'img/bg.png', id: 'bg'},
+    {src: 'img/score_bg.png', id: 'scoreBack'},
+    {src: 'img/lives_bg.png', id: 'lifeBack'},
+    {src: 'img/life.png', id: 'life'},
+    {src: 'img/no_life.png', id: 'nolife'},
+    {src: 'img/question_bg.png', id: 'quesBack'},
+    {src: 'img/question_center.png', id: 'quesCenter'},
+    {src: 'img/timer_bomb.png', id: 'timer'},
+    {src: 'img/answer.png', id: 'ans'}
+];
+
+function handleComplete(event) {
+    console.log("All files loaded");
+    initGame();
+}
+// -- END PRELOAD --
+
 // EaselJS 
 var canvas, stage;
 
@@ -29,7 +53,6 @@ var livesDisplay;
 // Audio
 var sfxEnabled; // Determined by loadSfx()
 
-
  
 // Initialize all base variables and preload assets. Once assets are loaded it will call init. 
 function init() {
@@ -46,7 +69,7 @@ function init() {
     initializeVariables(canvas.width, canvas.height);
 
     // Preload all assets (crucial for first rendering)
-    initializeAssets(); // Note: Once finish it will call initGame()
+    preload.loadManifest(manifest);
 }
 
 function initGame() {
@@ -80,7 +103,6 @@ function handleTick(event) {
         stage.update();
     }
 }
-
 
 // INITIALIZERS
 function initializeAnswers() {

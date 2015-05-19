@@ -25,3 +25,13 @@ img {
 .on {
 	
 }
+
+/* LOADING STUFF */
+#loading-div {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+}
+#loading-indicator {
+	text-align: center;
+}

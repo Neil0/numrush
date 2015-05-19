@@ -19,7 +19,7 @@ var p = createjs.extend(Score, createjs.Container);
 p.setup = function() {
 	var fontSize = this.height * 0.40;
 	var font = fontSize + "px Arial"; // TODO: make a global font
-	var text = new createjs.Text("0", font, "#000");
+	var text = new createjs.Text("0", font, "#FFF");
 	text.textBaseline = "middle";
 	text.textAlign = "center";
 		
@@ -27,8 +27,10 @@ p.setup = function() {
 	text.x = this.width/2;
 	text.y = this.height/2;
 	
-	var background = new createjs.Shape();
-	background.graphics.beginFill(this.color).drawRoundRect(0,0,this.width,this.height,10);
+	// Retrieve file
+	var scoreBackFile = preload.getResult("scoreBack");
+	var background = new createjs.Bitmap(scoreBackFile);
+	setScaleFactor(background, this.width, this.height);
 	
 	// Note: this refers to the container
 	this.txt = this.addChild(background, text);  // Container class method

@@ -1,3 +1,27 @@
+// -- PRELOAD --
+// Note: Waiting for init() call
+var preload = new createjs.LoadQueue();
+/*preload.on("fileload", foo, bar);
+preload.on("progress", foo, bar);*/ 
+preload.on("complete", handleComplete, this);
+var manifest = [
+    {src: 'img/bg.png', id: 'bg'},
+    {src: 'img/score_bg.png', id: 'scoreBack'},
+    {src: 'img/lives_bg.png', id: 'lifeBack'},
+    {src: 'img/life.png', id: 'life'},
+    {src: 'img/no_life.png', id: 'nolife'},
+    {src: 'img/question_bg.png', id: 'quesBack'},
+    {src: 'img/question_center.png', id: 'quesCenter'},
+    {src: 'img/timer_bomb.png', id: 'timer'},
+    {src: 'img/answer.png', id: 'ans'}
+];
+
+function handleComplete(event) {
+    console.log("All files loaded");
+    initGame();
+}
+// -- END PRELOAD --
+
 // EaselJS 
 var canvas, stage;
 
@@ -5,6 +29,7 @@ var canvas, stage;
 var questions = [];
 var answers = [];
 var currentAnswer; // Note: This is an object, to access the answer value use currentAnswer.answer
+var OPERATORS = ["+", "-", "x", "/"];
 // Score
 var BASE_GAIN = 10; // Minimum point gain on correct answer
 var score = 0;
@@ -27,15 +52,15 @@ var LEVEL5 = 10000;  // 3 Term + - x /
 
 // Layers
 var foregroundLayer = new createjs.Container(); 
-var backgroundLayer = new createjs.Container(); // Only contains questions
+var midLayer = new createjs.Container(); // Only contains questions
+var backgroundLayer = new createjs.Container();
 // DisplayObjects
 var scoreDisplay;
 var timerDisplay;
 var livesDisplay;
 
+// Audio
 var sfxEnabled; // Determined by loadSfx()
-
-var OPERATORS = ["+", "-", "x", "/"];
 
 
 // Initialize all base variables and preload assets. Once assets are loaded it will call init. 
@@ -45,7 +70,7 @@ function init() {
     fullScreenCanvas(canvas);                           // Sets width and height to fill screen
     // Stage info
     stage = new createjs.Stage(canvas);                 // Creates a EaselJS Stage for drawing
-    stage.addChild(backgroundLayer, foregroundLayer);   // Add layers
+    stage.addChild(backgroundLayer, midLayer, foregroundLayer);   // Add layers
     // Detection
     stage.enableMouseOver();    // TODO: Remove this later (change with touch or something?)
 
@@ -53,7 +78,7 @@ function init() {
     initializeVariables(canvas.width, canvas.height);
 
     // Preload all assets (crucial for first rendering)
-    initializeAssets(); // Note: Once finish it will call initGame()
+    preload.loadManifest(manifest);
 }
 
 function initGame() {
@@ -61,6 +86,14 @@ function initGame() {
     // TODO: sfx and bgm
 
     // Initialization: 
+    // Background
+    var bgImage = preload.getResult("bg");
+    var xFactor = canvas.width / bgImage.width;
+    var yFactor = canvas.height/ bgImage.height;
+    var background = new createjs.Bitmap(bgImage);
+    background.scaleX = xFactor;
+    background.scaleY = yFactor;  
+    backgroundLayer.addChild(background);
     // Timer stuff
     startTime = new Date().getTime();
     timerDisplay = foregroundLayer.addChild(new Timer());
@@ -94,6 +127,7 @@ function handleTick(event) {
     }
 }
 
+
 // INITIALIZERS
 function initializeAnswers() {
     for (i = 0; i < 5; i++) {
@@ -114,8 +148,7 @@ function initializeQuestionPositions() {
         switch (q) {
             case 0:
                 questions[q].y = layout.MID3; // Lowest
-                questions[q].scaleY = 1.66;
-                questions[q].getChildAt(1).scaleX = 1.66;
+                questions[q].animate1stPosition();
                 break;
             case 1: 
                 questions[q].y = layout.MID2; 
@@ -195,6 +228,9 @@ function updateTimeRemaining() {
         remainingTime = 0; // Might be unnecessary
         answerIncorrect();
     }
+
+    var percentLeft = remainingTime / MAX_TIME;
+    timerDisplay.angle = percentLeft * (Math.PI * 2)
 
     // Format to two decimal places (rounds too)
     var formattedTime = (remainingTime / 1000).toFixed(2);
@@ -373,7 +409,7 @@ function generateNextQuestion() {
     }
  
     // Return the display object 
-    return backgroundLayer.addChild(question);
+    return midLayer.addChild(question);
 }
 
 // Returns an array of numbers, and an array of operators (for the question).

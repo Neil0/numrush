@@ -13,6 +13,11 @@ function Question(set) {
 	this.operators = set[1];
 	this.answer = set[2];
 
+	// Display objects
+	this.txt;
+	this.bg;
+	this.center;
+
 	this.animate3rdPosition = function() {
   		createjs.Tween.get(this)
         	.to({ y:layout.MID1 }, 300, createjs.Ease.linear);  
@@ -24,7 +29,9 @@ function Question(set) {
 	this.animate1stPosition = function() {
 	    createjs.Tween.get(this)
 	        .to({ y:(layout.MID3), scaleY: 1.66 }, 300, createjs.Ease.linear); // Advance position
-	    createjs.Tween.get(this.getChildAt(1))	// TODO Might want to introduce a txt variable 
+	  	createjs.Tween.get(this.center)
+	  		.to({ scaleX: 1.66 }, 300, createjs.Ease.linear);	// Enlarge center image (scaleY taken care above)
+	    createjs.Tween.get(this.txt)
 	        .to({ scaleX: 1.66 }, 300, createjs.Ease.linear); // Enlarge text (scaleY taken care above)
 	}
 	this.animateGone = function() {
@@ -58,21 +65,48 @@ var p = createjs.extend(Question, createjs.Container);
 
 
 p.setup = function() {
+	// -- TEXT --
 	var fontSize = this.height * 0.40;
     var font = fontSize + "px Arial"; // TODO: make a global font
 	var text = new createjs.Text(this.label, "20px Arial", "#000");
 	text.textBaseline = "middle";
 	text.textAlign = "center";
-	
 	// cordinates for the text to be drawn 
 	text.x = this.width/2; // x is not top-left but the center
 	text.y = this.height/2;
 	
-	var background = new createjs.Shape();
-	background.graphics.beginFill(this.color).drawRoundRect(0,0,this.width,this.height,10);
+	// -- QUESTION BG --
+	// Load image background and get scale factors
+	var quesBackFile = preload.getResult("quesBack");
+	var xBackFactor = this.width / quesBackFile.width; 
+	var yBackFactor = this.height / quesBackFile.height;
+	// Create bitmap and resize
+	var questionBack = new createjs.Bitmap(quesBackFile);
+	questionBack.scaleX = xBackFactor;
+	questionBack.scaleY = yBackFactor;
 
-	// Note: this refers to the container
-	this.addChild(background, text);  // Container class method
+	// -- QUESTION CENTER -- 
+	// Load image center and get scale factors
+	var quesCenterFile = preload.getResult("quesCenter");
+	var yCenterFactor = (this.height * 0.80) / quesCenterFile.height;
+	var xCenterFactor = yCenterFactor;
+	// Create bitmap 
+	var questionCenter = new createjs.Bitmap(quesCenterFile);
+	// Base scaling and rotation around center for CENTER image
+	questionCenter.regX = questionCenter.image.width / 2;
+	questionCenter.regY = questionCenter.image.height / 2;
+	questionCenter.x = (this.width / 2);
+	questionCenter.y = (this.height / 2);
+	// Resize (after regXY)
+	questionCenter.scaleX = xCenterFactor;
+	questionCenter.scaleY = yCenterFactor;	
+
+
+	// -- THIS (CONTAINER) -- 
+	// Add to the container
+	this.bg = this.addChild(questionBack);
+	this.center = this.addChild(questionCenter);
+	this.txt = this.addChild(text);  
 	this.on("click", this.handleClick);
 	this.on("rollover", this.handleRollOver);
 	this.on("rollout", this.handleRollOver);
@@ -86,7 +120,7 @@ p.setup = function() {
 } ;
 
 p.handleClick = function (event) {
-	alert("You clicked on a button: "+this.label);
+	alert("You clicked on a button: "+ this.label);
 } ;
 
 p.handleRollOver = function(event) {       
