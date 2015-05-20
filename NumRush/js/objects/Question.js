@@ -49,7 +49,9 @@ function Question(set) {
 				string += this.operands[operand] + " " + this.operators[operand] + " ";
 			}
 		}
-        return string;
+
+		var special = string.replace("/", "÷");
+        return special;
     }
 
 	this.label = this.getQuestion();
@@ -63,8 +65,8 @@ var p = createjs.extend(Question, createjs.Container);
 p.setup = function() {
 	// -- TEXT --
 	var fontSize = this.height * 0.40;
-    var font = fontSize + "px Arial"; // TODO: make a global font
-	var text = new createjs.Text(this.label, "20px Arial", "#000");
+    var font = fontSize + "px Augusta"; // TODO: make a global font
+	var text = new createjs.Text(this.label, font, "#000");
 	text.textBaseline = "middle";
 	text.textAlign = "center";
 	// cordinates for the text to be drawn 

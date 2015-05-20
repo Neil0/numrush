@@ -22,3 +22,17 @@ html, body {
 .valid {
 	color: green;
 }
+
+/* FONTS */
+@font-face{
+    font-family: "Augusta";
+    src: url('../font/Augusta.ttf');
+}
+@font-face{
+    font-family: "Immortal";
+    src: url('../font/IMMORTAL.ttf');
+}
+@font-face{
+    font-family: "Zorque";
+    src: url('../font/zorque.regular.ttf');
+}

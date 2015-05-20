@@ -37,7 +37,7 @@ var p = createjs.extend(Answer, createjs.Container);
 
 p.setup = function() {
 	var fontSize = this.height * 0.40;
-	var font = fontSize + "px Arial"; // TODO: make a global font
+	var font = fontSize + "px Augusta"; // TODO: make a global font
 	var text = new createjs.Text(this.answer, font, "#000");
 	text.textBaseline = "middle";
 	text.textAlign = "center";

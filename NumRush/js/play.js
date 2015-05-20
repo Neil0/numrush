@@ -558,6 +558,12 @@ function gameOver() {
     $('#instance-score').text("Score: " + score);
     // Show the dialog 
     $.mobile.changePage("#score-dialog", { role: "dialog" });
+
+    // ACHIEVEMENTS
+    if (localStorage.getItem("achieve-YouSnoozeYouLose") == "false") {
+        // todo: show the shit
+        localStorage.setItem("achieve-YouSnoozeYouLose", "true");
+    }
 }
 
 function restartGame() {

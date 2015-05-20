@@ -45,6 +45,24 @@ var layout = {
 	ALWAYSUSECOMMAS : 6969 // Basically so you can re-arrange variables without fear of putting commas down
 }
 
+var achieve = {
+	// Image sources
+	YOUSNOOZEYOULOSE_SRC : "",
+	YOUSNOOZEYOULOSE_DESCR : "First game lost.",
+
+	HOTSTREAK_SRC : "",
+	HOTSTREAK_DESCR : "Get 15 questions right consecutively.",
+
+	FIRSTBLOOD_SRC : "",
+	FIRSTBLOOD_DESCR : "Get your first question right!",
+
+	ROCKY_SRC : "",
+	ROCKY_DESCR : "Try practice mode for the first time.",
+
+
+	ALWAYSUSECOMMAS : 6969 // Basically so you can re-arrange variables without fear of putting commas down
+}
+
 function initializeVariables(canvasWidth, canvasHeight) {
 	// STAGE
 	layout.STAGE_WIDTH = canvasWidth;
@@ -68,4 +86,3 @@ function initializeVariables(canvasWidth, canvasHeight) {
 	layout.BOT1 = canvasHeight * 0.75;			
 	layout.BOT2 = canvasHeight * 0.80;			
 }
-
