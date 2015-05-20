@@ -39,13 +39,6 @@ var p = createjs.extend(Lives, createjs.Container);
 
 p.setup = function() {
 
-	// Retrieve the background file
-	var bgFile = preload.getResult("lifeBack");
-	var background = new createjs.Bitmap(bgFile);
-	setScaleFactor(background, this.width, this.height);
-	// Add first so it'll always be on the back
-	this.addChild(background);
-
 	// Retrieve the files
 	var lifeFile = preload.getResult("life");
 	var nolifeFile = preload.getResult("nolife");
@@ -87,26 +80,12 @@ p.setup = function() {
 		this.nolifeArray.push(nolifeDisplayObject);
 	}
 
-	// Note: this refers to the container
-	this.on("click", this.handleClick);
-	this.on("rollover", this.handleRollOver);
-	this.on("rollout", this.handleRollOver);
-	this.cursor = "pointer";
-
 	// Container initial cordinates 
 	this.x = 0;
 	this.y = layout.TOP2;
 
 	// Disable interaction with child (only interact as a whole)
 	this.mouseChildren = false;
-} ;
-
-p.handleClick = function (event) {
-	alert("why you click on lives?");
-} ;
-
-p.handleRollOver = function(event) {       
-	this.alpha = event.type == ("rollover") ? 0.4 : 1;
 };
 
 // Allows things out of scope to use this now (all of the above cannot be called directly)

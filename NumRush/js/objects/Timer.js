@@ -9,7 +9,6 @@ function Timer() {
 	this.color = "orange";
 
 	this.txt; 	
-	this.angle = Math.PI * 2; 
 	
 	this.setup();
 }
@@ -28,29 +27,8 @@ p.setup = function() {
 	text.x = this.width/2;
 	text.y = this.height/2;
 	
-	var bombFile = preload.getResult("timer");
-	var bomb = new createjs.Bitmap(bombFile);
-	// Scale
-	var scaleFactor = this.width * 0.25 / bombFile.width; 
-	bomb.scaleX = bomb.scaleY = scaleFactor;
-	// Position
-	bomb.regX = bomb.image.width / 2;
-	bomb.regY = bomb.image.height / 2;
-	bomb.x = this.width / 2;
-	bomb.y = this.height / 2;
-
-	var background = new createjs.Shape();
-	background.graphics.beginFill(this.color).drawRoundRect(0,0,this.width,this.height,10);
-
-/*	var timeFill = new createjs.Shape();
-	timeFill.graphics.beginFill(this.color).drawRoundRect(0,0,)*/
-	
 	// Note: this refers to the container
-	this.txt = this.addChild(background, bomb, text);  // Container class method
-	this.on("click", this.handleClick);
-	this.on("rollover", this.handleRollOver);
-	this.on("rollout", this.handleRollOver);
-	this.cursor = "pointer";
+	this.txt = this.addChild(text);  // Container class method
 
 	// Container initial cordinates 
 	this.x = 0;
@@ -59,14 +37,6 @@ p.setup = function() {
 	// Disable interaction with child (only interact as a whole)
 	this.mouseChildren = false;
 } ;
-
-p.handleClick = function (event) {
-	alert("why you click on time?");
-} ;
-
-p.handleRollOver = function(event) {       
-	this.alpha = event.type == ("rollover") ? 0.4 : 1;
-};
 
 // Allows things out of scope to use this now (all of the above cannot be called directly)
 window.Timer = createjs.promote(Timer, "Container");

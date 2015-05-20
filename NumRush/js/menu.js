@@ -15,15 +15,15 @@ var preload = new createjs.LoadQueue();
 preload.on("progress", handleOverallProgress); 
 preload.on("complete", handleComplete, this);
 var manifest = [
+    // Game
     {src: 'img/bg.png', id: 'bg'},
-    {src: 'img/score_bg.png', id: 'scoreBack'},
-    {src: 'img/lives_bg.png', id: 'lifeBack'},
     {src: 'img/life.png', id: 'life'},
     {src: 'img/no_life.png', id: 'nolife'},
-    {src: 'img/question_bg.png', id: 'quesBack'},
-    {src: 'img/question_center.png', id: 'quesCenter'},
-    {src: 'img/timer_bomb.png', id: 'timer'},
-    {src: 'img/answer.png', id: 'ans'}
+    {src: 'img/answer.png', id: 'ans'},
+    // Menu
+    {src: 'img/button_leaderboard.png', id: 'ans'},
+    {src: 'img/button_practice.png', id: 'ans'},
+    {src: 'img/button_start.png', id: 'ans'}
 ];
 preload.loadManifest(manifest);
 

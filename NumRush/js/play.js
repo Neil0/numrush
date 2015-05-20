@@ -6,13 +6,8 @@ preload.on("progress", foo, bar);*/
 preload.on("complete", handleComplete, this);
 var manifest = [
     {src: 'img/bg.png', id: 'bg'},
-    {src: 'img/score_bg.png', id: 'scoreBack'},
-    {src: 'img/lives_bg.png', id: 'lifeBack'},
     {src: 'img/life.png', id: 'life'},
     {src: 'img/no_life.png', id: 'nolife'},
-    {src: 'img/question_bg.png', id: 'quesBack'},
-    {src: 'img/question_center.png', id: 'quesCenter'},
-    {src: 'img/timer_bomb.png', id: 'timer'},
     {src: 'img/answer.png', id: 'ans'}
 ];
 
@@ -66,6 +61,8 @@ var bgmEnabled;
 
 // Initialize all base variables and preload assets. Once assets are loaded it will call init. 
 function init() {
+    console.log("init()");
+
     // Canvas info
     canvas = document.getElementById("canvas"); 
     fullScreenCanvas(canvas);                           // Sets width and height to fill screen
@@ -84,9 +81,10 @@ function init() {
 
 function initGame() {
     // Audio:
-    sfxEnabled = (localStorage.getItem("sfx-mute") == "true") ? false : true;
-    bgmEnabled = (localStorage.getItem("bgm-mute") == "true") ? false : true;
- 
+    sfxEnabled = (localStorage.getItem("sfx-muted") == "true") ? false : true;
+    bgmEnabled = (localStorage.getItem("bgm-muted") == "true") ? false : true;
+    console.log("sfx: " + sfxEnabled + " bgm: " + bgmEnabled);
+
     createjs.Sound.initializeDefaultPlugins();
     var audiopath ="sound/";
     var sounds = [
@@ -193,10 +191,18 @@ function bgm(event){
         var instance = createjs.Sound.play("bg_music", { loop: -1 });
     }
 }
-function correctSfx() { var instance = createjs.Sound.play("correct"); }
-function incorrectSfx() { var instance = createjs.Sound.play("incorrect"); }
-function gameoverSfx() { var instance = createjs.Sound.play("gameover"); }
-function buttonSound() { var sound = new Audio("buttonSound"); }
+function correctSfx() { 
+    if (sfxEnabled) { var instance = createjs.Sound.play("correct"); }
+}
+function incorrectSfx() { 
+    if (sfxEnabled) { var instance = createjs.Sound.play("incorrect"); }
+}
+function gameoverSfx() { 
+    if (sfxEnabled) { var instance = createjs.Sound.play("gameover"); }
+}
+function buttonSound() { 
+    if (sfxEnabled) { var sound = new Audio("buttonSound"); }
+}
 
 
 // GAME LOGIC
