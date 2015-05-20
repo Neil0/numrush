@@ -4,12 +4,22 @@ function Achievement(imageSource, description) {
 	this.Container_constructor(); // Basically: super();
 	
 	// Layout
-	this.width = layout.TOP1_WIDTH;
-	this.height = layout.TOP1_HEIGHT;
-	this.color = "orange";
+	this.width = properties.TOP1_WIDTH;
+	this.height = properties.TOP1_HEIGHT;
 
+	this.source = imageSource;
+	this.description = description;
 	this.txt; 	
 	
+	// Fade in, wait, then out
+	this.animateAchievement = function() {
+	    createjs.Tween.get(this)
+	        .to({ alpha: 0.80}, 300, createjs.Ease.linear)
+	        .to({}, 300, createjs.Ease.linear)
+	        .to({ alpha: 0}, 300, createjs.Ease.linear)
+	        .call( function() { this.visible = false; });	
+	}
+
 	this.setup();
 }
 // Basically: ... Button extends Container ...  (below returns a prototype)
@@ -18,14 +28,19 @@ var p = createjs.extend(Achievement, createjs.Container);
 
 p.setup = function() {
 	var fontSize = this.height * 0.40;
-	var font = fontSize + "px Arial"; // TODO: make a global font
-	var text = new createjs.Text("0", font, "#FFF");
+	var font = fontSize + "px " + properties.FONT; // TODO: make a global font
+	var text = new createjs.Text(this.description, font, "#FFF");
 	text.textBaseline = "middle";
 	text.textAlign = "center";
 		
 	// cordinates for the text to be drawn 
 	text.x = this.width/2;
 	text.y = this.height/2;
+
+	// Achievement icon
+	var imageFile = new Image(this.source);
+	var background = new createjs.Bitmap(imageFile);
+	setScaleFactor(imageFile, this.width, this.height);
 	
 	// Note: this refers to the container
 	this.txt = this.addChild(text);  // Container class method

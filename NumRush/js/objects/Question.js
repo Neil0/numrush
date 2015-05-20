@@ -4,9 +4,8 @@ function Question(set) {
 	this.Container_constructor(); // Basically: super();
 	
 	// Positioning
-	this.width = layout.QUES_WIDTH;
-	this.height = layout.QUES_HEIGHT;
-	this.color = layout.QUES_COLOR;
+	this.width = properties.QUES_WIDTH;
+	this.height = properties.QUES_HEIGHT;
 
 	// Question
 	this.operands = set[0];
@@ -23,6 +22,8 @@ function Question(set) {
 	this.animate2ndPosition = function() {
 	    createjs.Tween.get(this)
 	        .to({ y:(layout.MID2) }, 300, createjs.Ease.linear); 
+	    createjs.Tween.get(this.txt)
+	    	.to({ scaleX: 1.00, scaleY: 1.00});
 	}
 	this.animate1stPosition = function() {
 	    createjs.Tween.get(this)
@@ -65,13 +66,15 @@ var p = createjs.extend(Question, createjs.Container);
 p.setup = function() {
 	// -- TEXT --
 	var fontSize = this.height * 0.40;
-    var font = fontSize + "px Augusta"; // TODO: make a global font
+    var font = fontSize + "px " + properties.FONT; // TODO: make a global font
 	var text = new createjs.Text(this.label, font, "#000");
 	text.textBaseline = "middle";
 	text.textAlign = "center";
 	// cordinates for the text to be drawn 
 	text.x = this.width/2; // x is not top-left but the center
 	text.y = this.height/2;
+	text.scaleX = 0.75;
+	text.scaleY = 0.75;
 	
 	// Add to the container
 	this.txt = this.addChild(text);  

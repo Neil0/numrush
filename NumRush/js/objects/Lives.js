@@ -4,9 +4,8 @@ function Lives() {
 	this.Container_constructor(); // Basically: super();
 	
 	// Layout
-	this.width = layout.TOP2_WIDTH;
-	this.height = layout.TOP2_HEIGHT;
-	this.color = "brown";
+	this.width = properties.TOP2_WIDTH;
+	this.height = properties.TOP2_HEIGHT;
 
 	this.lifeArray = [];
 	this.nolifeArray = [];

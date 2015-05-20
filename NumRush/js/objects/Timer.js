@@ -4,9 +4,8 @@ function Timer() {
 	this.Container_constructor(); // Basically: super();
 	
 	// Layout
-	this.width = layout.BOT1_WIDTH;
-	this.height = layout.BOT1_HEIGHT;
-	this.color = "orange";
+	this.width = properties.BOT1_WIDTH;
+	this.height = properties.BOT1_HEIGHT;
 
 	this.txt; 	
 	
@@ -18,7 +17,7 @@ var p = createjs.extend(Timer, createjs.Container);
 
 p.setup = function() {
 	var fontSize = this.height * 0.40;
-	var font = fontSize + "px Augusta"; // TODO: make a global font
+	var font = fontSize + "px " + properties.FONT; // TODO: make a global font
 	var text = new createjs.Text("20.00", font, "#000");
 	text.textBaseline = "middle";
 	text.textAlign = "center";

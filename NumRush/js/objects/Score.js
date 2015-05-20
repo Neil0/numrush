@@ -4,9 +4,8 @@ function Score() {
 	this.Container_constructor(); // Basically: super();
 	
 	// Layout
-	this.width = layout.TOP1_WIDTH;
-	this.height = layout.TOP1_HEIGHT;
-	this.color = "orange";
+	this.width = properties.TOP1_WIDTH;
+	this.height = properties.TOP1_HEIGHT;
 
 	this.txt; 	
 	
@@ -18,7 +17,7 @@ var p = createjs.extend(Score, createjs.Container);
 
 p.setup = function() {
 	var fontSize = this.height * 0.40;
-	var font = fontSize + "px Augusta"; // TODO: make a global font
+	var font = fontSize + "px " + properties.FONT; // TODO: make a global font
 	var text = new createjs.Text("0", font, "#FFF");
 	text.textBaseline = "middle";
 	text.textAlign = "center";

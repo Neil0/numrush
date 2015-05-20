@@ -6,13 +6,8 @@ preload.on("progress", foo, bar);*/
 preload.on("complete", handleComplete, this);
 var manifest = [
     {src: 'img/bg.png', id: 'bg'},
-    {src: 'img/score_bg.png', id: 'scoreBack'},
-    {src: 'img/lives_bg.png', id: 'lifeBack'},
     {src: 'img/life.png', id: 'life'},
     {src: 'img/no_life.png', id: 'nolife'},
-    {src: 'img/question_bg.png', id: 'quesBack'},
-    {src: 'img/question_center.png', id: 'quesCenter'},
-    {src: 'img/timer_bomb.png', id: 'timer'},
     {src: 'img/answer.png', id: 'ans'}
 ];
 
@@ -58,6 +53,8 @@ var bgmEnabled;
  
 // Initialize all base variables and preload assets. Once assets are loaded it will call init. 
 function init() {
+    console.log("init()");
+
     // Canvas info
     canvas = document.getElementById("canvas"); 
     fullScreenCanvas(canvas);                           // Sets width and height to fill screen
@@ -76,8 +73,8 @@ function init() {
 
 function initGame() {
     // Audio:
-    sfxEnabled = (localStorage.getItem("sfx-mute") == "true") ? false : true;
-    bgmEnabled = (localStorage.getItem("bgm-mute") == "true") ? false : true;
+    sfxEnabled = (localStorage.getItem("sfx-muted") == "true") ? false : true;
+    bgmEnabled = (localStorage.getItem("bgm-muted") == "true") ? false : true;
  
     createjs.Sound.initializeDefaultPlugins();
     var audiopath ="sound/";
@@ -114,6 +111,12 @@ function initGame() {
     // Handles all the update logic
     createjs.Ticker.on("tick", handleTick); 
 
+    // Achievements
+    if (localStorage.getItem("achieve-Rocky") == "false") {
+        // TODO: Some shit fuck
+        localStorage.setItem("achieve-Rocky", "true");
+    }
+
     console.log(stage.children.length);
 }
 
@@ -144,8 +147,7 @@ function initializeQuestionPositions() {
         switch (q) {
             case 0:
                 questions[q].y = layout.MID3; // Lowest
-                questions[q].scaleY = 1.66;
-                questions[q].getChildAt(1).scaleX = 1.66;
+                questions[q].animate1stPosition();
                 break;
             case 1: 
                 questions[q].y = layout.MID2; 
@@ -164,7 +166,7 @@ function initializeQuestionPositions() {
 function initializeAnswerPositions() {
     for (a = 0; a < 5; a++) {
         // x and y of the CENTER of the container. (not top left)
-        answers[a].x = (layout.ANS_SIZE / 2) + (a)*(layout.ANS_SIZE);
+        answers[a].x = (properties.ANS_SIZE / 2) + (a)*(properties.ANS_SIZE);
 
         console.log("Ans x: " + answers[a].x + " y: " + answers[a].y);
     }
@@ -178,10 +180,18 @@ function bgm(event){
         var instance = createjs.Sound.play("bg_music", { loop: -1 });
     }
 }
-function correctSfx() { var instance = createjs.Sound.play("correct"); }
-function incorrectSfx() { var instance = createjs.Sound.play("incorrect"); }
-function gameoverSfx() { var instance = createjs.Sound.play("gameover"); }
-function buttonSound() { var sound = new Audio("buttonSound"); }
+function correctSfx() { 
+    if (sfxEnabled) { var instance = createjs.Sound.play("correct"); }
+}
+function incorrectSfx() { 
+    if (sfxEnabled) { var instance = createjs.Sound.play("incorrect"); }
+}
+function gameoverSfx() { 
+    if (sfxEnabled) { var instance = createjs.Sound.play("gameover"); }
+}
+function buttonSound() { 
+    if (sfxEnabled) { var sound = new Audio("buttonSound"); }
+}
 
 
 // GAME LOGIC

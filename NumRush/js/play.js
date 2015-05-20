@@ -45,6 +45,10 @@ var LEVEL3 = 4000;  // 2-3 Term + -
 var LEVEL4 = 6000;  // 2-3 Term + - x /
 var LEVEL5 = 10000;  // 3 Term + - x / 
 
+// Achievements 
+var consecutive, maxConsecutive;
+var firstBlood = false;
+
 // Layers
 var foregroundLayer = new createjs.Container(); 
 var midLayer = new createjs.Container(); // Only contains questions
@@ -177,7 +181,7 @@ function initializeQuestionPositions() {
 function initializeAnswerPositions() {
     for (a = 0; a < 5; a++) {
         // x and y of the CENTER of the container. (not top left)
-        answers[a].x = (layout.ANS_SIZE / 2) + (a)*(layout.ANS_SIZE);
+        answers[a].x = (properties.ANS_SIZE / 2) + (a)*(properties.ANS_SIZE);
 
         console.log("Ans x: " + answers[a].x + " y: " + answers[a].y);
     }
@@ -522,6 +526,20 @@ function answerCorrect() {
     advanceAnswers(generateNextAnswer());   // Create the next answer, animate, and setup
     advanceRows(generateNextQuestion());    // Create the next question, animate, and setup
     updateCurrentAnswer();
+
+    // Achievements
+    // First blood
+    firstBlood = true;
+    if (localStorage.getItem("achieve-FirstBlood") == "false" && firstBlood == true) {
+        // TODO: Do some shit
+        localStorage.setItem("achieve-FirstBlood", "true");
+    }
+    // Hot Streak
+    consecutive++;
+    if (consecutive > 15 && localStorage.getItem("achieve-HotStreak") == "false") {
+        // TODO: Do the shit
+        localStorage.setItem("achieve-HotStreak", "true");
+    } 
 }
 
 function answerIncorrect() {

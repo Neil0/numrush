@@ -4,9 +4,8 @@ function Answer(answer) {
 	this.Container_constructor(); // Basically: super();
 	
 	// Layout
-	this.width = layout.ANS_SIZE;
-	this.height = layout.ANS_SIZE;
-	this.color = layout.ANS_COLOR;
+	this.width = properties.ANS_SIZE;
+	this.height = properties.ANS_SIZE;
 	this.index; // Set by the game when loaded into the array
 
 	// Answer
@@ -37,7 +36,7 @@ var p = createjs.extend(Answer, createjs.Container);
 
 p.setup = function() {
 	var fontSize = this.height * 0.40;
-	var font = fontSize + "px Augusta"; // TODO: make a global font
+	var font = fontSize + "px " + properties.FONT; // TODO: make a global font
 	var text = new createjs.Text(this.answer, font, "#000");
 	text.textBaseline = "middle";
 	text.textAlign = "center";
