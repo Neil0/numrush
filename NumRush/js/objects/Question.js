@@ -23,7 +23,7 @@ function Question(set) {
 	    createjs.Tween.get(this)
 	        .to({ y:(layout.MID2) }, 300, createjs.Ease.linear); 
 	    createjs.Tween.get(this.txt)
-	    	.to({ scaleX: 1.00, scaleY: 1.00});
+	    	.to({ scaleX: 1.00, scaleY: 1.00}, 300, createjs.Ease.linear);
 	}
 	this.animate1stPosition = function() {
 	    createjs.Tween.get(this)

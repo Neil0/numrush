@@ -162,10 +162,12 @@ function initializeQuestionPositions() {
         switch (q) {
             case 0:
                 questions[q].y = layout.MID3; // Lowest
-                questions[q].animate1stPosition();
+                questions[q].scaleY = 1.66;
+                questions[q].txt.scaleX = 1.66;
                 break;
             case 1: 
-                questions[q].y = layout.MID2; 
+                questions[q].y = layout.MID2;
+                questions[q].txt.scaleX = questions[q].txt.scaleY = 1.00;
                 break;
             case 2: 
                 questions[q].y = layout.MID1; // Most upper
