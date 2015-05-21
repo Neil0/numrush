@@ -26,6 +26,7 @@
 	<script src="js/objects/Timer.js"></script>
 	<script src="js/objects/Score.js"></script>
 	<script src="js/objects/Lives.js"></script>
+	<script src="js/objects/Achievement.js"></script>
 	<script src="js/play.js"></script>
 
 </head> 
@@ -50,7 +51,8 @@
 			<h1>GAME OVER</h1>
 		</div><!-- /header -->
 
-		<div data-role="content" data-theme="d">	
+		<div data-role="content" data-theme="d">
+			<h2 id="local-score">Personal best:</h2>	
 			<h2 id="instance-score">Score: </h2>
 			<p id="valid-indicator"></p>
 			<label for="name">Name:</label><input type="text" name="name" id="name-input" value=""/>

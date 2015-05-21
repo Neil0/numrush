@@ -47,9 +47,9 @@ var LEVEL5 = 10000;  // 3 Term + - x /
 
 // Achievements 
 var consecutive, maxConsecutive;
-var firstBlood = false;
 
 // Layers
+var overlayLayer = new createjs.Container();
 var foregroundLayer = new createjs.Container(); 
 var midLayer = new createjs.Container(); // Only contains questions
 var backgroundLayer = new createjs.Container();
@@ -72,7 +72,7 @@ function init() {
     fullScreenCanvas(canvas);                           // Sets width and height to fill screen
     // Stage info
     stage = new createjs.Stage(canvas);                 // Creates a EaselJS Stage for drawing
-    stage.addChild(backgroundLayer, midLayer, foregroundLayer);   // Add layers
+    stage.addChild(backgroundLayer, midLayer, foregroundLayer, overlayLayer);   // Add layers
     // Detection
     stage.enableMouseOver();    // TODO: Remove this later (change with touch or something?)
 
@@ -99,7 +99,6 @@ function initGame() {
     ];
     createjs.Sound.addEventListener("fileload", bgm);   // Will call bgm() when loaded
     createjs.Sound.registerSounds(sounds, audiopath);
-
 
     // Initialization: 
     // Background
@@ -219,6 +218,10 @@ function increaseScore() {
 }
 
 function updateTimeRemaining() {
+    // MAX_TIME
+    var percentMaxDifficulty = (score > 10000) ? 1.00 : score / 10000;
+    MAX_TIME = 10000 - (5000 * percentMaxDifficulty);
+
     var currentTime = new Date().getTime();
     var elapsedTime = currentTime - startTime;
     // Update time left
@@ -531,11 +534,11 @@ function answerCorrect() {
 
     // Achievements
     // First blood
-    firstBlood = true;
-    if (localStorage.getItem("achieve-FirstBlood") == "false" && firstBlood == true) {
-        // TODO: Do some shit
+    //if (localStorage.getItem("achieve-FirstBlood") == "false") {
+        var achievement = overlayLayer.addChild(new Achievement(achieve.FIRSTBLOOD_SRC, achieve.FIRSTBLOOD_DESCR));
+        achievement.animateAchievement();
         localStorage.setItem("achieve-FirstBlood", "true");
-    }
+    //}
     // Hot Streak
     consecutive++;
     if (consecutive > 15 && localStorage.getItem("achieve-HotStreak") == "false") {
@@ -579,9 +582,17 @@ function gameOver() {
     // Show the dialog 
     $.mobile.changePage("#score-dialog", { role: "dialog" });
 
+    if(score > localStorage.getItem("localscore")){
+    localStorage.setItem("localscore", score);
+    $('#local-score').text("Personal best: " + score);
+    }else{
+        $('#local-score').text("Personal best: " + localStorage.getItem("localscore"));
+    }
+
     // ACHIEVEMENTS
     if (localStorage.getItem("achieve-YouSnoozeYouLose") == "false") {
-        // todo: show the shit
+        var achievement = overlayLayer.addChild(new Achievement(achieve.YOUSNOOZEYOULOSE_SRC, achieve.YOUSNOOZEYOULOSE_DESCR));
+        achievement.animateAchievement();
         localStorage.setItem("achieve-YouSnoozeYouLose", "true");
     }
 }

@@ -41,14 +41,12 @@ function handleComplete(event) {
     function bgmHandler(event) {
         // Retrieve the selected element
         var $targetElement = $(event.target); // Not used
-
         toggleBgm();
     }
     
     function sfxHandler(event) {
         // Retrieve the selected element
         var $targetElement = $(event.target); // Not used
-
         toggleSfx();
     }
 
@@ -92,3 +90,8 @@ function handleComplete(event) {
         }
     }
 });
+
+function buttonSound() {
+    var sfx = document.getElementById("menu-sfx");
+    sfx.play();
+}

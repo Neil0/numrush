@@ -9,7 +9,11 @@ function Achievement(imageSource, description) {
 
 	this.source = imageSource;
 	this.description = description;
-	this.txt; 	
+	this.txt;
+	this.imageFile = new Image(this.source);
+	imageFile.onload( function() {
+		this.setup()
+	});
 	
 	// Fade in, wait, then out
 	this.animateAchievement = function() {
@@ -20,7 +24,8 @@ function Achievement(imageSource, description) {
 	        .call( function() { this.visible = false; });	
 	}
 
-	this.setup();
+	// Might want to call animate after constructing 
+
 }
 // Basically: ... Button extends Container ...  (below returns a prototype)
 var p = createjs.extend(Achievement, createjs.Container); 
@@ -51,6 +56,9 @@ p.setup = function() {
 	// Container initial cordinates 
 	this.x = layout.STAGE_WIDTH / 2;
 	this.y = layout.TOP2;
+
+	// Start hidden
+	this.alpha = 0; 
 
 	// Disable interaction with child (only interact as a whole)
 	this.mouseChildren = false;

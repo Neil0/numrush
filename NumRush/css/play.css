@@ -8,6 +8,7 @@ html, body {
 /* Centers the canvas */
 #main {
 	text-align: center;
+	background-color: black;
 }
 
 /* Removes some padding */

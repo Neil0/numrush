@@ -38,6 +38,12 @@ $(document).ready(function() {
 
     //prints out rank, name, scores of the top 10 (5?) players according to score
     function loadLeaderboard() {
+
+        if(localStorage.getItem("localscore") == null){
+        localStorage.setItem("localscore", "0");
+        }
+        $('#localhighscore').text("Personal best: " + localStorage.getItem("localscore"));
+
         console.log("loadLeaderboard()");
 
         for (i = 0; i < jsonData.length; i++) {

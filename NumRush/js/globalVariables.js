@@ -41,13 +41,13 @@ var properties = {
 
 var achieve = {
 	// You Snooze, you lose
-	YOUSNOOZEYOULOSE_SRC : "",
+	YOUSNOOZEYOULOSE_SRC : "../img/button_start.png",
 	YOUSNOOZEYOULOSE_DESCR : "First game lost.",
 	// Hot Streak
 	HOTSTREAK_SRC : "",
 	HOTSTREAK_DESCR : "Get 15 questions right consecutively.",
 	// First blood
-	FIRSTBLOOD_SRC : "",
+	FIRSTBLOOD_SRC : "../img/button_start.png",
 	FIRSTBLOOD_DESCR : "Get your first question right!",
 	// Rocky
 	ROCKY_SRC : "",

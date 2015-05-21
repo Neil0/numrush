@@ -30,13 +30,13 @@
 	<div id="content">
 
 		<div id="button-container">
-			<a href="play.html" data-ajax="false">
+			<a href="play.html" data-ajax="false" onclick="buttonSound()">
 				<img src="img/button_start.png">
 			</a>
-			<a href="practice.html" data-ajax="false">
+			<a href="practice.html" data-ajax="false" onclick="buttonSound()">
 				<img src="img/button_practice.png">
 			</a>
-			<a href="leaderboard.html" data-ajax="false">
+			<a href="leaderboard.html" data-ajax="false" onclick="buttonSound()">
 				<img src="img/button_leaderboard.png">
 			</a>
 		</div>
@@ -48,7 +48,7 @@
 
 	<!-- AUDIO -->
 	<audio id="menu-bgm" loop>
-		<source src ="sound/menu_bgm.mp3" type="audio/mpeg">
+		<source src="sound/menu_bgm.mp3" type="audio/mpeg">
 	</audio>
 	<audio id="menu-sfx">
 		<source src="sound/sfx_toggle.wav" type="audio/mpeg">
