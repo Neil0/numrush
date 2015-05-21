@@ -1,8 +1,7 @@
 // -- PRELOAD --
 // Note: Waiting for init() call
 var preload = new createjs.LoadQueue();
-/*preload.on("fileload", foo, bar);
-preload.on("progress", foo, bar);*/ 
+preload.on("progress", handleOverallProgress, this);
 preload.on("complete", handleComplete, this);
 var manifest = [
     {src: 'img/bg.png', id: 'bg'},
@@ -11,8 +10,14 @@ var manifest = [
     {src: 'img/answer.png', id: 'ans'}
 ];
 
+function handleOverallProgress(event) {
+    var progressPercent = (preload.progress * 100).toFixed(2) + "%";
+    $("#loading-indicator").text(progressPercent);
+}
+
 function handleComplete(event) {
     console.log("All files loaded");
+    $("#loading-div").hide();
     initGame();
 }
 // -- END PRELOAD --
@@ -131,6 +136,7 @@ function initGame() {
     console.log(stage.children.length);
 }
 
+// -- HANDLERS --
 function handleTick(event) {
     if (!event.paused) {
         // Update (kinda)
@@ -194,7 +200,7 @@ function initializeAnswerPositions() {
 function bgm(event){
     console.log("Audio loaded");
     if(bgmEnabled){
-        var instance = createjs.Sound.play("bg_music", { loop: -1 });
+        var instance = createjs.Sound.play("bg_music", { interrupt: "none", loop: -1 });
     }
 }
 function correctSfx() { 

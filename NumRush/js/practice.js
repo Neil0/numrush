@@ -1,8 +1,7 @@
 // -- PRELOAD --
-// Note: Waiting for init() call
+// Note: Waiting for init() call 
 var preload = new createjs.LoadQueue();
-/*preload.on("fileload", foo, bar);
-preload.on("progress", foo, bar);*/ 
+preload.on("progress", handleOverallProgress, this);
 preload.on("complete", handleComplete, this);
 var manifest = [
     {src: 'img/practice_bg.png', id: 'bg'},
@@ -12,11 +11,18 @@ var manifest = [
     {src: 'img/button_back.png', id: 'back'}
 ];
 
+function handleOverallProgress(event) {
+    var progressPercent = (preload.progress * 100).toFixed(2) + "%";
+    $("#loading-indicator").text(progressPercent);
+}
+
 function handleComplete(event) {
     console.log("All files loaded");
+    $("#loading-div").hide();
     initGame();
 }
 // -- END PRELOAD --
+
 
 // EaselJS 
 var canvas, stage;

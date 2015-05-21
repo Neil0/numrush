@@ -12,7 +12,7 @@ $(document).ready(function() {
     var complete = 0;
     var rank = 0;
 
-    // Initialization
+    // -- INIT -- 
     // Audio
     $bgmToggle.bind("tap", bgmHandler);
     $sfxToggle.bind("tap", sfxHandler);
@@ -20,8 +20,8 @@ $(document).ready(function() {
     // Leaderboards
     retrieve();
 
-
-    //USE THIS SHIT BEFORE CALLING ANY FUNCTIONS THAT WILL QUERY THE DATABASE!!!!!!!!!!!!
+    // -- METHODS --
+    // Retrieves all the data from the data base (Use first before other functions)
     function retrieve() {
         $.ajax({
             dataType: "json",
@@ -33,33 +33,24 @@ $(document).ready(function() {
                 loadLeaderboard();
             }
         });
-
     }
 
-    //prints out rank, name, scores of the top 10 (5?) players according to score
+    // Prints out rank, name, scores of the top 10 players
     function loadLeaderboard() {
-
-        if(localStorage.getItem("localscore") == null){
-        localStorage.setItem("localscore", "0");
-        }
+        // Users local score
+        if (localStorage.getItem("localscore") == null) { localStorage.setItem("localscore", "0"); }
         $('#localhighscore').text("Personal best: " + localStorage.getItem("localscore"));
 
-        console.log("loadLeaderboard()");
-
+        // Global score
         for (i = 0; i < jsonData.length; i++) {
+            // Row that contains the rank, name, and score
             var $newRow = $("<tr>");
             // Create rank
-            var $newRank = $("<td>", {
-                text: ++rank
-            });
+            var $newRank = $("<td>", { text: ++rank });
             // Create name
-            var $newName = $("<td>", {
-                text: jsonData[i].username
-            });
+            var $newName = $("<td>", { text: jsonData[i].username });
             // Create score
-            var $newScore = $("<td>", {
-                text: jsonData[i].score
-            });
+            var $newScore = $("<td>", { text: jsonData[i].score });
 
             // Add to DOM
             $newRow.append($newRank);    // Rank column
@@ -70,21 +61,8 @@ $(document).ready(function() {
     }
 
     // -- HANDLERS --
-    // Note: I almost feel that pure js here would be easier 
-    function bgmHandler(event) {
-        // Retrieve the selected element
-        var $targetElement = $(event.target); // Not used
-
-        toggleBgm();
-    }
-
-    function sfxHandler(event) {
-        // Retrieve the selected element
-        var $targetElement = $(event.target); // Not used
-
-        toggleSfx();
-    }
-
+    function bgmHandler(event) { toggleBgm(); }
+    function sfxHandler(event) { toggleSfx(); }
 
     // -- METHODS --
     function loadAudioButtons() {

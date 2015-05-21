@@ -17,6 +17,9 @@ html, body {
 }
 
 /* Score Dialog */
+.ui-dialog-titlebar-close {
+  visibility: hidden;	/* Removes the x button */
+}
 .invalid {
 	color: red;
 }
@@ -42,6 +45,16 @@ html, body {
 #menu-button{
 	width:68px;
 	left:37%;
+}
+
+/* Loading */
+#loading-div {
+	position: fixed;
+	bottom: 50%;
+	left: 50%;
+}
+#loading-indicator {
+	color: white;
 }
 
 

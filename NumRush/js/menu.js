@@ -5,50 +5,47 @@ $(document).ready(function() {
     var $bgm = $('#menu-bgm');
     var $sfx = $('#menu-sfx');
 
-    // Initialization
+    // -- INIT --
     $bgmToggle.bind("tap", bgmHandler);
     $sfxToggle.bind("tap", sfxHandler);
     loadAudioButtons();
 
-// -- PRELOAD ASSETS --
-var preload = new createjs.LoadQueue();
-preload.on("progress", handleOverallProgress); 
-preload.on("complete", handleComplete, this);
-var manifest = [
-    // Game
-    {src: 'img/bg.png', id: 'bg'},
-    {src: 'img/life.png', id: 'life'},
-    {src: 'img/no_life.png', id: 'nolife'},
-    {src: 'img/answer.png', id: 'ans'},
-    // Menu
-    {src: 'img/button_leaderboard.png', id: 'ans'},
-    {src: 'img/button_practice.png', id: 'ans'},
-    {src: 'img/button_start.png', id: 'ans'}
-];
-preload.loadManifest(manifest);
+    // -- PRELOAD ASSETS --
+    var preload = new createjs.LoadQueue();
+    preload.on("progress", handleOverallProgress); 
+    preload.on("complete", handleComplete, this);
+    var manifest = [
+        // Game
+        {src: 'img/bg.png', id: 'bg'},
+        {src: 'img/life.png', id: 'life'},
+        {src: 'img/no_life.png', id: 'nolife'},
+        {src: 'img/answer.png', id: 'ans'},
+        // Menu
+        {src: 'img/button_leaderboard.png', id: 'ans'},
+        {src: 'img/button_practice.png', id: 'ans'},
+        {src: 'img/button_start.png', id: 'ans'}
+    ];
+    preload.loadManifest(manifest);
 
-function handleOverallProgress(event) {
-    console.log("Progress:", preload.progress, event.progress);
-    var progressPercent = (preload.progress * 100).toFixed(2) + "%";
-    $("#loading-indicator").text(progressPercent);
-}
-
-function handleComplete(event) {
-    $("#loading-div").hide();
-}
 
     // -- HANDLERS --
+    function handleOverallProgress(event) {
+        var progressPercent = (preload.progress * 100).toFixed(2) + "%";
+        $("#loading-indicator").text(progressPercent);
+    }
+
+    function handleComplete(event) {
+        $("#loading-div").hide();
+    }
+
     function bgmHandler(event) {
-        // Retrieve the selected element
-        var $targetElement = $(event.target); // Not used
         toggleBgm();
     }
     
     function sfxHandler(event) {
-        // Retrieve the selected element
-        var $targetElement = $(event.target); // Not used
         toggleSfx();
     }
+
 
     // -- METHODS --
     function loadAudioButtons() {
@@ -74,7 +71,7 @@ function handleComplete(event) {
             localStorage.setItem("sfx-muted", "false"); // Un-mute sfx globally
         } else {
             $sfxToggle.addClass('off');
-            localStorage.setItem("sfx-muted", "true"); // Mute sfx globally
+            localStorage.setItem("sfx-muted", "true");  // Mute sfx globally
         }
     }
 
@@ -86,7 +83,7 @@ function handleComplete(event) {
         } else {
             $bgmToggle.attr('src', 'img/bgm_off.png');
             $bgm.get(0).pause();
-            localStorage.setItem("bgm-muted", "true"); // Un-mute sfx globally
+            localStorage.setItem("bgm-muted", "true");  // Un-mute sfx globally
         }
     }
 });
