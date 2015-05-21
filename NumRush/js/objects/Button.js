@@ -23,6 +23,12 @@ p.setup = function() {
 	this.on("click", this.handleClick);
 	this.cursor = "pointer";
 
+	this.bitmap.regX = (this.bitmap.image.width) / 2;	// Get real width / 2
+	this.bitmap.regY = (this.bitmap.image.height) / 2;	// Get real height /2
+	// Set to center
+	this.bitmap.x = this.width / 2;
+	this.bitmap.y = this.height / 2;
+
 	// Container cordinates 
 	this.x = 0;
 	this.y = 0;

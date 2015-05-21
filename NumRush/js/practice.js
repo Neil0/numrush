@@ -65,7 +65,7 @@ function init() {
     stage = new createjs.Stage(canvas);                 // Creates a EaselJS Stage for drawing
     stage.addChild(backgroundLayer, midLayer, foregroundLayer, overlayLayer);   // Add layers
     // Detection
-    stage.enableMouseOver();    // TODO: Remove this later (change with touch or something?)
+    createjs.Touch.enable(stage);   
 
     // Initialize global variables for layout and sizing
     initializeVariables(canvas.width, canvas.height);
@@ -116,10 +116,8 @@ function initGame() {
     createjs.Ticker.on("tick", handleTick); 
 
     // Achievements
-    if (localStorage.getItem("achieve-Rocky") == "false") {
-        // TODO: Some shit fuck
-        localStorage.setItem("achieve-Rocky", "true");
-    }
+    // No condition
+    checkAchievement(achieve.YOURTRAININGBEGINS_KEY, achieve.YOURTRAININGBEGINS_SRC);
 
     console.log(stage.children.length);
 }
@@ -514,6 +512,22 @@ function DifficultyController() {
         termRange.max = this.difficulties[this.index][1];
         operatorRange.min = this.difficulties[this.index][2];
         operatorRange.max = this.difficulties[this.index][3];
+    }
+}
+
+// Checks if achievement is unlocked, and creates it if it can
+function checkAchievement(key, imageSource) {
+    // Not unlocked yet, unlock now!
+    if (localStorage.getItem(key) != "true") {
+        var imageFile = new Image();
+        imageFile.src = imageSource
+        
+        imageFile.onload = function() {
+            var achievement = overlayLayer.addChild(new Achievement(imageFile));
+            achievement.animateAchievement();
+        }
+
+        localStorage.setItem(key, "true");
     }
 }
 

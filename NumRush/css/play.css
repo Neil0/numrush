@@ -23,6 +23,27 @@ html, body {
 .valid {
 	color: green;
 }
+/* Center content */
+#local-score{
+	text-align:center;
+}
+#instance-score{
+	text-align:center;
+}
+/* button sizing */
+#submit-button{
+	width: 125px;
+	left:37%;
+}
+#restart-button{
+	width:68px;
+	left:37%;
+}
+#menu-button{
+	width:68px;
+	left:37%;
+}
+
 
 /* FONTS */
 @font-face{

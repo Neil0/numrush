@@ -13,7 +13,7 @@ var layout = {
 	BOT1 : 1111,			// H 75%
 	BOT2 : 1111,			// H 80&
 
-	ALWAYSUSECOMMAS : 6969 // Basically so you can re-arrange variables without fear of putting commas down
+	ALWAYSUSECOMMAS : 9999 // Basically so you can re-arrange variables without fear of putting commas down
 }
 
 var properties = {
@@ -42,22 +42,22 @@ var properties = {
 var achieve = {
 	// You Snooze, you lose
 	YOUSNOOZEYOULOSE_KEY : "achieve-YouSnoozeYouLose",
-	YOUSNOOZEYOULOSE_SRC : "../img/button_start.png",
+	YOUSNOOZEYOULOSE_SRC : "img/snooze_you_lose.jpg",
 	YOUSNOOZEYOULOSE_DESCR : "First game lost.",
 	// Hot Streak
 	HOTSTREAK_KEY : "achieve-HotStreak",
-	HOTSTREAK_SRC : "",
+	HOTSTREAK_SRC : "img/hot_streak.jpg",
 	HOTSTREAK_DESCR : "Get 15 questions right consecutively.",
 	// First blood
 	FIRSTBLOOD_KEY : "achieve-FirstBlood",
 	FIRSTBLOOD_SRC : "img/first_blood.jpg",
 	FIRSTBLOOD_DESCR : "Get your first question right!",
 	// Rocky
-	ROCKY_KEY : "achieve-Rocky",
-	ROCKY_SRC : "",
-	ROCKY_DESCR : "Try practice mode for the first time.",
+	YOURTRAININGBEGINS_KEY : "achieve-YourTrainingBegins",
+	YOURTRAININGBEGINS_SRC : "img/your_training_begins.jpg",
+	YOURTRAININGBEGINS_DESCR : "Try practice mode for the first time.",
 
-	ALWAYSUSECOMMAS : 6969 // Basically so you can re-arrange variables without fear of putting commas down
+	ALWAYSUSECOMMAS : 9999 // Basically so you can re-arrange variables without fear of putting commas down
 }
 
 function initializeVariables(canvasWidth, canvasHeight) {

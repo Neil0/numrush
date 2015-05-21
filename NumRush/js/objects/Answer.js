@@ -53,8 +53,6 @@ p.setup = function() {
 	// Note: this refers to the container
 	this.addChild(background, text);  // Container class method
 	this.on("click", this.handleClick);
-	this.on("rollover", this.handleRollOver);
-	this.on("rollout", this.handleRollOver);
 	this.cursor = "pointer";
 
 	// Container initial cordinates 
@@ -79,10 +77,6 @@ p.handleClick = function (event) {
 		// Carry out the incorrect function (which can vary between game modes)
 		answerIncorrect();
 	}
-};
-
-p.handleRollOver = function(event) {       
-	this.alpha = event.type == ("rollover") ? 0.4 : 1;
 };
 
 // Allows things out of scope to use this now (all of the above cannot be called directly)

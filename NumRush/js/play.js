@@ -74,7 +74,7 @@ function init() {
     stage = new createjs.Stage(canvas);                 // Creates a EaselJS Stage for drawing
     stage.addChild(backgroundLayer, midLayer, foregroundLayer, overlayLayer);   // Add layers
     // Detection
-    stage.enableMouseOver();    // TODO: Remove this later (change with touch or something?)
+    createjs.Touch.enable(stage);   
 
     // Initialize global variables for layout and sizing
     initializeVariables(canvas.width, canvas.height);
@@ -537,13 +537,11 @@ function answerCorrect() {
     // First blood
     // No condition
     checkAchievement(achieve.FIRSTBLOOD_KEY, achieve.FIRSTBLOOD_SRC);
-    localStorage.setItem(achieve.FIRSTBLOOD_KEY, "false");
 
     // Hot Streak
     consecutive++;
     if (consecutive > 15) {
         checkAchievement(achieve.HOTSTREAK_KEY, achieve.HOTSTREAK_SRC);
-        localStorage.setItem("achieve-HotStreak", "true");
     } 
 }
 
@@ -672,7 +670,7 @@ function validateName(name) {
 // Checks if achievement is unlocked, and creates it if it can
 function checkAchievement(key, imageSource) {
     // Not unlocked yet, unlock now!
-    if (localStorage.getItem(key) == "false") {
+    if (localStorage.getItem(key) != "true") {
         var imageFile = new Image();
         imageFile.src = imageSource
         

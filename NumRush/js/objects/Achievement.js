@@ -13,7 +13,7 @@ function Achievement(image) {
 	this.animateAchievement = function() {
 	    createjs.Tween.get(this)
 	        .to({ alpha: 0.95}, 150, createjs.Ease.sineIn)
-	        .to({}, 1000, createjs.Ease.linear)
+	        .to({}, 2000, createjs.Ease.linear)
 	        .to({ alpha: 0}, 300, createjs.Ease.sineIn)
 	        .call( function() { this.visible = false; });	
 	}
