@@ -59,14 +59,7 @@
 }
 
 header img {
-	position: absolute;
-	top: 0px;
-	right: 110px;
-}
-#sfx-toggle {
-	position: absolute;
-	top: 0px;
-	right: 60px;
+	float: right;
 }
 
 .off {

@@ -60,6 +60,10 @@ html, body {
 	}
 }
 
+/* Audio buttons */
+header img {
+	float: right;
+}
 
 /* Achievements */
 .achievement-holder {

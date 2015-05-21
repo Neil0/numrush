@@ -60,7 +60,7 @@ p.setup = function() {
 	this.regX = this.width / 2; 
 	this.regY = this.height / 2;
 	this.x = 1111;
-	this.y = layout.BOT2 + (this.height / 2);
+	this.y = layout.BOT2 + (this.height / 2) + 10;
 
 	// Disable interaction with child (only interact as a whole)
 	this.mouseChildren = false;

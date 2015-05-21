@@ -68,9 +68,9 @@ $(document).ready(function() {
     function loadAudioButtons() {
         // Sfx init
         if (localStorage.getItem("sfx-muted") == "true") {
-            $sfxToggle.addClass('off');
+            $sfxToggle.attr('src', 'img/sfx_off.png');
         } else {
-            $sfxToggle.removeClass('off');
+            $sfxToggle.attr('src', 'img/sfx_on.png');
         }
         // bgm init
         if (localStorage.getItem("bgm-muted") == "true") {
@@ -83,24 +83,24 @@ $(document).ready(function() {
 
     function toggleSfx() {
         if (localStorage.getItem("sfx-muted") == "true") {
-            $sfxToggle.removeClass('off');
-            $sfx.get(0).play();
+            $sfxToggle.attr('src', 'img/sfx_on.png');   // Display sfx on image
+            $sfx.get(0).play();                         // Play the sfx sound
             localStorage.setItem("sfx-muted", "false"); // Un-mute sfx globally
         } else {
-            $sfxToggle.addClass('off');
-            localStorage.setItem("sfx-muted", "true"); // Mute sfx globally
+            $sfxToggle.attr('src', 'img/sfx_off.png');  // Display sfx off image
+            localStorage.setItem("sfx-muted", "true");  // Mute sfx globally
         }
     }
 
     function toggleBgm() {
         if (localStorage.getItem("bgm-muted") == "true") {
-            $bgmToggle.attr('src', 'img/bgm_on.png');
-            $bgm.get(0).play();
+            $bgmToggle.attr('src', 'img/bgm_on.png');   // Display bgm on image
+            $bgm.get(0).play();                         // Resume the bgm
             localStorage.setItem("bgm-muted", "false"); // Un-mute sfx globally
         } else {
-            $bgmToggle.attr('src', 'img/bgm_off.png');
-            $bgm.get(0).pause();
-            localStorage.setItem("bgm-muted", "true"); // Un-mute sfx globally
+            $bgmToggle.attr('src', 'img/bgm_off.png');  // Display bgm off image
+            $bgm.get(0).pause();                        // Pause the bgm
+            localStorage.setItem("bgm-muted", "true");  // Un-mute sfx globally
         }
     }
 });

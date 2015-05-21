@@ -57,12 +57,12 @@ var timerDisplay;
 var livesDisplay;
 
 // Audio
-var sfxEnabled;
-var bgmEnabled;
+var sfxEnabled, bgmEnabled;
  
-// Initialize all base variables and preload assets. Once assets are loaded it will call init. 
+
+// Sets up the canvas, stage, and preloads all the assets.
 function init() {
-    console.log("init()");
+    // Initialize all base variables and preload assets. Once assets are loaded it will call init. 
 
     // Canvas info
     canvas = document.getElementById("canvas"); 
@@ -124,10 +124,9 @@ function initGame() {
     // Achievements
     // No condition
     checkAchievement(achieve.YOURTRAININGBEGINS_KEY, achieve.YOURTRAININGBEGINS_SRC);
-
-    console.log(stage.children.length);
 }
 
+// -- HANDLERS --
 function handleTick(event) {
     if (!event.paused) {
         // Render 
@@ -135,6 +134,7 @@ function handleTick(event) {
     }
 }
 
+// -- METHODS --
 // INITIALIZERS
 function initializeAnswers() {
     for (i = 0; i < 5; i++) {
@@ -208,8 +208,6 @@ function buttonSound() {
 // GAME LOGIC
 // Creates the next answer 
 function generateNextAnswer() {
-    console.log("generateNextAnswer()");
-
     var randInt;
     // Loop until there is no overlap
     outer:
@@ -240,9 +238,6 @@ function generateNextAnswer() {
 
 // Gathers are all the necessary info before generating the next answer
 function prepareNextQuestion() {
-    console.log("prepareNextQuestion()");
-
-
     // Obtain information about the current board
     var availableArray = [];
     // Note: foreach loop not working very well
@@ -261,7 +256,6 @@ function prepareNextQuestion() {
 }
 
 function generateNextQuestion() {
-    console.log("generateNextQuestion()");
     // Init the question     
     var question;
  
@@ -385,9 +379,9 @@ function generateMinus(answer) {
     return numSet;
 }
 function generateMultiplication(answer) {
-    do{
+    do {
         var numA = getRandomInt(1,10);
-    }while(answer%numA != 0)
+    } while (answer%numA != 0)
     
     var numB = answer / numA;
     var numSet = [numA, numB];
@@ -421,8 +415,6 @@ function advanceRows(newQuestion) {
 }
 
 function advanceAnswers(nextAnswer) {
-    console.log("advanceAnswers()");
-
     // Animations:
     // Current answer
     currentAnswer.animateGone();
@@ -433,15 +425,14 @@ function advanceAnswers(nextAnswer) {
     answers[nextAnswer.index] = nextAnswer; // Replace parent 
 }
 
-// Answer checking
+
+// ANSWER CHECKING
 function checkAnswer(answer) {
     return (answer == questions[0].answer);
 }
 
 function answerCorrect() {
-    console.log("answerCorrect()");
-
-    // GAME-LOGIC(?)
+    // GAME-LOGIC
     correct++;
     correctIndicator.txt.text = correct;
     updateDifficulty();
@@ -456,9 +447,7 @@ function answerCorrect() {
 }
 
 function answerIncorrect() {
-    console.log("answerIncorrect()");
-
-    // GAME-LOGIC(?)
+    // GAME-LOGIC
     incorrect++;
     incorrectIndicator.txt.text = incorrect;
 
@@ -473,8 +462,6 @@ function answerIncorrect() {
 
 // Sets the currentAnswer to the answer object for the bottom most question. 
 function updateCurrentAnswer() {
-    console.log("updateCurrentAnswer()");
-
     for (a = 0; a < answers.length; a++) {
         if (checkAnswer(answers[a].answer)) {
             currentAnswer = answers[a];
@@ -482,6 +469,8 @@ function updateCurrentAnswer() {
     }
 }
 
+
+// DIFFICULTY
 // Cycles difficulty
 function updateDifficulty() {
     difficultyController.currentCount++;

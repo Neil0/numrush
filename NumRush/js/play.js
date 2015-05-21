@@ -22,6 +22,7 @@ function handleComplete(event) {
 }
 // -- END PRELOAD --
 
+// -- FIELDS -- 
 // EaselJS 
 var canvas, stage;
 
@@ -40,7 +41,6 @@ var livesRemaining = MAX_LIVES;
 var MAX_TIME = 10000; // 10 Seconds
 var remainingTime = MAX_TIME;
 var startTime;
-
 // Difficulty
 var termRange = {min: 2, max: 2};       // Only supports 2-3 terms
 var operatorRange = { min: 0, max: 1};  // 0 = +, 1 = -, 2 = x, 3 = / 
@@ -49,9 +49,6 @@ var LEVEL2 = 2000;  // 2 Term + - x /
 var LEVEL3 = 4000;  // 2-3 Term + -
 var LEVEL4 = 6000;  // 2-3 Term + - x /
 var LEVEL5 = 10000;  // 3 Term + - x / 
-
-// Achievements 
-var consecutive, maxConsecutive;
 
 // Layers
 var overlayLayer = new createjs.Container();
@@ -63,13 +60,14 @@ var scoreDisplay;
 var timerDisplay;
 var livesDisplay;
 
+// Achievements 
+var consecutive;
 // Audio
-var sfxEnabled; 
-var bgmEnabled;
+var sfxEnabled, bgmEnabled; 
 
-
-// Initialize all base variables and preload assets. Once assets are loaded it will call init. 
+// Sets up the canvas, stage, and preloads all the assets.
 function init() {
+    // Initialize all base variables and preload assets. Once assets are loaded it will call initGame() 
     console.log("init()");
 
     // Canvas info
@@ -88,6 +86,7 @@ function init() {
     preload.loadManifest(manifest);
 }
 
+// Initializes all the game components and functions
 function initGame() {
     // Audio:
     sfxEnabled = (localStorage.getItem("sfx-muted") == "true") ? false : true;
@@ -105,7 +104,6 @@ function initGame() {
     createjs.Sound.addEventListener("fileload", bgm);   // Will call bgm() when loaded
     createjs.Sound.registerSounds(sounds, audiopath);
 
-    // Initialization: 
     // Background
     var bgImage = preload.getResult("bg");
     var background = new createjs.Bitmap(bgImage);
@@ -132,8 +130,6 @@ function initGame() {
     createjs.Ticker.setFPS(60);
     // Handles all the update logic
     createjs.Ticker.on("tick", handleTick); 
-
-    console.log(stage.children.length);
 }
 
 // -- HANDLERS --
@@ -146,7 +142,7 @@ function handleTick(event) {
     }
 }
 
-
+// -- METHODS --
 // INITIALIZERS
 function initializeAnswers() {
     for (i = 0; i < 5; i++) {
@@ -249,7 +245,7 @@ function updateTimeRemaining() {
     timerDisplay.txt.text = formattedTime;
 }
 
-// Currently based on score
+// Based on current score
 function updateDifficulty() {
     if (score > LEVEL5) {
         termRange.min = 3;
@@ -281,8 +277,6 @@ function updateDifficulty() {
 
 // Creates the next answer 
 function generateNextAnswer() {
-    console.log("generateNextAnswer()");
-
     var randInt;
     // Loop until there is no overlap
     outer:
@@ -313,9 +307,6 @@ function generateNextAnswer() {
 
 // Gathers are all the necessary info before generating the next answer
 function prepareNextQuestion() {
-    console.log("prepareNextQuestion()");
-
-
     // Obtain information about the current board
     var availableArray = [];
     // Note: foreach loop not working very well
@@ -451,16 +442,15 @@ function generateSum(answer) {
     return numSet;
 }
 function generateMinus(answer) {
-    // TODO: The difference will always be from 1-20, might want to base it off the answer it self
     var numA = getRandomInt(answer, answer + 20);
     var numB = numA - answer;
     var numSet = [numA, numB];
     return numSet;
 }
 function generateMultiplication(answer) {
-    do{
+    do {
         var numA = getRandomInt(1,10);
-    }while(answer%numA != 0)
+    } while (answer%numA != 0)
     
     var numB = answer / numA;
     var numSet = [numA, numB];
@@ -475,8 +465,6 @@ function generateDivision(answer) {
 
 // Move all objects up one position (overwritting the first)
 function advanceRows(newQuestion) {
-    console.log("advanceRows()");
-
     // Animations: (Individually animate each one)
     // Bottom question
     questions[0].animateGone();
@@ -494,8 +482,6 @@ function advanceRows(newQuestion) {
 }
 
 function advanceAnswers(nextAnswer) {
-    console.log("advanceAnswers()");
-
     // Animations:
     // Current answer
     currentAnswer.animateGone();
@@ -508,8 +494,6 @@ function advanceAnswers(nextAnswer) {
 
 // Sets the currentAnswer to the answer object for the bottom most question. 
 function updateCurrentAnswer() {
-        console.log("updateCurrentAnswer()");
-
     for (a = 0; a < answers.length; a++) {
         if (checkAnswer(answers[a].answer)) {
             currentAnswer = answers[a];
@@ -524,8 +508,6 @@ function checkAnswer(answer) {
 }
 
 function answerCorrect() {
-    console.log("answerCorrect()");
-
     // GAME-LOGIC(?)
     increaseScore();                        // Update the score
     startTime = new Date().getTime();       // Reset the time (Set the time stamp to now)
@@ -552,9 +534,7 @@ function answerCorrect() {
 }
 
 function answerIncorrect() {
-    console.log("answerIncorrect()");
-
-    // GAME-LOGIC(?)
+    // GAME-LOGIC
     // Update lives 
     livesRemaining--;
     livesDisplay.updateLivesDisplay(livesRemaining);
@@ -579,7 +559,6 @@ function answerIncorrect() {
 }
 
 function gameOver() {
-    console.log("gameOver()");
     // Play sound
     gameoverSfx();
     // Pause the game
@@ -590,9 +569,9 @@ function gameOver() {
     $.mobile.changePage("#score-dialog", { role: "dialog" });
 
     if(score > localStorage.getItem("localscore")){
-    localStorage.setItem("localscore", score);
-    $('#local-score').text("Personal best: " + score);
-    }else{
+        localStorage.setItem("localscore", score);
+        $('#local-score').text("Personal best: " + score);
+    } else {
         $('#local-score').text("Personal best: " + localStorage.getItem("localscore"));
     }
 
@@ -628,14 +607,16 @@ function restartGame() {
     initializeAnswerPositions();
     initializeQuestionPositions();
 
+    // Allow submission again
+    $('#submit-button').removeAttr('disabled'); 
+
     // Resume
     createjs.Ticker.paused = false;
 }
 
 
 // SCORE DIALOG
-function submitScore(){ 
-
+function submitScore() { 
     var name = document.getElementById("name-input").value;
     var $validIndicator = $('#valid-indicator');
     var submitted = false;
