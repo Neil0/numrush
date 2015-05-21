@@ -1,28 +1,67 @@
-body {
-	background-image: url("../img/index_bg.png");
-  	background-size: 100% 100%;
+@media only screen and (min-width:508px) {
+	body{
+		background-image: url("../img/bg_medium.png");
+  		background-size: 100% 100%;
+   		background-repeat: no-repeat;
+	}
+		#button-container {
+		text-align: center;
+		position: absolute;
+		top: 62%;
+	}	
+
+	#button-container img {
+			width: 50%;
+			height: 50%;
+	}
 }
 
-#button-container {
-	text-align: center;
-	position: absolute;
-	top: 55%;
-}
+@media only screen and (max-width:509px) {
+	body{
+		background-image: url("../img/index_bg.png");
+  		background-size: 100% 100%;
+  		background-repeat: no-repeat;
+	}
+		#button-container {
+		text-align: center;
+		position: absolute;
+		top: 55%;
+	}
+
 #button-container img {
-	width: 50%;
-	height: 50%;
+		width: 50%;
+		height: 50%;
+	}
+}
+
+@media only screen and (min-width:1000px) {
+	body{
+		background-image: url("../img/bg_high.png");
+  		background-size: 100% 100%;
+  		background-repeat: no-repeat;
+	}
+		#button-container {
+		text-align: center;
+		position: absolute;
+		top: 70%;
+	}
+
+	#button-container img {
+		width: 20%; /*Minor issue here percentage gets too large for menu style buttons*/
+		height: 20%;
+		display:inline;
+	}
 }
 
 .ui-btn {
-	margin-left: auto;
-	margin-right: auto;
+	margin:0 auto;
     width: 200px;
 }
 
 header img {
 	position: absolute;
 	top: 0px;
-	right: 10px;
+	right: 110px;
 }
 #sfx-toggle {
 	position: absolute;
@@ -36,7 +75,6 @@ header img {
 .on {
 	
 }
-
 /* LOADING STUFF */
 #loading-div {
 	position: fixed;
