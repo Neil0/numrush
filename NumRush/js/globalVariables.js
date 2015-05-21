@@ -41,15 +41,19 @@ var properties = {
 
 var achieve = {
 	// You Snooze, you lose
+	YOUSNOOZEYOULOSE_KEY : "achieve-YouSnoozeYouLose",
 	YOUSNOOZEYOULOSE_SRC : "../img/button_start.png",
 	YOUSNOOZEYOULOSE_DESCR : "First game lost.",
 	// Hot Streak
+	HOTSTREAK_KEY : "achieve-HotStreak",
 	HOTSTREAK_SRC : "",
 	HOTSTREAK_DESCR : "Get 15 questions right consecutively.",
 	// First blood
-	FIRSTBLOOD_SRC : "../img/button_start.png",
+	FIRSTBLOOD_KEY : "achieve-FirstBlood",
+	FIRSTBLOOD_SRC : "img/first_blood.jpg",
 	FIRSTBLOOD_DESCR : "Get your first question right!",
 	// Rocky
+	ROCKY_KEY : "achieve-Rocky",
 	ROCKY_SRC : "",
 	ROCKY_DESCR : "Try practice mode for the first time.",
 

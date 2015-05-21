@@ -1,54 +1,35 @@
 (function() {
 
-function Achievement(imageSource, description) {
+function Achievement(image) {
 	this.Container_constructor(); // Basically: super();
 	
 	// Layout
-	this.width = properties.TOP1_WIDTH;
+	this.width = properties.TOP1_WIDTH * 0.80;
 	this.height = properties.TOP1_HEIGHT;
 
-	this.source = imageSource;
-	this.description = description;
-	this.txt;
-	this.imageFile = new Image(this.source);
-	imageFile.onload( function() {
-		this.setup()
-	});
+	this.image = image;
 	
 	// Fade in, wait, then out
 	this.animateAchievement = function() {
 	    createjs.Tween.get(this)
-	        .to({ alpha: 0.80}, 300, createjs.Ease.linear)
-	        .to({}, 300, createjs.Ease.linear)
-	        .to({ alpha: 0}, 300, createjs.Ease.linear)
+	        .to({ alpha: 0.95}, 150, createjs.Ease.sineIn)
+	        .to({}, 1000, createjs.Ease.linear)
+	        .to({ alpha: 0}, 300, createjs.Ease.sineIn)
 	        .call( function() { this.visible = false; });	
 	}
 
-	// Might want to call animate after constructing 
-
+	this.setup();
 }
 // Basically: ... Button extends Container ...  (below returns a prototype)
 var p = createjs.extend(Achievement, createjs.Container); 
 
 
 p.setup = function() {
-	var fontSize = this.height * 0.40;
-	var font = fontSize + "px " + properties.FONT; // TODO: make a global font
-	var text = new createjs.Text(this.description, font, "#FFF");
-	text.textBaseline = "middle";
-	text.textAlign = "center";
-		
-	// cordinates for the text to be drawn 
-	text.x = this.width/2;
-	text.y = this.height/2;
-
 	// Achievement icon
-	var imageFile = new Image(this.source);
-	var background = new createjs.Bitmap(imageFile);
-	setScaleFactor(imageFile, this.width, this.height);
+	var background = new createjs.Bitmap(this.image);
+	setEqualScaleFactor(background, true, this.width);
 	
-	// Note: this refers to the container
-	this.txt = this.addChild(text);  // Container class method
+	this.addChild(background);  // Container class method
 
 	// Registration point
 	this.regX = this.width / 2;

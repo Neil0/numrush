@@ -49,3 +49,14 @@ function setScaleFactor(rawBitmap, width, height) {
   rawBitmap.scaleX = xFactor;
   rawBitmap.scaleY = yFactor;
 }
+
+// Refer to setScaleFactor. Keeps the aspect ratio though.
+function setEqualScaleFactor(rawBitmap, forWidth, length) {
+  if (forWidth) {
+    var scaleFactor = length / rawBitmap.image.width;
+    rawBitmap.scaleX = rawBitmap.scaleY = scaleFactor;
+  } else {
+    var scaleFactor = length / rawBitmap.image.height;
+    rawBitmap.scaleX = rawBitmap.scaleY = scaleFactor;
+  }
+}

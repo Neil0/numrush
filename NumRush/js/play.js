@@ -162,6 +162,7 @@ function initializeQuestionPositions() {
             case 0:
                 questions[q].y = layout.MID3; // Lowest
                 questions[q].scaleY = 1.66;
+                questions[q].txt.scaleY = 1.00;
                 questions[q].txt.scaleX = 1.66;
                 break;
             case 1: 
@@ -534,15 +535,14 @@ function answerCorrect() {
 
     // Achievements
     // First blood
-    //if (localStorage.getItem("achieve-FirstBlood") == "false") {
-        var achievement = overlayLayer.addChild(new Achievement(achieve.FIRSTBLOOD_SRC, achieve.FIRSTBLOOD_DESCR));
-        achievement.animateAchievement();
-        localStorage.setItem("achieve-FirstBlood", "true");
-    //}
+    // No condition
+    checkAchievement(achieve.FIRSTBLOOD_KEY, achieve.FIRSTBLOOD_SRC);
+    localStorage.setItem(achieve.FIRSTBLOOD_KEY, "false");
+
     // Hot Streak
     consecutive++;
-    if (consecutive > 15 && localStorage.getItem("achieve-HotStreak") == "false") {
-        // TODO: Do the shit
+    if (consecutive > 15) {
+        checkAchievement(achieve.HOTSTREAK_KEY, achieve.HOTSTREAK_SRC);
         localStorage.setItem("achieve-HotStreak", "true");
     } 
 }
@@ -564,6 +564,9 @@ function answerIncorrect() {
     advanceAnswers(generateNextAnswer());   // Create the next answer, animate, and setup
     advanceRows(generateNextQuestion());    // Create the next question, animate, and setup
     updateCurrentAnswer();
+
+    // Achievements
+    consecutive = 0;
 
     // Check if user lost
     if (livesRemaining <= 0) {
@@ -590,11 +593,8 @@ function gameOver() {
     }
 
     // ACHIEVEMENTS
-    if (localStorage.getItem("achieve-YouSnoozeYouLose") == "false") {
-        var achievement = overlayLayer.addChild(new Achievement(achieve.YOUSNOOZEYOULOSE_SRC, achieve.YOUSNOOZEYOULOSE_DESCR));
-        achievement.animateAchievement();
-        localStorage.setItem("achieve-YouSnoozeYouLose", "true");
-    }
+    // No condition
+    checkAchievement(achieve.YOUSNOOZEYOULOSE_KEY, achieve.YOUSNOOZEYOULOSE_SRC);
 }
 
 function restartGame() {
@@ -666,5 +666,21 @@ function validateName(name) {
         return false;
     } else {
         return true;
+    }
+}
+
+// Checks if achievement is unlocked, and creates it if it can
+function checkAchievement(key, imageSource) {
+    // Not unlocked yet, unlock now!
+    if (localStorage.getItem(key) == "false") {
+        var imageFile = new Image();
+        imageFile.src = imageSource
+        
+        imageFile.onload = function() {
+            var achievement = overlayLayer.addChild(new Achievement(imageFile));
+            achievement.animateAchievement();
+        }
+
+        localStorage.setItem(key, "true");
     }
 }
