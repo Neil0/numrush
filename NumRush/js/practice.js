@@ -5,10 +5,11 @@ var preload = new createjs.LoadQueue();
 preload.on("progress", foo, bar);*/ 
 preload.on("complete", handleComplete, this);
 var manifest = [
-    {src: 'img/bg.png', id: 'bg'},
+    {src: 'img/practice_bg.png', id: 'bg'},
     {src: 'img/life.png', id: 'life'},
     {src: 'img/no_life.png', id: 'nolife'},
-    {src: 'img/answer.png', id: 'ans'}
+    {src: 'img/answer.png', id: 'ans'},
+    {src: 'img/button_back.png', id: 'back'}
 ];
 
 function handleComplete(event) {
@@ -19,6 +20,7 @@ function handleComplete(event) {
 
 // EaselJS 
 var canvas, stage;
+var backButton; 
 
 // Game Info
 var OPERATORS = ["+", "-", "x", "/"];
@@ -38,6 +40,7 @@ var termRange = {min: 2, max: 2};       // Only supports 2-3 terms
 var operatorRange = { min: 0, max: 1};  // 0 = +, 1 = -, 2 = x, 3 = / 
 
 // Layers
+var overlayLayer = new createjs.Container();
 var foregroundLayer = new createjs.Container(); 
 var midLayer = new createjs.Container(); // Only contains questions
 var backgroundLayer = new createjs.Container();
@@ -60,7 +63,7 @@ function init() {
     fullScreenCanvas(canvas);                           // Sets width and height to fill screen
     // Stage info
     stage = new createjs.Stage(canvas);                 // Creates a EaselJS Stage for drawing
-    stage.addChild(backgroundLayer, midLayer, foregroundLayer);   // Add layers
+    stage.addChild(backgroundLayer, midLayer, foregroundLayer, overlayLayer);   // Add layers
     // Detection
     stage.enableMouseOver();    // TODO: Remove this later (change with touch or something?)
 
@@ -95,6 +98,7 @@ function initGame() {
     backgroundLayer.addChild(background);
 
     // Indicator stuff
+    backButton = foregroundLayer.addChild(new Button('back'));
     correctIndicator = foregroundLayer.addChild(new CorrectIndicator());
     incorrectIndicator = foregroundLayer.addChild(new IncorrectIndicator());
 
@@ -148,6 +152,7 @@ function initializeQuestionPositions() {
             case 0:
                 questions[q].y = layout.MID3; // Lowest
                 questions[q].scaleY = 1.66;
+                questions[q].txt.scaleY = 1.00;
                 questions[q].txt.scaleX = 1.66;
                 break;
             case 1: 

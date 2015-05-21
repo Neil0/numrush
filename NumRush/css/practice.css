@@ -32,3 +32,9 @@ html, body {
 div.ui-content {
 	padding: 0;
 }
+
+/* Fonts */
+@font-face{
+    font-family: "Augusta";
+    src: url('../font/Augusta.ttf');
+}

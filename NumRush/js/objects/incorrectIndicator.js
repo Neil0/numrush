@@ -21,23 +21,16 @@ var p = createjs.extend(IncorrectIndicator, createjs.Container);
 p.setup = function() {
 	var fontSize = this.height * 0.40;
 	var font = fontSize + "px " + properties.FONT; // TODO: make a global font
-	var text = new createjs.Text(this.answer, font, "red");
+	var text = new createjs.Text(this.label, font, "red");
 	text.textBaseline = "middle";
 	text.textAlign = "center";
 		
 	// cordinates for the text to be drawn 
 	text.x = this.width/2;
 	text.y = this.height/2;
-	              
-	var background = new createjs.Shape();
-	background.graphics.beginFill(this.color).drawRoundRect(0,0,this.width,this.height,10);
-	
+	              	
 	// Note: this refers to the container
-	this.txt = this.addChild(background, text);  // Container class method
-	this.on("click", this.handleClick);
-	this.on("rollover", this.handleRollOver);
-	this.on("rollout", this.handleRollOver);
-	this.cursor = "pointer";
+	this.txt = this.addChild(text);  // Container class method
 
 	// Container initial cordinates 
 	this.x = layout.STAGE_WIDTH * 0.50;
@@ -46,14 +39,6 @@ p.setup = function() {
 	// Disable interaction with child (only interact as a whole)
 	this.mouseChildren = false;
 } ;
-
-p.handleClick = function (event) {
-	alert("why you clicking me");
-} ;
-
-p.handleRollOver = function(event) {       
-	this.alpha = event.type == ("rollover") ? 0.4 : 1;
-};
 
 // Allows things out of scope to use this now (all of the above cannot be called directly)
 window.IncorrectIndicator = createjs.promote(IncorrectIndicator, "Container");
