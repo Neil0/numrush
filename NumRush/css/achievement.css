@@ -72,6 +72,8 @@ header img {
 	-webkit-filter: drop-shadow(5px 5px 5px #000);
 	filter: drop-shadow(5px 5px 5px #000);
 }
+
+img {
 	max-width: 100%;
 	height: auto;
 }
