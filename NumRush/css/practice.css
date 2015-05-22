@@ -48,3 +48,7 @@ div.ui-content {
     font-family: "Augusta";
     src: url('../font/Augusta.ttf');
 }
+
+.ui-loader {
+	display: none;
+}

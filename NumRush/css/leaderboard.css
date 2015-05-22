@@ -108,3 +108,7 @@ footer{
 
 }
 /*END TABLE STYLE*/
+
+.ui-loader {
+	display: none;
+}

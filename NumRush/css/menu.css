@@ -71,3 +71,7 @@ header img {
 #loading-indicator {
 	color: white;
 }
+
+.ui-loader {
+	display: none;
+}
