@@ -91,9 +91,8 @@ function initGame() {
     var sounds = [
         {src:"game_bgm.wav", id:"bg_music"},
         {src:"hitsound1.wav", id:"correct"},
-        {src:"miss.wav", id:"incorrect"},
-        {src:"failsound.mp3", id:"gameover"},
-        {src:"achievement.mp3", id:"achieved"}
+        {src:"miss.mp3", id:"incorrect"},
+        {src:"failsound.mp3", id:"gameover"}
     ];
     createjs.Sound.addEventListener("fileload", bgm);   // Will call bgm() when loaded
     createjs.Sound.registerSounds(sounds, audiopath);
@@ -516,18 +515,14 @@ function DifficultyController() {
 function checkAchievement(key, imageSource) {
     // Not unlocked yet, unlock now!
     if (localStorage.getItem(key) != "true") {
-        // Prep the image
         var imageFile = new Image();
         imageFile.src = imageSource
         
-        // Wait until done loading
         imageFile.onload = function() {
             var achievement = overlayLayer.addChild(new Achievement(imageFile));
             achievement.animateAchievement();
-            if (sfxEnabled) { var instance = createjs.Sound.play("achieved"); }
         }
 
-        // Unlock the achievement
         localStorage.setItem(key, "true");
     }
 }
