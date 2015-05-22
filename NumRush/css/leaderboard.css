@@ -1,14 +1,72 @@
 /*HEADER*/
+@media only screen and (min-width:508px) {
+	body{
+		background-image: url("../img/bg_leaderboard_medium.png");
+  		background-size: 100% 100%;
+   		background-repeat: no-repeat;
+	}
+	h2{
+		margin-top:25%;	
+		color:#FFF;
+		font:bold 20px arial;
+	}
+		 
+	#back-button-container{
+		margin:15px auto;
+	}
+}
+@media only screen and (max-width:507px) {
+	body{
+		background-image: url("../img/leaderboard_bg.png");
+  		background-size: 100% 100%;
+  		background-repeat: no-repeat;
+	}
+	h2{
+		margin-top:25%;	
+		color:#FFF;
+		font:bold 20px arial;
+	}
+	#back-button-container {
+		margin:15px auto;
+	}	
+}
+@media only screen and (min-width:890px) {
+	body{  
+		background-image: url("../img/bg_leaderboard_high.png");
+  		background-size: 100% 100%;
+  		background-repeat: no-repeat;
+	}
+	h2{
+		margin-top:15%;	
+		color:#FFF;
+		font:bold 20px arial;
+	}
+	#back-button-container {
+		margin:30px auto;
+	}
+}
 h1 {
 	text-align: center;
 }
-/* Audio buttons */
-header img {
-	float: right;
+img {
+	position: absolute;
+	top: 0px;
+	right: 10px;
 }
 .ui-btn {
 	margin:0 auto;
     width: 200px;
+}
+#sfx-toggle {
+	position: absolute;
+	top: 0px;
+	right: 60px;
+}
+.off {
+	text-decoration: line-through;
+}
+.on {
+	
 }
 #localhighscore{
 	text-align:center;
@@ -19,36 +77,44 @@ header img {
 table {
 	text-align:center;
 	color:black;
+	width:80%;
+	height:80%;
+	margin:0 auto;
+	color:#fff;
 }
 th{
-	background-color:rgba(0,191,255,.9);
-	border-right:1px solid #FFF;	
+	padding:10px 0;
+	background-color:rgba(255,0,0,.2);
 	color:#FFF;
-	font:italic 20px arial;
+	font:italic 25px arial;
 }
 tr:nth-child(odd){
-	background-color:rgba(0,191,255,.3);
+	background-color:rgba(160,82,45,.2);
 }
 tr:nth-child(even){
-	background-color:rgba(0,191,255,.1);
+	background-color:rgba(255,0,0,.2);
 }
-td{
-	border-left:1px solid #FFF;
+td{	
+	padding:10px;
 	font:20px arial;
 }
-/*END TABLE STYLE*/
+#back-button-container{
+	text-align:center;
+}
+#back-button{
+	background-image: url("../img/button_back.png");
+  	background-size: 100% 100%;
+  	background-repeat: no-repeat;
+  	padding:2% 15%;
+  	
+}
+footer{
+	margin:4% auto;
+	width:100%;
+	background-color:rgba(255,0,0,.2);
+	text-align:center;
+	font:40px arial;
+	color:#FFF;
 
-/* LEADERBOARD STUFF */
-@media screen and (orientation:portrait) {
-	#main-content {
-		width: 90%;
-		margin:0 auto;
-	}
 }
-@media screen and (orientation:landscape) {
-	#main-content {
-		width: 50%;
-		margin:0 auto;
-	}
-}
-/*END LEADERBOARD*/
+/*END TABLE STYLE*/
