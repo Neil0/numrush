@@ -62,12 +62,6 @@ header img {
 	float: right;
 }
 
-.off {
-	text-decoration: line-through;
-}
-.on {
-	
-}
 /* LOADING STUFF */
 #loading-div {
 	position: fixed;

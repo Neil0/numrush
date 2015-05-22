@@ -45,29 +45,19 @@
 		margin:30px auto;
 	}
 }
-h1 {
-	text-align: center;
+
+header {
+	display: block;
 }
-img {
-	position: absolute;
-	top: 0px;
-	right: 10px;
+header img {
+	float: right;
 }
+
 .ui-btn {
 	margin:0 auto;
     width: 200px;
 }
-#sfx-toggle {
-	position: absolute;
-	top: 0px;
-	right: 60px;
-}
-.off {
-	text-decoration: line-through;
-}
-.on {
-	
-}
+
 #localhighscore{
 	text-align:center;
 }
