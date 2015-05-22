@@ -90,5 +90,5 @@ $(document).ready(function() {
 
 function buttonSound() {
     var sfx = document.getElementById("menu-sfx");
-    sfx.play();
+    if (sfxEnabled) {  sfx.play(); }
 }
