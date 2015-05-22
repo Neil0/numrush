@@ -21,6 +21,11 @@ html, body {
 			width: 50%;
 			height: 50%;
 	}
+
+	/* Push achievements down */
+	#top-block {
+		height: 150px;
+	}
 }
 
 @media only screen and (max-width:509px) {
@@ -35,15 +40,20 @@ html, body {
 		top: 55%;
 	}
 
-#button-container img {
+	#button-container img {
 		width: 50%;
 		height: 50%;
+	}
+
+	/* Push achievements down */
+	#top-block {
+		height: 100px;
 	}
 }
 
 @media only screen and (min-width:1000px) {
 	body{
-		background-image: url("../img/bg_high.png");
+		background-image: url("../img/achievements_large_bg.png");
   		background-size: 100% 100%;
   		background-repeat: no-repeat;
 	}
@@ -58,7 +68,14 @@ html, body {
 		height: 20%;
 		display:inline;
 	}
+
+	/* Push achievements down */
+	#top-block {
+		height: 200px;
+	}
 }
+
+
 
 /* Audio buttons */
 header img {
@@ -74,7 +91,7 @@ header img {
 }
 
 img {
-	max-width: 100%;
+	max-width: 80%;
 	height: auto;
 }
 
