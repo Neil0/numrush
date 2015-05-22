@@ -72,6 +72,9 @@ header img {
 	-webkit-filter: drop-shadow(5px 5px 5px #000);
 	filter: drop-shadow(5px 5px 5px #000);
 }
+	max-width: 100%;
+	height: auto;
+}
 
 .gray-out  {
  	-webkit-filter: grayscale(1) brightness(1.4) opacity(0.9);
