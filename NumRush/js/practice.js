@@ -60,6 +60,7 @@ var livesDisplay;
 var sfxEnabled, bgmEnabled;
  
 
+// -- INITIALIZATION --
 // Sets up the canvas, stage, and preloads all the assets.
 function init() {
     // Initialize all base variables and preload assets. Once assets are loaded it will call init. 
