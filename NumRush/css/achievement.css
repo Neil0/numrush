@@ -26,6 +26,11 @@ html, body {
 	#top-block {
 		height: 150px;
 	}
+
+	img {
+		max-width: 80%;
+		height: auto;
+	}
 }
 
 @media only screen and (max-width:509px) {
@@ -48,6 +53,11 @@ html, body {
 	/* Push achievements down */
 	#top-block {
 		height: 100px;
+	}
+
+	img {
+		max-width: 80%;
+		height: auto;
 	}
 }
 
@@ -73,6 +83,11 @@ html, body {
 	#top-block {
 		height: 200px;
 	}
+
+	img {
+		max-width: 35%;
+		height: auto;
+	}
 }
 
 
@@ -90,10 +105,7 @@ header img {
 	filter: drop-shadow(5px 5px 5px #000);
 }
 
-img {
-	max-width: 80%;
-	height: auto;
-}
+
 
 .gray-out  {
  	-webkit-filter: grayscale(1) brightness(1.4) opacity(0.9);
