@@ -574,10 +574,6 @@ function gameOver() {
     } else {
         $('#local-score').text("Personal best: " + localStorage.getItem("localscore"));
     }
-
-    // ACHIEVEMENTS
-    // No condition
-    checkAchievement(achieve.YOUSNOOZEYOULOSE_KEY, achieve.YOUSNOOZEYOULOSE_SRC);
 }
 
 function restartGame() {

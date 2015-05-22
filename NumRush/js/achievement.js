@@ -29,19 +29,15 @@ $(document).ready(function() {
     // -- METHODS --    
     // Grey out locked achievements
     function loadUnlockedAchievements() {
-        $firstBlood = $('#achieve-FirstBlood');
-        $hotStreak = $('#achieve-HotStreak');
-        $snoozeLose = $('#achieve-YouSnoozeYouLose');
-        $trainingBegins = $('#achieve-YourTrainingBegins');
+        var $firstBlood = $('#achieve-FirstBlood');
+        var $hotStreak = $('#achieve-HotStreak');
+        var $trainingBegins = $('#achieve-YourTrainingBegins');
 
         if (localStorage.getItem("achieve-FirstBlood") != "true") {
             $firstBlood.addClass("gray-out");
         }
         if (localStorage.getItem("achieve-HotStreak") != "true") {
             $hotStreak.addClass("gray-out");
-        }
-        if (localStorage.getItem("achieve-YouSnoozeYouLose") != "true") {
-            $snoozeLose.addClass("gray-out");
         }
         if (localStorage.getItem("achieve-YourTrainingBegins") != "true") {
             $trainingBegins.addClass("gray-out");
